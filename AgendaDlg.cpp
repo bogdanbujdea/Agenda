@@ -316,10 +316,11 @@ HCURSOR CAgendaDlg::OnQueryDragIcon()
 
 void CAgendaDlg::LoadList(char *type, List list)
 {
-	int item;
+	int item = 0;
 	Phonebook *p = manager->detailsDlg->p;
-	if(_stricmp(type, "this"))
+	if(!_stricmp(type, "this"))
 		list = p->getContacts(p->ContactList, type);
+
 	listCtrl.DeleteAllItems();
 	for(int i = 0; i < list.getSize(); i++)
 	{
@@ -330,7 +331,8 @@ void CAgendaDlg::LoadList(char *type, List list)
 		int age =list[i].getAge();
 		char a[3];
 		_itoa_s(age, a, 10);
-		if(age) listCtrl.SetItemText(item, 4, a);
+		if(age)
+			listCtrl.SetItemText(item, 4, a);
 		listCtrl.SetItemText(item, 5, list[i].getHomeAddress().c_str());
 		listCtrl.SetItemText(item, 6, list[i].getEmailAddress().c_str());
 	}

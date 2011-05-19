@@ -14,9 +14,11 @@ IMPLEMENT_DYNAMIC(PbDetails, CDialogEx)
 PbDetails::PbDetails(CWnd* pParent /*=NULL*/)
 	: CDialogEx(PbDetails::IDD, pParent), ini("Settings.ini", "Settings")
 {
+	//MessageBox("ptdetails ctcr", 0, 0);
 	CString temp = (LPCTSTR) ini.GetIniPath().c_str(); // Force CString to make a copy
 	cout<<"ini path="<<ini.GetIniPath()<<endl;
 	char path[2048];
+	picLoaded = 0;
 	::GetCurrentDirectoryA(sizeof(path) - 1, path);
 	photoDir = path;
 	cout<<"photo dir="<<photoDir<<endl;
@@ -89,6 +91,7 @@ void PbDetails::OnBnClickedButton3()
 	}
 	else
 		picName = name;
+	picLoaded = 1;
 
 } //browse
 
@@ -404,11 +407,15 @@ void PbDetails::OnBnClickedButton2() //save
 		details = picName.GetBuffer();
 		ini.WriteValue(section, "Owner Photo", details);
 		string photoPath = photoDir;
-		photoPath += "\\";
-		photoPath += photoName;
-		if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
-			MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
-		cout<<"photo path="<<photoPath<<endl;
+		if(picLoaded)
+		{		
+			photoPath += "\\";
+			photoPath += photoName;
+			if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
+				MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+			cout<<"photo path="<<photoPath<<endl;
+			picLoaded = 0;
+		}
 		Pb++;
 		_itoa_s(Pb, tmp, 10);
 		ini.WriteValue("Settings", "PbNo", tmp);

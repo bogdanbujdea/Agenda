@@ -46,6 +46,7 @@ public:
 	CButton bCancel;
 	afx_msg void OnBnClickedButton4();
 	bool show;
+	int picLoaded;
 	CEdit eFirstName;
 	CEdit eLastName;
 	CEdit ePhoneNumber;
