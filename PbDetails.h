@@ -8,6 +8,15 @@
 using namespace std;
 
 // PbDetails dialog
+enum Mode
+{
+	ADD_CONTACT,
+	EDIT_CONTACT,
+	VIEW_CONTACT,
+	ADD_PHONEBOOK,
+	EDIT_PHONEBOOK,
+	VIEW_PHONEBOOK
+};
 
 class PbDetails : public CDialogEx
 {
@@ -33,6 +42,7 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CButton bClear;
 	IniFile ini;
+	Mode mode;
 	CButton bCancel;
 	afx_msg void OnBnClickedButton4();
 	bool show;
@@ -50,12 +60,11 @@ public:
 	string PbSection;
 	string OpenedPb;
 	CEdit eBirthDate;
-	void ViewContact();
-	void AddContact();
 	bool contactView, contactAdd;
 	afx_msg void OnBnClickedButton2();
 	Phonebook *p;
 	int contact;
+	HWND PbName;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void SaveContact();
 	afx_msg void OnEnChangeEdit1();
@@ -65,4 +74,11 @@ public:
 	string chPb[1000];
 	bool viewOnly;
 	virtual INT_PTR DoModal();
+	void AddPhonebook();
+	void EditPhonebook();
+	void ViewPhonebook();
+	void AddContact();
+	void ViewContact();
+	void EditContact();
+	CComboBox cbType;
 };

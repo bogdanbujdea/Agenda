@@ -184,9 +184,9 @@ LRESULT CAgendaDlg::OnShowWnd(UINT wParam, LONG lParam)
 
 BOOL CAgendaDlg::OnInitDialog()
 {
-	//AllocConsole();
-	//AttachConsole( GetCurrentProcessId() ) ;
-	//freopen( "CON", "w", stdout ) ;
+	AllocConsole();
+	AttachConsole( GetCurrentProcessId() ) ;
+	freopen( "CON", "w", stdout ) ;
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
@@ -239,7 +239,7 @@ BOOL CAgendaDlg::OnInitDialog()
 	
 	DWORD error = GetLastError();
 //	char err[100];
-	//itoa(error, err, 10);
+	//_itoa_s(error, err, 10);
 	//MessageBox(err, err, 0);
 	bClosePb.SetIcon(hClose);
 	bSavePb.SetIcon(hSave);
@@ -271,7 +271,7 @@ void CAgendaDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CAgendaDlg::OpenPb()
 {
-	int item;
+	//int item;
 	string file;
 	file = manager->OpenedPb;
 	file += ".txt";
@@ -318,7 +318,7 @@ void CAgendaDlg::LoadList(char *type, List list)
 {
 	int item;
 	Phonebook *p = manager->detailsDlg->p;
-	if(stricmp(type, "this"))
+	if(_stricmp(type, "this"))
 		list = p->getContacts(p->ContactList, type);
 	listCtrl.DeleteAllItems();
 	for(int i = 0; i < list.getSize(); i++)
@@ -329,7 +329,7 @@ void CAgendaDlg::LoadList(char *type, List list)
 		listCtrl.SetItemText(item, 3, list[i].getOccupation().c_str());
 		int age =list[i].getAge();
 		char a[3];
-		itoa(age, a, 10);
+		_itoa_s(age, a, 10);
 		if(age) listCtrl.SetItemText(item, 4, a);
 		listCtrl.SetItemText(item, 5, list[i].getHomeAddress().c_str());
 		listCtrl.SetItemText(item, 6, list[i].getEmailAddress().c_str());
@@ -429,6 +429,7 @@ int CAgendaDlg::GetSelectedContact()
 		)
 		return i;
 	}
+	return -1;
 }
 
 void CAgendaDlg::OnBnClickedButton3()
@@ -482,28 +483,23 @@ void CAgendaDlg::OnBnClickedButton8()
 	// TODO: Add your control notification handler code here
 	int i = this->GetSelectedContact();
 	manager->detailsDlg->contact = i;
-	manager->detailsDlg->save = 1;
+	manager->detailsDlg->mode = ADD_CONTACT;
 	manager->detailsDlg->DoModal();
-	manager->detailsDlg->save = 0;
 }
 
 
 void CAgendaDlg::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
-	manager->detailsDlg->add = 1;
-	manager->detailsDlg->contact = 1;
+	manager->detailsDlg->mode = ADD_CONTACT;
 	manager->detailsDlg->DoModal();
-	manager->detailsDlg->add = 0;
 }
 
 
 void CAgendaDlg::OnBnClickedButton4()
 {
 	// TODO: Add your control notification handler code here
-	manager->detailsDlg->save = 1;
+	manager->detailsDlg->mode = EDIT_CONTACT;
 	manager->detailsDlg->contact = GetSelectedContact();
-	manager->detailsDlg->contactView = 1;
 	manager->detailsDlg->DoModal();
-	manager->detailsDlg->save = 0;
 }

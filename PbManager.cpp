@@ -38,7 +38,7 @@ void PbManager::InitCbList()
 		detailsDlg->chPb->clear();
 		for(int i = 0; i < 1000; i++)
 		{
-			itoa(i, ch, 10);
+			_itoa_s(i, ch, 10);
 			tmp = detailsDlg->ini.GetStringValue(ch, "Phone Book Name", "error");
 			if(tmp != "error")
 			{
@@ -145,11 +145,11 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 		cbList.GetLBText(sel, s);
 		for(int i = 0; i < 1000; i++)
 		{
-			itoa(i, section, 10);
+			_itoa_s(i, section, 10);
 			string tmp = detailsDlg->ini.GetStringValue(section, "Phone Book Name", "error");
 			cout<<"s="<<s<<"\ttmp="<<tmp<<endl;
 			if(tmp.compare("error") != 0)
-			if(stricmp(tmp.c_str(), s) == 0)
+			if(_stricmp(tmp.c_str(), s) == 0)
 			{
 				sel = i;
 				break;
@@ -158,7 +158,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 		if(MessageBox("Are you sure you want to delete this phone book?", "", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2 | MB_APPLMODAL) == IDYES)
 		{	
 		//	OpenedPb = NULL;
-			itoa(sel, s, 10);
+			_itoa_s(sel, s, 10);
 			int ret = detailsDlg->ini.DeleteSection(s);
 			if(ret != 0)
 				MessageBox("Can't delete phonebook", "ERROR", MB_ICONERROR);
@@ -169,7 +169,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 				pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
 				cout<<"\npbno="<<pb<<endl;
 				pb--;
-				itoa(pb, s, 10);
+				_itoa_s(pb, s, 10);
 				detailsDlg->ini.WriteValue("Settings", "PbNo", s);
 				MessageBox("Phone Book Deleted",0,0);
 			}
@@ -191,11 +191,11 @@ void PbManager::OnBnClickedButton5()
 		detailsDlg->OpenedPb = cbList.GetLBText(sel, pb);
 		for(int i = 0; i < 100; i++)
 		{
-			itoa(i, section, 10);
+			_itoa_s(i, section, 10);
 			string str = detailsDlg->ini.GetStringValue(section, "Phone Book Name", "");
-			if(stricmp(pb, str.c_str()) == 0)
+			if(_stricmp(pb, str.c_str()) == 0)
 			{
-				itoa(i, pb, 10);
+				_itoa_s(i, pb, 10);
 				detailsDlg->PbSection = pb;
 			break;
 			}

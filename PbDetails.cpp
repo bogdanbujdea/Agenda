@@ -14,18 +14,14 @@ IMPLEMENT_DYNAMIC(PbDetails, CDialogEx)
 PbDetails::PbDetails(CWnd* pParent /*=NULL*/)
 	: CDialogEx(PbDetails::IDD, pParent), ini("Settings.ini", "Settings")
 {
-	show = add = save = contact = contactView = 0;
-	viewOnly = false;
 	CString temp = (LPCTSTR) ini.GetIniPath().c_str(); // Force CString to make a copy
 	cout<<"ini path="<<ini.GetIniPath()<<endl;
-	//::PathStripPath(temp.GetBuffer(0));
-	//temp.ReleaseBuffer(-1);
-	//photoDir = temp.GetBuffer();
 	char path[2048];
 	::GetCurrentDirectoryA(sizeof(path) - 1, path);
 	photoDir = path;
 	cout<<"photo dir="<<photoDir<<endl;
 	p = &Phonebook::getInstance();
+	mode = ADD_PHONEBOOK;
 }
 
 PbDetails::~PbDetails()
@@ -49,6 +45,7 @@ void PbDetails::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT7, eEmail);
 	DDX_Control(pDX, IDC_EDIT8, eBirthDate);
 	DDX_Control(pDX, IDC_EDIT9, ePbName);
+	DDX_Control(pDX, IDC_COMBO1, cbType);
 }
 
 
@@ -78,13 +75,13 @@ void PbDetails::OnBnClickedButton3()
 	if(FileDlg.DoModal() == IDOK)
 	{
 		name = FileDlg.GetFileName();
-		strcpy(fileName, name.GetBuffer());
+		strcpy_s(fileName, sizeof(fileName), name.GetBuffer());
 		photoName = name.GetBuffer();
 		name = FileDlg.GetFolderPath();
 		name.Append("\\");
 		name.Append(fileName);
 	}
-	strcpy(fileName, name.GetBuffer());	
+	strcpy_s(fileName, sizeof(fileName), name.GetBuffer());	
 	if(mPic.LoadFromFile(name) == 0)
 	{
 		MessageBox("Can't open this photo", "ERROR", MB_ICONERROR);
@@ -95,65 +92,124 @@ void PbDetails::OnBnClickedButton3()
 
 } //browse
 
+void PbDetails::EditContact()
+{}
+
+void PbDetails::AddPhonebook()
+{
+	bSave.ShowWindow(1);
+	bClear.ShowWindow(1);
+	bBrowse.ShowWindow(1);
+	bCancel.SetWindowTextA("Cancel");
+	eFirstName.SetReadOnly(0);
+	eLastName.SetReadOnly(0);
+	ePbName.SetReadOnly(0);
+	ePhoneNumber.SetReadOnly(0);
+	eOccupation.SetReadOnly(0);
+	eAge.SetReadOnly(0);
+	eHomeAddress.SetReadOnly(0);
+	eEmail.SetReadOnly(0);
+	eBirthDate.SetReadOnly(0);
+	::ShowWindow(PbName, 1);
+	::SetWindowTextA(PbName, "Owner Name:");
+}
+
+void PbDetails::ViewPhonebook()
+{
+	bSave.ShowWindow(0);
+	bClear.ShowWindow(0);
+	bBrowse.ShowWindow(0);
+	bCancel.SetWindowTextA("Close");
+	eFirstName.SetReadOnly(1);
+	eLastName.SetReadOnly(1);
+	ePbName.SetReadOnly(1);
+	ePhoneNumber.SetReadOnly(1);
+	eOccupation.SetReadOnly(1);
+	eAge.SetReadOnly(1);
+	eHomeAddress.SetReadOnly(1);
+	eEmail.SetReadOnly(1);
+	eBirthDate.SetReadOnly(1);
+	string tmp[256];
+	eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
+	eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
+	ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
+	ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
+	eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
+	eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
+	eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
+	eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
+	eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
+	CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
+	::ShowWindow(PbName, 1);
+	mPic.LoadFromFile(str);
+	::SetWindowTextA(PbName, "Phone Book Name:");
+}
+
+void PbDetails::EditPhonebook()
+{
+	bSave.ShowWindow(0);
+	bClear.ShowWindow(0);
+	bBrowse.ShowWindow(0);
+	bCancel.SetWindowTextA("Close");
+	eFirstName.SetReadOnly(1);
+	eLastName.SetReadOnly(1);
+	ePbName.SetReadOnly(1);
+	ePhoneNumber.SetReadOnly(1);
+	eOccupation.SetReadOnly(1);
+	eAge.SetReadOnly(1);
+	eHomeAddress.SetReadOnly(1);
+	eEmail.SetReadOnly(1);
+	eBirthDate.SetReadOnly(1);
+	string tmp[256];
+	eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
+	eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
+	ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
+	ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
+	eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
+	eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
+	eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
+	eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
+	eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
+	CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
+	::ShowWindow(PbName, 1);
+	::SetWindowTextA(PbName, "Phone Book Name:");
+	mPic.LoadFromFile(str);
+}
 
 BOOL PbDetails::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	this->OnBnClickedButton1();
 	mPic.FreeData();
-	if(viewOnly)
+	PbName = ::GetDlgItem(this->m_hWnd, IDC_STATICPBNAME);
+	MessageBox("InitDialog",0,0);
+	switch(mode)
 	{
-		bSave.ShowWindow(0);
-		bClear.ShowWindow(0);
-		bBrowse.ShowWindow(0);
-		bCancel.SetWindowTextA("Close");
-		eFirstName.SetReadOnly(1);
-		eLastName.SetReadOnly(1);
-		ePbName.SetReadOnly(1);
-		ePhoneNumber.SetReadOnly(1);
-		eOccupation.SetReadOnly(1);
-		eAge.SetReadOnly(1);
-		eHomeAddress.SetReadOnly(1);
-		eEmail.SetReadOnly(1);
-		eBirthDate.SetReadOnly(1);
-		string tmp[256];
-		eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
-		eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
-		ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
-		ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
-		eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
-		eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
-		eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
-		eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
-		eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
-		CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
-		mPic.LoadFromFile(str);
-		viewOnly = false;
+	case ADD_PHONEBOOK:
+		AddPhonebook();
+		break;
+	case EDIT_PHONEBOOK:
+		EditPhonebook();
+		break;
+	case VIEW_PHONEBOOK:
+		ViewPhonebook();
+		break;
+	case ADD_CONTACT:
+		AddContact();
+		break;
+	case EDIT_CONTACT:
+		EditContact();
+		break;
+	case VIEW_CONTACT:
+		ViewContact();
+		break;
 	}
-	else
-	{
-		bSave.ShowWindow(1);
-		bClear.ShowWindow(1);
-		bBrowse.ShowWindow(1);
-		bCancel.SetWindowTextA("Cancel");
-		eFirstName.SetReadOnly(0);
-		eLastName.SetReadOnly(0);
-		ePbName.SetReadOnly(0);
-		ePhoneNumber.SetReadOnly(0);
-		eOccupation.SetReadOnly(0);
-		eAge.SetReadOnly(0);
-		eHomeAddress.SetReadOnly(0);
-		eEmail.SetReadOnly(0);
-		eBirthDate.SetReadOnly(0);
-		if(contactView)
-			ViewContact();
-		/*else if(add)
-			AddContact();*/
-	}
+
+
 	// TODO:  Add extra initialization here
 	HICON hSave = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON6));
 	HICON hClear = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON5));
-	
+
 	
 	//DWORD error = GetLastError();
 	bSave.SetIcon(hSave);
@@ -164,26 +220,28 @@ BOOL PbDetails::OnInitDialog()
 
 void PbDetails::ViewContact()
 {
+	this->SetWindowTextA("Contact Details");
 	eFirstName.SetWindowTextA(p->ContactList[contact].getFirstName().c_str());
 	eLastName.SetWindowTextA(p->ContactList[contact].getLastName().c_str());
 	ePhoneNumber.SetWindowTextA(p->ContactList[contact].getPhoneNumber().c_str());
 	eOccupation.SetWindowTextA(p->ContactList[contact].getOccupation().c_str());
 	int age = p->ContactList[contact].getAge();
 	char tmp[10]; 
-	itoa(age, tmp, 10);
+	_itoa_s(age, tmp, 10);
 	eAge.SetWindowTextA(tmp);
 	eHomeAddress.SetWindowTextA(p->ContactList[contact].getHomeAddress().c_str());
 	eEmail.SetWindowTextA(p->ContactList[contact].getEmailAddress().c_str());
 	eBirthDate.SetWindowTextA(p->ContactList[contact].getBirthDate().toString().c_str());
-	if(save)
-		bBrowse.EnableWindow(0);
-	bSave.EnableWindow(1);
+	::SetWindowTextA(PbName, "Contact Name:");
 }
 
 void PbDetails::AddContact()
 {
 		char tmp[1024];
-		
+		this->SetWindowTextA("Add Contact");
+		::ShowWindow(PbName, 1);
+		::SetWindowTextA(PbName, "Contact Type:");
+		ePbName.ShowWindow(0);
 		string details[10];
 		ePbName.GetWindowTextA(tmp, 256);
 		details[0] = tmp;
@@ -296,14 +354,14 @@ void PbDetails::OnBnClickedButton2() //save
 	int Pb;
 	Pb = ini.GetIntValue("Settings", "PbNo");
 	char tmp[256], section[100];
-	itoa(Pb, section, 10);
+	_itoa_s(Pb, section, 10);
 	ini.CreateSection(section);
 	string details, pbPath;
 	ePbName.GetWindowTextA(tmp, 256);
 	int err = 0;
-	for(int i = 0; i < chPb->size(); i++)
+	for(int i = 0; i < (int) chPb->size(); i++)
 	{
-		if(stricmp(tmp, chPb[i].c_str()) == 0)
+		if(_stricmp(tmp, chPb[i].c_str()) == 0)
 		{
 			MessageBox("Enter a different phone book name, this one already exists", "ERROR", MB_ICONERROR);
 			err = 1;
@@ -344,7 +402,7 @@ void PbDetails::OnBnClickedButton2() //save
 			MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
 		cout<<"photo path="<<photoPath<<endl;
 		Pb++;
-		itoa(Pb, tmp, 10);
+		_itoa_s(Pb, tmp, 10);
 		ini.WriteValue("Settings", "PbNo", tmp);
 		
 		photoPath = photoDir;
