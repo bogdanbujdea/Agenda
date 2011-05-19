@@ -14,7 +14,6 @@ IMPLEMENT_DYNAMIC(PbDetails, CDialogEx)
 PbDetails::PbDetails(CWnd* pParent /*=NULL*/)
 	: CDialogEx(PbDetails::IDD, pParent), ini("Settings.ini", "Settings")
 {
-	//MessageBox("ptdetails ctcr", 0, 0);
 	CString temp = (LPCTSTR) ini.GetIniPath().c_str(); // Force CString to make a copy
 	cout<<"ini path="<<ini.GetIniPath()<<endl;
 	char path[2048];
@@ -182,6 +181,7 @@ void PbDetails::EditPhonebook()
 BOOL PbDetails::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	picLoaded = 0;
 	this->OnBnClickedButton1();
 	mPic.FreeData();
 	cbType.AddString("Acquaintance");
@@ -351,17 +351,7 @@ void PbDetails::SaveContact()
 void PbDetails::OnBnClickedButton2() //save
 {
 	// TODO: Add your control notification handler code here
-	if(contact > 0)
-	{
-		if(save)
-			SaveContact();
-		else if(add)
-			AddContact();
-		contact = -1;
-		EndDialog(0);
-	}
-	else
-	{
+
 	int Pb;
 	Pb = ini.GetIntValue("Settings", "PbNo");
 	char tmp[256], section[100];
@@ -432,7 +422,6 @@ void PbDetails::OnBnClickedButton2() //save
 		photoDir = "";
 		photoPath = "";
 		this->EndDialog(IDOK);
-	}
 	}
 }
 
