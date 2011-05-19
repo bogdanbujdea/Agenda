@@ -318,7 +318,7 @@ void CAgendaDlg::LoadList(char *type, List list)
 {
 	int item = 0;
 	Phonebook *p = manager->detailsDlg->p;
-	if(!_stricmp(type, "this"))
+	if(_stricmp(type, "this"))
 		list = p->getContacts(p->ContactList, type);
 
 	listCtrl.DeleteAllItems();

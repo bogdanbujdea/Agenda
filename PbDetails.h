@@ -91,5 +91,6 @@ public:
 	void EditContact();
 	int ChangeContact();
 	int ValidateData();
+	void DisplayInfo();
 	CComboBox cbType;
 };

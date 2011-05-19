@@ -129,18 +129,11 @@ int PbDetails::ChangeContact()
 	return SUCCESS;
 }
 
-void PbDetails::ViewContact()
+void PbDetails::DisplayInfo()
 {
-	this->SetWindowTextA("Add Contact");
-	::ShowWindow(PbName, 1);
-	::SetWindowTextA(PbName, "Contact Type:");
-	cbType.ShowWindow(1);
-	bSave.EnableWindow(0);
-	ePbName.ShowWindow(0);
-	cbType.EnableWindow(0);
-	if(p->ContactList[contact].getContactType().compare("Acquaintance") == 0)
+	if(p->ContactList[contact].getContactType().compare("acquaintance") == 0)
 		cbType.SetCurSel(0);
-	else if(p->ContactList[contact].getContactType().compare("Colleague") == 0)
+	else if(p->ContactList[contact].getContactType().compare("colleague") == 0)
 		cbType.SetCurSel(1);
 	else cbType.SetCurSel(2);
 	this->SetWindowTextA("Contact Details");
@@ -155,6 +148,18 @@ void PbDetails::ViewContact()
 	eHomeAddress.SetWindowTextA(p->ContactList[contact].getHomeAddress().c_str());
 	eEmail.SetWindowTextA(p->ContactList[contact].getEmailAddress().c_str());
 	eBirthDate.SetWindowTextA(p->ContactList[contact].getBirthDate().toString().c_str());
+}
+
+void PbDetails::ViewContact()
+{
+	this->SetWindowTextA("Add Contact");
+	::ShowWindow(PbName, 1);
+	::SetWindowTextA(PbName, "Contact Type:");
+	cbType.ShowWindow(1);
+	bSave.EnableWindow(0);
+	ePbName.ShowWindow(0);
+	cbType.EnableWindow(0);
+	DisplayInfo();
 	::SetWindowTextA(PbName, "Contact Name:");
 }
 
@@ -172,9 +177,9 @@ void PbDetails::AddContact()
 void PbDetails::EditContact()
 {
 	cbType.EnableWindow(1);
-	if(p->ContactList[contact].getContactType().compare("Acquaintance") == 0)
+	if(p->ContactList[contact].getContactType().compare("acquaintance") == 0)
 		cbType.SetCurSel(0);
-	else if(p->ContactList[contact].getContactType().compare("Colleague") == 0)
+	else if(p->ContactList[contact].getContactType().compare("colleague") == 0)
 		cbType.SetCurSel(1);
 	else cbType.SetCurSel(2);
 	this->SetWindowTextA("Edit Contact");
@@ -182,6 +187,7 @@ void PbDetails::EditContact()
 	::SetWindowTextA(PbName, "Contact Type:");
 	cbType.ShowWindow(1);
 	ePbName.ShowWindow(0);
+	DisplayInfo();
 }
 
 void PbDetails::AddPhonebook()
@@ -274,9 +280,9 @@ BOOL PbDetails::OnInitDialog()
 	picLoaded = 0;
 	this->OnBnClickedButton1();
 	mPic.FreeData();
-	cbType.AddString("Acquaintance");
-	cbType.AddString("Colleague");
-	cbType.AddString("Friend");
+	cbType.AddString("acquaintance");
+	cbType.AddString("colleague");
+	cbType.AddString("friend");
 	cbType.SetCurSel(0);
 	PbName = ::GetDlgItem(this->m_hWnd, IDC_STATICPBNAME);
 	switch(mode)
@@ -366,12 +372,12 @@ int PbDetails::SaveContact()
 	eHomeAddress.GetWindowTextA(tmp, 256);
 	details[9] = tmp;
 	int err = 0;
-	if(details[0].compare("Acquaintance") == 0)
+	if(details[0].compare("acquaintance") == 0)
 		p->addAcquaintance(details);
 	else
-		if(details[0].compare("Colleague") == 0)
+		if(details[0].compare("colleague") == 0)
 			p->addColleague(details);
-		else if(details[0].compare("Friend") == 0)
+		else if(details[0].compare("friend") == 0)
 			p->addFriend(details);
 		else
 			err = 1;
@@ -456,6 +462,11 @@ void PbDetails::OnBnClickedButton2() //save
 	if(mode == ADD_CONTACT)
 		SaveContact();
 	else
+		if(mode == EDIT_CONTACT)
+			ChangeContact();
+		else if(mode == VIEW_CONTACT)
+			ViewContact();
+		else
 	switch(ValidateInputData())
 	{
 	case PB_ALREADY_EXISTS:
