@@ -1,5 +1,4 @@
 acquaintance|Ionescu|Alex|0231111111|male
 colleague|Radu|Bogdan|0232222222|male|20|bogdan@yahoo.com|student
-friend|Nanu|Daniel|0390484903|male|20|daniel@gmail.com|programmer|12 4 1991|Libertatii,nr 14
 acquaintance|Popescu|Ionut|0723423423|male
 friend|Hurba|Robert|0390484903|male|21|robert@gmail.com|teacher|3 1 1990|V. Alecsandri,nr 23
