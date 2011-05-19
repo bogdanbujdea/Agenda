@@ -105,7 +105,7 @@ void PbManager::OnBnClickedButton2()
 void PbManager::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
-	detailsDlg->viewOnly = false;
+	detailsDlg->mode = ADD_PHONEBOOK;
 	if (detailsDlg->DoModal() == IDOK)
 		InitCbList();
 }
@@ -200,7 +200,7 @@ void PbManager::OnBnClickedButton5()
 			break;
 			}
 		}
-		detailsDlg->viewOnly = true;
+		detailsDlg->mode = VIEW_PHONEBOOK;
 		detailsDlg->DoModal();
 	}
 }

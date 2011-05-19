@@ -68,20 +68,20 @@ void PbDetails::OnBnClickedButton3()
 {
 	// TODO: Add your control notification handler code here
 	CString name;
-	char *fileName;
-	fileName = new char[1024];
+	char fileName[1024];
 	char Filter[] = { "BMP Files (*.bmp)|*.bmp|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg||" };
 	CFileDialog FileDlg(TRUE, ".txt", NULL, 0, Filter, 0, 0, 1);
 	if(FileDlg.DoModal() == IDOK)
 	{
 		name = FileDlg.GetFileName();
-		strcpy_s(fileName, sizeof(fileName), name.GetBuffer());
+		cout<<"\nsizeof filename="<<sizeof(fileName)<<endl;
+		strcpy_s(fileName, name.GetBuffer());
 		photoName = name.GetBuffer();
 		name = FileDlg.GetFolderPath();
 		name.Append("\\");
 		name.Append(fileName);
 	}
-	strcpy_s(fileName, sizeof(fileName), name.GetBuffer());	
+	strcpy_s(fileName,  name.GetBuffer());	
 	if(mPic.LoadFromFile(name) == 0)
 	{
 		MessageBox("Can't open this photo", "ERROR", MB_ICONERROR);
@@ -111,7 +111,7 @@ void PbDetails::AddPhonebook()
 	eEmail.SetReadOnly(0);
 	eBirthDate.SetReadOnly(0);
 	::ShowWindow(PbName, 1);
-	::SetWindowTextA(PbName, "Owner Name:");
+	::SetWindowTextA(PbName, "Phone Book Name:");
 }
 
 void PbDetails::ViewPhonebook()
@@ -241,7 +241,6 @@ void PbDetails::ViewContact()
 
 void PbDetails::AddContact()
 {
-		char tmp[1024];
 		this->SetWindowTextA("Add Contact");
 		::ShowWindow(PbName, 1);
 		::SetWindowTextA(PbName, "Contact Type:");
