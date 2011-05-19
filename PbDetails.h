@@ -18,6 +18,13 @@ enum Mode
 	VIEW_PHONEBOOK
 };
 
+enum RetCode
+{
+	SUCCESS,
+	PB_ALREADY_EXISTS,
+	FILE_ERROR
+};
+
 class PbDetails : public CDialogEx
 {
 	DECLARE_DYNAMIC(PbDetails)
@@ -67,7 +74,7 @@ public:
 	int contact;
 	HWND PbName;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	void SaveContact();
+	int SaveContact();
 	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnEnChangeEdit2();
 	CEdit ePbName;
@@ -75,11 +82,14 @@ public:
 	string chPb[1000];
 	bool viewOnly;
 	virtual INT_PTR DoModal();
+	int ValidateInputData();
 	void AddPhonebook();
 	void EditPhonebook();
 	void ViewPhonebook();
 	void AddContact();
 	void ViewContact();
 	void EditContact();
+	int ChangeContact();
+	int ValidateData();
 	CComboBox cbType;
 };

@@ -392,6 +392,8 @@ void CAgendaDlg::OnBnClickedMfcbutton1()
 int CAgendaDlg::GetSelectedContact()
 {
 	int sel = listCtrl.GetSelectionMark();
+	if(sel == -1)
+		return -1;
 	char data[1024];
 	
 	Phonebook *p = manager->detailsDlg->p;
@@ -501,7 +503,14 @@ void CAgendaDlg::OnBnClickedButton2()
 void CAgendaDlg::OnBnClickedButton4()
 {
 	// TODO: Add your control notification handler code here
-	manager->detailsDlg->mode = EDIT_CONTACT;
-	manager->detailsDlg->contact = GetSelectedContact();
-	manager->detailsDlg->DoModal();
+	
+	int sel = GetSelectedContact();
+	if(sel == -1)
+		MessageBox("First select a contact!", "ERROR", MB_ICONWARNING);
+	else
+	{
+		manager->detailsDlg->mode = EDIT_CONTACT;
+		manager->detailsDlg->contact = sel;
+		manager->detailsDlg->DoModal();
+	}
 }

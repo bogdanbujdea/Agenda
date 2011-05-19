@@ -94,8 +94,95 @@ void PbDetails::OnBnClickedButton3()
 
 } //browse
 
+int PbDetails::ChangeContact()
+{
+	char tmp[1024];
+	string details[10];
+	ePbName.GetWindowTextA(tmp, 256);
+	details[0] = tmp;
+	eFirstName.GetWindowTextA(tmp, 256);
+	details[1] = tmp;
+	eLastName.GetWindowTextA(tmp, 256);
+	details[2] = tmp;
+	ePhoneNumber.GetWindowTextA(tmp, 256);
+	details[3] = tmp;
+	eAge.GetWindowTextA(tmp, 256);
+	details[4] = "";
+	details[5] = tmp;
+	eEmail.GetWindowTextA(tmp, 256);
+	details[6] = tmp;
+	eOccupation.GetWindowTextA(tmp, 256);
+	details[7] = tmp;
+	eBirthDate.GetWindowTextA(tmp, 256);
+	details[8] = tmp;
+	eHomeAddress.GetWindowTextA(tmp, 256);
+	details[9] = tmp;
+	p->ContactList[contact].setFirstName(details[1]);
+	p->ContactList[contact].setLastName(details[2]);
+	p->ContactList[contact].setEmailAddress(details[6]);
+	p->ContactList[contact].setHomeAddress(details[9]);
+	p->ContactList[contact].setPhoneNumber(details[3]);
+	p->ContactList[contact].setOccupation(details[7]);
+	int age = atoi(details[5].c_str());
+	p->ContactList[contact].setAge(age);
+	this->EndDialog(IDOK);
+	return SUCCESS;
+}
+
+void PbDetails::ViewContact()
+{
+	this->SetWindowTextA("Add Contact");
+	::ShowWindow(PbName, 1);
+	::SetWindowTextA(PbName, "Contact Type:");
+	cbType.ShowWindow(1);
+	bSave.EnableWindow(0);
+	ePbName.ShowWindow(0);
+	cbType.EnableWindow(0);
+	if(p->ContactList[contact].getContactType().compare("Acquaintance") == 0)
+		cbType.SetCurSel(0);
+	else if(p->ContactList[contact].getContactType().compare("Colleague") == 0)
+		cbType.SetCurSel(1);
+	else cbType.SetCurSel(2);
+	this->SetWindowTextA("Contact Details");
+	eFirstName.SetWindowTextA(p->ContactList[contact].getFirstName().c_str());
+	eLastName.SetWindowTextA(p->ContactList[contact].getLastName().c_str());
+	ePhoneNumber.SetWindowTextA(p->ContactList[contact].getPhoneNumber().c_str());
+	eOccupation.SetWindowTextA(p->ContactList[contact].getOccupation().c_str());
+	int age = p->ContactList[contact].getAge();
+	char tmp[10]; 
+	_itoa_s(age, tmp, 10);
+	eAge.SetWindowTextA(tmp);
+	eHomeAddress.SetWindowTextA(p->ContactList[contact].getHomeAddress().c_str());
+	eEmail.SetWindowTextA(p->ContactList[contact].getEmailAddress().c_str());
+	eBirthDate.SetWindowTextA(p->ContactList[contact].getBirthDate().toString().c_str());
+	::SetWindowTextA(PbName, "Contact Name:");
+}
+
+void PbDetails::AddContact()
+{
+		this->SetWindowTextA("Add Contact");
+		::ShowWindow(PbName, 1);
+		::SetWindowTextA(PbName, "Contact Type:");
+		cbType.ShowWindow(1);
+		ePbName.ShowWindow(0);
+		cbType.EnableWindow(1);
+		
+}
+
 void PbDetails::EditContact()
-{}
+{
+	cbType.EnableWindow(1);
+	if(p->ContactList[contact].getContactType().compare("Acquaintance") == 0)
+		cbType.SetCurSel(0);
+	else if(p->ContactList[contact].getContactType().compare("Colleague") == 0)
+		cbType.SetCurSel(1);
+	else cbType.SetCurSel(2);
+	this->SetWindowTextA("Edit Contact");
+	::ShowWindow(PbName, 1);
+	::SetWindowTextA(PbName, "Contact Type:");
+	cbType.ShowWindow(1);
+	ePbName.ShowWindow(0);
+}
 
 void PbDetails::AddPhonebook()
 {
@@ -114,10 +201,12 @@ void PbDetails::AddPhonebook()
 	eBirthDate.SetReadOnly(0);
 	::ShowWindow(PbName, 1);
 	::SetWindowTextA(PbName, "Phone Book Name:");
+	cbType.ShowWindow(0);
 }
 
 void PbDetails::ViewPhonebook()
 {
+	cbType.ShowWindow(0);
 	bSave.ShowWindow(0);
 	bClear.ShowWindow(0);
 	bBrowse.ShowWindow(0);
@@ -149,6 +238,7 @@ void PbDetails::ViewPhonebook()
 
 void PbDetails::EditPhonebook()
 {
+	cbType.ShowWindow(0);
 	bSave.ShowWindow(0);
 	bClear.ShowWindow(0);
 	bBrowse.ShowWindow(0);
@@ -189,7 +279,6 @@ BOOL PbDetails::OnInitDialog()
 	cbType.AddString("Friend");
 	cbType.SetCurSel(0);
 	PbName = ::GetDlgItem(this->m_hWnd, IDC_STATICPBNAME);
-	MessageBox("InitDialog",0,0);
 	switch(mode)
 	{
 	case ADD_PHONEBOOK:
@@ -225,32 +314,7 @@ BOOL PbDetails::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void PbDetails::ViewContact()
-{
-	this->SetWindowTextA("Contact Details");
-	eFirstName.SetWindowTextA(p->ContactList[contact].getFirstName().c_str());
-	eLastName.SetWindowTextA(p->ContactList[contact].getLastName().c_str());
-	ePhoneNumber.SetWindowTextA(p->ContactList[contact].getPhoneNumber().c_str());
-	eOccupation.SetWindowTextA(p->ContactList[contact].getOccupation().c_str());
-	int age = p->ContactList[contact].getAge();
-	char tmp[10]; 
-	_itoa_s(age, tmp, 10);
-	eAge.SetWindowTextA(tmp);
-	eHomeAddress.SetWindowTextA(p->ContactList[contact].getHomeAddress().c_str());
-	eEmail.SetWindowTextA(p->ContactList[contact].getEmailAddress().c_str());
-	eBirthDate.SetWindowTextA(p->ContactList[contact].getBirthDate().toString().c_str());
-	::SetWindowTextA(PbName, "Contact Name:");
-}
 
-void PbDetails::AddContact()
-{
-		this->SetWindowTextA("Add Contact");
-		::ShowWindow(PbName, 1);
-		::SetWindowTextA(PbName, "Contact Type:");
-		cbType.ShowWindow(1);
-		ePbName.ShowWindow(0);
-		
-}
 //clear edit boxes
 void PbDetails::OnBnClickedButton1() //clear function
 {
@@ -273,8 +337,10 @@ void PbDetails::OnBnClickedButton4() //cancel
 	this->EndDialog(IDCANCEL);
 }
 
-void PbDetails::SaveContact()
+int PbDetails::SaveContact()
 {
+	if(mode == EDIT_CONTACT)
+		return ChangeContact();
 	char tmp[1024];
 	string details[10];
 	int sel = cbType.GetCurSel();
@@ -307,122 +373,102 @@ void PbDetails::SaveContact()
 			p->addColleague(details);
 		else if(details[0].compare("Friend") == 0)
 			p->addFriend(details);
-	else
-		{
-			details[0] += " is not a valid contact type!";
-			MessageBox(details[0].c_str(), "ERROR", 0);
+		else
 			err = 1;
-		}
 	if(!err)
+	{
 		MessageBox("Contact saved", 0, 0);
+		return SUCCESS;
+	}
+	return SUCCESS;
 
-	////ViewContact();
-	//char tmp[1024];
-	//string details[10];
-	//ePbName.GetWindowTextA(tmp, 256);
-	//details[0] = tmp;
-	//eFirstName.GetWindowTextA(tmp, 256);
-	//details[1] = tmp;
-	//eLastName.GetWindowTextA(tmp, 256);
-	//details[2] = tmp;
-	//ePhoneNumber.GetWindowTextA(tmp, 256);
-	//details[3] = tmp;
-	//eAge.GetWindowTextA(tmp, 256);
-	//details[4] = "";
-	//details[5] = tmp;
-	//eEmail.GetWindowTextA(tmp, 256);
-	//details[6] = tmp;
-	//eOccupation.GetWindowTextA(tmp, 256);
-	//details[7] = tmp;
-	//eBirthDate.GetWindowTextA(tmp, 256);
-	//details[8] = tmp;
-	//eHomeAddress.GetWindowTextA(tmp, 256);
-	//details[9] = tmp;
-	//p->ContactList[contact].setFirstName(details[1]);
-	//p->ContactList[contact].setLastName(details[2]);
-	//p->ContactList[contact].setEmailAddress(details[6]);
-	//p->ContactList[contact].setHomeAddress(details[9]);
-	//p->ContactList[contact].setPhoneNumber(details[3]);
-	//p->ContactList[contact].setOccupation(details[7]);
-	//int age = atoi(details[5].c_str());
-	//p->ContactList[contact].setAge(age);
+}
+
+
+int PbDetails::ValidateInputData()
+{
+	int Pb;
+	Pb = ini.GetIntValue("Settings", "PbNo");
+	char tmp[256], section[100];
+	_itoa_s(Pb, section, 10);
+	for(int i = 0; i < (int) chPb->size(); i++)
+	{
+		if(_stricmp(tmp, chPb[i].c_str()) == 0)
+			return PB_ALREADY_EXISTS;	
+	}
+	ini.CreateSection(section);
+	string details, pbPath;
+	ePbName.GetWindowTextA(tmp, 256);
+	int err = 0;
+	pbPath = details = tmp;
+	ini.WriteValue(section, "Phone Book Name", details);
+	eFirstName.GetWindowTextA(tmp, 256);
+	details = tmp;
+	ini.WriteValue(section, "Owner First Name", details);
+	eLastName.GetWindowTextA(tmp, 256);
+	details += tmp;
+	p->setOwner(details);
+	details = tmp;
+	ini.WriteValue(section, "Owner Last Name", details);
+	ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Phone Number", details);
+	eOccupation.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Occupation", details);
+	eAge.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Age", details);
+	eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Home Address", details);
+	eEmail.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Email Address", details);
+	eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
+	ini.WriteValue(section, "Owner Birth Date", details);
+	details = picName.GetBuffer();
+	ini.WriteValue(section, "Owner Photo", details);
+	string photoPath = photoDir;
+	if(picLoaded)
+	{		
+		photoPath += "\\";
+		photoPath += photoName;
+		if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
+			MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+		cout<<"photo path="<<photoPath<<endl;
+		picLoaded = 0;
+	}
+	Pb++;
+	_itoa_s(Pb, tmp, 10);
+	ini.WriteValue("Settings", "PbNo", tmp);
+	photoPath = photoDir;
+	photoPath += pbPath;
+	photoPath += ".txt";
+	ofstream f(photoPath.c_str());
+	if(!f)
+		return FILE_ERROR;
+	PbSection = "";
+	photoDir = "";
+	photoPath = "";
+	this->EndDialog(IDOK);
+	return SUCCESS;
 }
 //save
 void PbDetails::OnBnClickedButton2() //save
 {
 	// TODO: Add your control notification handler code here
-
-	int Pb;
-	Pb = ini.GetIntValue("Settings", "PbNo");
-	char tmp[256], section[100];
-	_itoa_s(Pb, section, 10);
-	ini.CreateSection(section);
-	string details, pbPath;
-	ePbName.GetWindowTextA(tmp, 256);
-	int err = 0;
-	for(int i = 0; i < (int) chPb->size(); i++)
+	if(mode == ADD_CONTACT)
+		SaveContact();
+	else
+	switch(ValidateInputData())
 	{
-		if(_stricmp(tmp, chPb[i].c_str()) == 0)
-		{
-			MessageBox("Enter a different phone book name, this one already exists", "ERROR", MB_ICONERROR);
-			err = 1;
-			break;
-		}
+	case PB_ALREADY_EXISTS:
+		MessageBox("Enter a different phone book name, this one already exists", "ERROR", MB_ICONERROR);
+		break;
+	case FILE_ERROR:
+		MessageBox("Error creating phone book file", "ERROR", MB_ICONERROR);
+		break;
+	case SUCCESS:
+		MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);
+		break;
 	}
-	
-	if(!err)
-	{	details = tmp;
-		pbPath = details;
-		ini.WriteValue(section, "Phone Book Name", details);
-		eFirstName.GetWindowTextA(tmp, 256);
-		details = tmp;
-		ini.WriteValue(section, "Owner First Name", details);
-		eLastName.GetWindowTextA(tmp, 256);
-		details += tmp;
-		p->setOwner(details);
-		details = tmp;
-		ini.WriteValue(section, "Owner Last Name", details);
-		ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Phone Number", details);
-		eOccupation.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Occupation", details);
-		eAge.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Age", details);
-		eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Home Address", details);
-		eEmail.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Email Address", details);
-		eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
-		ini.WriteValue(section, "Owner Birth Date", details);
-		details = picName.GetBuffer();
-		ini.WriteValue(section, "Owner Photo", details);
-		string photoPath = photoDir;
-		if(picLoaded)
-		{		
-			photoPath += "\\";
-			photoPath += photoName;
-			if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
-				MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
-			cout<<"photo path="<<photoPath<<endl;
-			picLoaded = 0;
-		}
-		Pb++;
-		_itoa_s(Pb, tmp, 10);
-		ini.WriteValue("Settings", "PbNo", tmp);
-		
-		photoPath = photoDir;
-		photoPath += pbPath;
-		photoPath += ".txt";
-		ofstream f(photoPath.c_str());
-		if(!f)
-			MessageBox("Error creating phone book file", "ERROR", MB_ICONERROR);
-		else
-			MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);
-		PbSection = "";
-		photoDir = "";
-		photoPath = "";
-		this->EndDialog(IDOK);
-	}
+
 }
 
 BOOL PbDetails::PreTranslateMessage(MSG* pMsg)
