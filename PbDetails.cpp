@@ -181,6 +181,10 @@ BOOL PbDetails::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	this->OnBnClickedButton1();
 	mPic.FreeData();
+	cbType.AddString("Acquaintance");
+	cbType.AddString("Colleague");
+	cbType.AddString("Friend");
+	cbType.SetCurSel(0);
 	PbName = ::GetDlgItem(this->m_hWnd, IDC_STATICPBNAME);
 	MessageBox("InitDialog",0,0);
 	switch(mode)
@@ -241,44 +245,9 @@ void PbDetails::AddContact()
 		this->SetWindowTextA("Add Contact");
 		::ShowWindow(PbName, 1);
 		::SetWindowTextA(PbName, "Contact Type:");
+		cbType.ShowWindow(1);
 		ePbName.ShowWindow(0);
-		string details[10];
-		ePbName.GetWindowTextA(tmp, 256);
-		details[0] = tmp;
-		eFirstName.GetWindowTextA(tmp, 256);
-		details[1] = tmp;
-		eLastName.GetWindowTextA(tmp, 256);
-		details[2] = tmp;
-		ePhoneNumber.GetWindowTextA(tmp, 256);
-		details[3] = tmp;
-		eAge.GetWindowTextA(tmp, 256);
-		details[4] = "";
-		details[5] = tmp;
-		eEmail.GetWindowTextA(tmp, 256);
-		details[6] = tmp;
-		eOccupation.GetWindowTextA(tmp, 256);
-		details[7] = tmp;
-		eBirthDate.GetWindowTextA(tmp, 256);
-		details[8] = tmp;
-		eHomeAddress.GetWindowTextA(tmp, 256);
-		details[9] = tmp;
-		int err = 0;
-		if(details[0].compare("acquaintance") == 0)
-			p->addAcquaintance(details);
-		else
-			if(details[0].compare("colleague") == 0)
-				p->addColleague(details);
-			else if(details[0].compare("friend") == 0)
-				p->addFriend(details);
-		else
-			{
-				details[0] += " is not a valid contact type!";
-				MessageBox(details[0].c_str(), "ERROR", 0);
-				err = 1;
-			}
-	if(!err)
-		MessageBox("Contact saved", 0, 0);
-
+		
 }
 //clear edit boxes
 void PbDetails::OnBnClickedButton1() //clear function
@@ -299,16 +268,17 @@ void PbDetails::OnBnClickedButton1() //clear function
 void PbDetails::OnBnClickedButton4() //cancel
 {
 	// TODO: Add your control notification handler code here
-	show = 0;
 	this->EndDialog(IDCANCEL);
 }
 
 void PbDetails::SaveContact()
 {
-	//ViewContact();
 	char tmp[1024];
 	string details[10];
-	ePbName.GetWindowTextA(tmp, 256);
+	int sel = cbType.GetCurSel();
+	if(sel == CB_ERR)
+		MessageBox("Choose a contact type", "ERROR", MB_ICONWARNING);
+	else cbType.GetLBText(sel, tmp);
 	details[0] = tmp;
 	eFirstName.GetWindowTextA(tmp, 256);
 	details[1] = tmp;
@@ -327,14 +297,53 @@ void PbDetails::SaveContact()
 	details[8] = tmp;
 	eHomeAddress.GetWindowTextA(tmp, 256);
 	details[9] = tmp;
-	p->ContactList[contact].setFirstName(details[1]);
-	p->ContactList[contact].setLastName(details[2]);
-	p->ContactList[contact].setEmailAddress(details[6]);
-	p->ContactList[contact].setHomeAddress(details[9]);
-	p->ContactList[contact].setPhoneNumber(details[3]);
-	p->ContactList[contact].setOccupation(details[7]);
-	int age = atoi(details[5].c_str());
-	p->ContactList[contact].setAge(age);
+	int err = 0;
+	if(details[0].compare("Acquaintance") == 0)
+		p->addAcquaintance(details);
+	else
+		if(details[0].compare("Colleague") == 0)
+			p->addColleague(details);
+		else if(details[0].compare("Friend") == 0)
+			p->addFriend(details);
+	else
+		{
+			details[0] += " is not a valid contact type!";
+			MessageBox(details[0].c_str(), "ERROR", 0);
+			err = 1;
+		}
+	if(!err)
+		MessageBox("Contact saved", 0, 0);
+
+	////ViewContact();
+	//char tmp[1024];
+	//string details[10];
+	//ePbName.GetWindowTextA(tmp, 256);
+	//details[0] = tmp;
+	//eFirstName.GetWindowTextA(tmp, 256);
+	//details[1] = tmp;
+	//eLastName.GetWindowTextA(tmp, 256);
+	//details[2] = tmp;
+	//ePhoneNumber.GetWindowTextA(tmp, 256);
+	//details[3] = tmp;
+	//eAge.GetWindowTextA(tmp, 256);
+	//details[4] = "";
+	//details[5] = tmp;
+	//eEmail.GetWindowTextA(tmp, 256);
+	//details[6] = tmp;
+	//eOccupation.GetWindowTextA(tmp, 256);
+	//details[7] = tmp;
+	//eBirthDate.GetWindowTextA(tmp, 256);
+	//details[8] = tmp;
+	//eHomeAddress.GetWindowTextA(tmp, 256);
+	//details[9] = tmp;
+	//p->ContactList[contact].setFirstName(details[1]);
+	//p->ContactList[contact].setLastName(details[2]);
+	//p->ContactList[contact].setEmailAddress(details[6]);
+	//p->ContactList[contact].setHomeAddress(details[9]);
+	//p->ContactList[contact].setPhoneNumber(details[3]);
+	//p->ContactList[contact].setOccupation(details[7]);
+	//int age = atoi(details[5].c_str());
+	//p->ContactList[contact].setAge(age);
 }
 //save
 void PbDetails::OnBnClickedButton2() //save
@@ -446,7 +455,9 @@ void PbDetails::OnEnChangeEdit1()
 	int length;
 	length = eFirstName.GetWindowTextLengthA();
 	int lastname = eLastName.GetWindowTextLengthA();
-	int pb = ePbName.GetWindowTextLengthA();
+	int pb = 1;
+	if(mode >= 3)
+		pb = ePbName.GetWindowTextLengthA();
 	if((length > 0 && lastname > 0 && pb > 0) || save == 1)
 		bSave.EnableWindow(1);
 	else
@@ -464,7 +475,9 @@ void PbDetails::OnEnChangeEdit2()
 	int length;
 	length = eFirstName.GetWindowTextLengthA();
 	int lastname = eLastName.GetWindowTextLengthA();
-	int pb = ePbName.GetWindowTextLengthA();
+	int pb = 1;
+	if(mode >= 3)
+		pb = ePbName.GetWindowTextLengthA();
 	if((length > 0 && lastname > 0 && pb > 0) || save == 1)
 		bSave.EnableWindow(1);
 	else
@@ -482,7 +495,9 @@ void PbDetails::OnEnChangeEdit9()
 	int length;
 	length = eFirstName.GetWindowTextLengthA();
 	int lastname = eLastName.GetWindowTextLengthA();
-	int pb = ePbName.GetWindowTextLengthA();
+	int pb = 1;
+	if(mode >= 3)
+		pb = ePbName.GetWindowTextLengthA();
 	if((length > 0 && lastname > 0 && pb > 0) || save == 1)
 		bSave.EnableWindow(1);
 	else
