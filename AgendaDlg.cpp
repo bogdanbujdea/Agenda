@@ -153,6 +153,10 @@ ON_BN_CLICKED(IDC_BUTTON5, &CAgendaDlg::OnBnClickedButton5)
 ON_BN_CLICKED(IDC_BUTTON8, &CAgendaDlg::OnBnClickedButton8)
 ON_BN_CLICKED(IDC_BUTTON2, &CAgendaDlg::OnBnClickedButton2)
 ON_BN_CLICKED(IDC_BUTTON4, &CAgendaDlg::OnBnClickedButton4)
+ON_COMMAND(ID_FILE_NEWPHONEBOOK, &CAgendaDlg::OnFileNewphonebook)
+ON_COMMAND(ID_FILE_NEWCONTACT32798, &CAgendaDlg::OnFileNewcontact32798)
+ON_COMMAND(ID_FILE_EXIT32795, &CAgendaDlg::OnFileExit32795)
+ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::OnEditDeletephonebook)
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -513,4 +517,32 @@ void CAgendaDlg::OnBnClickedButton4()
 		manager->detailsDlg->contact = sel;
 		manager->detailsDlg->DoModal();
 	}
+}
+
+
+void CAgendaDlg::OnFileNewphonebook()
+{
+	manager->OnBnClickedButton1();
+	// TODO: Add your command handler code here
+}
+
+
+void CAgendaDlg::OnFileNewcontact32798()
+{
+	this->OnBnClickedButton2();
+	// TODO: Add your command handler code here
+}
+
+
+void CAgendaDlg::OnFileExit32795()
+{
+	// TODO: Add your command handler code here
+	this->CloseWindow();
+}
+
+
+void CAgendaDlg::OnEditDeletephonebook()
+{
+	// TODO: Add your command handler code here
+	manager->OnBnClickedButton4();
 }

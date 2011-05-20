@@ -71,4 +71,8 @@ public:
 	afx_msg void OnBnClickedButton8();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton4();
+	afx_msg void OnFileNewphonebook();
+	afx_msg void OnFileNewcontact32798();
+	afx_msg void OnFileExit32795();
+	afx_msg void OnEditDeletephonebook();
 };
