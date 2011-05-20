@@ -29,7 +29,7 @@ void CAgendaDlg::ShowControls(bool show)
 	bClosePb.ShowWindow(show);
 	bDeletePb.ShowWindow(show);
 	bSavePb.ShowWindow(show);
-	//bDetails.ShowWindow(show);
+	bDetails.ShowWindow(show);
 }
 
 void CAgendaDlg::InitTree()
@@ -113,8 +113,6 @@ END_MESSAGE_MAP()
 // CAgendaDlg dialog
 
 
-
-
 CAgendaDlg::CAgendaDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CAgendaDlg::IDD, pParent)
 {
@@ -157,6 +155,7 @@ ON_COMMAND(ID_FILE_NEWPHONEBOOK, &CAgendaDlg::OnFileNewphonebook)
 ON_COMMAND(ID_FILE_NEWCONTACT32798, &CAgendaDlg::OnFileNewcontact32798)
 ON_COMMAND(ID_FILE_EXIT32795, &CAgendaDlg::OnFileExit32795)
 ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::OnEditDeletephonebook)
+ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -545,4 +544,12 @@ void CAgendaDlg::OnEditDeletephonebook()
 {
 	// TODO: Add your command handler code here
 	manager->OnBnClickedButton4();
+}
+
+
+void CAgendaDlg::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	manager->detailsDlg->p->savePhonebook(1);
+	CDialogEx::OnClose();
 }
