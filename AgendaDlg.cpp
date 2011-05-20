@@ -226,7 +226,7 @@ BOOL CAgendaDlg::OnInitDialog()
 	info->ModifyStyleEx(0, WS_EX_LAYERED, 0);
 	info->tSlider.SetRange(0, 255, 0);
 	CMenu menu1;
-//	menu1.LoadMenuA(IDR_MENU1);
+	menu1.LoadMenuA(IDR_MENU1);
 	SetMenu(&menu1);
 	HICON hSearch = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
 	HICON hEdit = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON2));
