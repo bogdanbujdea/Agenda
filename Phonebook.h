@@ -42,9 +42,9 @@ public:
 	int addFriend(string *s);
 	int editContact();
 	string getOwner();
-	//List getContacts(List list, string contactType);
+	deque<Contact> getContacts(deque<Contact> list, string contactType);
 	void deleteContact(int nIndex);
-	//int displayContacts(List list);
+	int displayContacts(deque<Contact> list);
 	//List search(string attribute, string crt, string contactType);
 	int loadPhonebook();
 	int savePhonebook(int);

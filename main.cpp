@@ -56,7 +56,9 @@ int managePhonebook(Phonebook &p)
 			}
 		case 1:
 			{
-				//p.displayContacts(p.getContacts(p.ContactList, "acquaintance"));
+				deque<Contact> list;
+				list = p.getContacts(p.ContactList, "acquaintance");
+				p.displayContacts(list);
 				break;
 			}
 		case 2:
@@ -76,13 +78,14 @@ int managePhonebook(Phonebook &p)
 			}
 		case 5:
 			{
-				string name, number, gender;
-				cout<<"\nName:"; getline(cin, name);
+				string fname, lname, number, gender;
+				cout<<"\nFirst Name:"; getline(cin, fname);
+				cout<<"\nLast Name:"; getline(cin, lname);
 				cout<<"\nPhone number:"; getline(cin, number);
 				cout<<"\nGender:"; getline(cin, gender);
-				//Acquaintance acq(gender, name, number, "acquaintance");
-				//acq.setContactType("acquaintance");
-				//p.ContactList.add(acq);
+				Acquaintance acq(gender, fname, lname, number, "acquaintance");
+				acq.setContactType("acquaintance");
+				p.ContactList.push_back(acq);
 				break;
 			}
 		case 8:

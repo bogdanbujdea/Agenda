@@ -1,0 +1,3 @@
+acquaintance|bujdea|bogdan|0761292462|male
+acquaintance|alex|mihai|49383w98954|female
+acquaintance|f|sdffsd|32r4432234|female

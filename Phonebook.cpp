@@ -17,7 +17,7 @@ int Phonebook::loadPhonebook()
 		cout<<"\nCould not open phonebook file";
 		return 0;
 	}
-	ZeroMemory(&ContactList, sizeof(ContactList));
+	//ZeroMemory(&ContactList, sizeof(ContactList));
 	int i, k = 0;
 	string str, tmp;
 	string infs[100];
@@ -81,29 +81,35 @@ int Phonebook::addFriend(string *s)
 	return 0;
 }
 
-//int Phonebook::displayContacts(List list)
-//{
-//	cout<<"\n\nContacts:\n\n";
-//	cout<<"size="<<list.getSize();
-//	list.Show();
-//	return 0;
-//}
+int Phonebook::displayContacts(deque<Contact> list)
+{
+	cout<<"\n\nContacts:\n\n";
+	cout<<"size="<<list.size();
+	for(int i = 0; i < list.size(); i++)
+	{
+		cout<<"\nFirst Name:"<<list[i].getFirstName();
+		cout<<"\nLast Name:"<<list[i].getLastName();
+		cout<<"\nPhone number:"<<list[i].getPhoneNumber();
+		cout<<"\nGender:"<<list[i].getGender()<<endl<<endl;
+	}
+	return 0;
+}
 
 void Phonebook::deleteContact(int nIndex)
 {
 	ContactList.erase(ContactList.begin() + nIndex);
 }
 
-//List Phonebook::getContacts(List list, string contactType)
-//{
-//	if(contactType == "all")
-//		return list;
-//	List tmpList;
-//	for(int i = 0; i < list.getSize(); i++)
-//		if(list[i].getContactType() == contactType)
-//			tmpList.add(list[i]);
-//	return tmpList;
-//}
+deque<Contact> Phonebook::getContacts(deque<Contact> list, string contactType)
+{
+	if(contactType == "all")
+		return list;
+	deque<Contact> tmpList;
+	for(int i = 0; i < list.size(); i++)
+		if(list[i].getContactType() == contactType)
+			tmpList.push_back(list[i]);
+	return tmpList;
+}
 //
 //List Phonebook::search(string attribute, string crt, string contactType)
 //{
