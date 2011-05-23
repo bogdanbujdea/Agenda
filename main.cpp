@@ -112,14 +112,29 @@ int managePhonebook(Phonebook &p)
 				break;
 			}
 		case 10:
-			{	string s1,s2,s3;
+			{	
+				/*string s1,s2,s3;
 				cout<<"\nAtribut:";
 				getline(cin,s1);
 				cout<<"\nCriteriu:";
 				getline(cin,s2);
 				cout<<"\nContactele de tip:";
-				getline(cin,s3);
+				getline(cin,s3);*/
 				//p.displayContacts(p.search(s1,s2,s3));
+				cout<<"\n1.By first name";
+				cout<<"\n2.By last name";
+				try{
+					int opt;
+					cin>>opt;
+					if(opt == 1)
+						p.Sort(SORT_BY_FIRST_NAME);
+					else 
+						p.Sort(SORT_BY_LAST_NAME);
+				}
+				catch(char *error)
+				{
+					cout<<error<<endl;
+				}
 				break;
 			}
 		default:

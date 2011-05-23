@@ -144,6 +144,40 @@ deque<Contact> Phonebook::getContacts(deque<Contact> list, string contactType)
 //	}
 //	return getContacts(tmpList, contactType);
 //}
+
+
+
+
+
+bool sortByLastName (Contact c1, Contact c2)
+{
+    /* a person is less than another person
+     * - if the last name is less
+     * - if the last name is equal and the first name is less
+     */
+    return c1.getLastName() < c2.getLastName();
+}
+
+bool sortByFirstName (Contact c1, Contact c2)
+{
+    return c1.getFirstName() < c2.getFirstName();
+}
+
+void Phonebook::Sort(int SortType)
+{
+	switch(SortType)
+	{
+	case SORT_BY_FIRST_NAME:
+		sort(ContactList.begin(), ContactList.end(), sortByFirstName);
+		break;
+	case SORT_BY_LAST_NAME:
+		sort(ContactList.begin(), ContactList.end(), sortByLastName);
+		break;
+	default:
+		throw("Invalid type of sort");
+	}
+}
+
 int Phonebook::savePhonebook(int save)
 {
 	if(!save)

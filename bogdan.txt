@@ -1,0 +1,4 @@
+acquaintance|mihaela|airinei|8493|female
+acquaintance|bbbb|ccc|490|male
+acquaintance|ioana|popescu|579834|female
+acquaintance|zzzzzzzzzz|zzzdfsz|50489445459|male

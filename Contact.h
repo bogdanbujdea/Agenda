@@ -22,7 +22,7 @@ public:
 	friend class Phonebook;
 	friend class CAgendaDlg;
 	friend class PbDetails;
-protected:
+
 	Date mBirthDate;
 	string mHomeAddress, mEmailAddress, mOccupation, mFirstName, mLastName, mPhoneNumber, mContactType, mGender;
 	int mAge;
