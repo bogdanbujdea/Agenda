@@ -63,83 +63,85 @@ void Phonebook::setOwner(string owner) { mOwner = owner; }
 int Phonebook::addAcquaintance(string *s)
 {
 	Acquaintance tmp(s);
-	ContactList.add(tmp);
+	ContactList.push_back(tmp);
 	return 1;
 }
 
 int Phonebook::addColleague(string *s)
 {
 	Colleague col(s);
-	ContactList.add(col);
+	ContactList.push_back(col);
 	return 0;
 }
 
 int Phonebook::addFriend(string *s)
 {
 	Friend fr(s);
-	ContactList.add(fr);
+	ContactList.push_back(fr);
 	return 0;
 }
 
-int Phonebook::displayContacts(List list)
+//int Phonebook::displayContacts(List list)
+//{
+//	cout<<"\n\nContacts:\n\n";
+//	cout<<"size="<<list.getSize();
+//	list.Show();
+//	return 0;
+//}
+
+void Phonebook::deleteContact(int nIndex)
 {
-	cout<<"\n\nContacts:\n\n";
-	cout<<"size="<<list.getSize();
-	list.Show();
-	return 0;
+	ContactList.erase(ContactList.begin() + nIndex);
 }
 
-int Phonebook::deleteContact(int nIndex)
-{
-	return ContactList.Delete(nIndex);
-}
-
-List Phonebook::getContacts(List list, string contactType)
-{
-	if(contactType == "all")
-		return list;
-	List tmpList;
-	for(int i = 0; i < list.getSize(); i++)
-		if(list[i].getContactType() == contactType)
-			tmpList.add(list[i]);
-	return tmpList;
-}
-
-List Phonebook::search(string attribute, string crt, string contactType)
-{
-	List tmpList;
-	stringstream str;
-	int age;
-	str<<crt;
-	str>>age;
-	for(int i = 0; i < ContactList.getSize(); i++)
-	{
-		if(attribute == "occupation" && ContactList[i].getOccupation().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "lastname" && ContactList[i].getLastName().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "firstname" && ContactList[i].getFirstName().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "gender" && ContactList[i].getGender().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "birth date" && ContactList[i].getBirthDate().toString() == crt)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "number" && ContactList[i].getPhoneNumber().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "email" && ContactList[i].getEmailAddress().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "address" && ContactList[i].getHomeAddress().find(crt) != string::npos)
-			tmpList.add(ContactList[i]);
-		else if(attribute == "age" && ContactList[i].getAge() == age)
-			tmpList.add(ContactList[i]);
-	}
-	return getContacts(tmpList, contactType);
-}
+//List Phonebook::getContacts(List list, string contactType)
+//{
+//	if(contactType == "all")
+//		return list;
+//	List tmpList;
+//	for(int i = 0; i < list.getSize(); i++)
+//		if(list[i].getContactType() == contactType)
+//			tmpList.add(list[i]);
+//	return tmpList;
+//}
+//
+//List Phonebook::search(string attribute, string crt, string contactType)
+//{
+//	List tmpList;
+//	stringstream str;
+//	int age;
+//	str<<crt;
+//	str>>age;
+//	for(int i = 0; i < ContactList.getSize(); i++)
+//	{
+//		if(attribute == "occupation" && ContactList[i].getOccupation().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "lastname" && ContactList[i].getLastName().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "firstname" && ContactList[i].getFirstName().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "gender" && ContactList[i].getGender().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "birth date" && ContactList[i].getBirthDate().toString() == crt)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "number" && ContactList[i].getPhoneNumber().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "email" && ContactList[i].getEmailAddress().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "address" && ContactList[i].getHomeAddress().find(crt) != string::npos)
+//			tmpList.add(ContactList[i]);
+//		else if(attribute == "age" && ContactList[i].getAge() == age)
+//			tmpList.add(ContactList[i]);
+//	}
+//	return getContacts(tmpList, contactType);
+//}
 int Phonebook::savePhonebook(int save)
 {
 	if(!save)
 		memcpy(&ContactList, &tmpList, sizeof(tmpList));
-	for(int i = 0; i < ContactList.getSize(); i++)
+	deque<Contact>::iterator it;
+	int i = 0;
+	for(i = 0; i < ContactList.size(); i++)
 	{
 		mData<<ContactList[i].getContactType()<<"|";
 		mData<<ContactList[i].getFirstName()<<"|";

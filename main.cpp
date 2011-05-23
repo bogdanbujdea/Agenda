@@ -56,22 +56,22 @@ int managePhonebook(Phonebook &p)
 			}
 		case 1:
 			{
-				p.displayContacts(p.getContacts(p.ContactList, "acquaintance"));
+				//p.displayContacts(p.getContacts(p.ContactList, "acquaintance"));
 				break;
 			}
 		case 2:
 			{
-				p.displayContacts(p.getContacts(p.ContactList, "colleague"));
+				//p.displayContacts(p.getContacts(p.ContactList, "colleague"));
 				break;
 			}
 		case 3:
 			{
-				p.displayContacts(p.getContacts(p.ContactList, "friend"));
+				//p.displayContacts(p.getContacts(p.ContactList, "friend"));
 				break;
 			}
 		case 4:
 			{
-				p.displayContacts(p.getContacts(p.ContactList, "contactlist"));
+				//p.displayContacts(p.getContacts(p.ContactList, "contactlist"));
 				break;
 			}
 		case 5:
@@ -95,7 +95,7 @@ int managePhonebook(Phonebook &p)
 				int i;
 				cout<<"\nindex=";
 				cin>>i;
-				cout<<p.deleteContact(i)<<endl;
+				p.deleteContact(i);
 				break;
 			}
 		case 10:
@@ -106,7 +106,7 @@ int managePhonebook(Phonebook &p)
 				getline(cin,s2);
 				cout<<"\nContactele de tip:";
 				getline(cin,s3);
-				p.displayContacts(p.search(s1,s2,s3));
+				//p.displayContacts(p.search(s1,s2,s3));
 				break;
 			}
 		default:
