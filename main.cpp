@@ -98,7 +98,17 @@ int managePhonebook(Phonebook &p)
 				int i;
 				cout<<"\nindex=";
 				cin>>i;
-				p.deleteContact(i);
+				try{
+					p.deleteContact(i);
+				}
+				catch(char *error)
+				{
+					cout<<endl<<error<<endl;
+				}
+				catch(int error)
+				{
+					cout<<"\nError number:"<<error<<endl;
+				}
 				break;
 			}
 		case 10:

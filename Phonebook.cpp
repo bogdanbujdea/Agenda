@@ -85,7 +85,7 @@ int Phonebook::displayContacts(deque<Contact> list)
 {
 	cout<<"\n\nContacts:\n\n";
 	cout<<"size="<<list.size();
-	for(int i = 0; i < list.size(); i++)
+	for(int i = 0; i < (int)list.size(); i++)
 	{
 		cout<<"\nFirst Name:"<<list[i].getFirstName();
 		cout<<"\nLast Name:"<<list[i].getLastName();
@@ -97,6 +97,9 @@ int Phonebook::displayContacts(deque<Contact> list)
 
 void Phonebook::deleteContact(int nIndex)
 {
+	if(nIndex < 0 || nIndex > (int)ContactList.size())
+		throw("Index out of range");
+	else
 	ContactList.erase(ContactList.begin() + nIndex);
 }
 
@@ -105,7 +108,7 @@ deque<Contact> Phonebook::getContacts(deque<Contact> list, string contactType)
 	if(contactType == "all")
 		return list;
 	deque<Contact> tmpList;
-	for(int i = 0; i < list.size(); i++)
+	for(int i = 0; i < (int)list.size(); i++)
 		if(list[i].getContactType() == contactType)
 			tmpList.push_back(list[i]);
 	return tmpList;
@@ -147,7 +150,7 @@ int Phonebook::savePhonebook(int save)
 		memcpy(&ContactList, &tmpList, sizeof(tmpList));
 	deque<Contact>::iterator it;
 	int i = 0;
-	for(i = 0; i < ContactList.size(); i++)
+	for(i = 0; i < (int)ContactList.size(); i++)
 	{
 		mData<<ContactList[i].getContactType()<<"|";
 		mData<<ContactList[i].getFirstName()<<"|";
