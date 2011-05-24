@@ -52,7 +52,7 @@ public:
 	CButton bDelete;
 	CButton bNew;
 	void ShowControls(bool show);
-	void LoadList(char *type, List list);
+	void LoadList(char *type, deque<Contact> list);
 	afx_msg LRESULT OnShowWnd(UINT wParam, LONG lParam);
 	afx_msg LRESULT Search(UINT wParam, LONG lParam);
 	afx_msg void OnBnClickedButton3();

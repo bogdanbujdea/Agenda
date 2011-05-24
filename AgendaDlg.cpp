@@ -161,7 +161,7 @@ END_MESSAGE_MAP()
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
 {
 	LRESULT x = NULL;
-	LoadList("this", manager->detailsDlg->p->search(info->attribute, info->text, "all"));
+	//LoadList("this", manager->detailsDlg->p->search(info->attribute, info->text, "all"));
 	return x;
 }
 
@@ -177,7 +177,7 @@ LRESULT CAgendaDlg::OnShowWnd(UINT wParam, LONG lParam)
 	agenda.hInsertAfter = NULL;
 	agenda.item.mask = TVIF_TEXT;
 	agenda.item.pszText = manager->OpenedPb;
-	List list;
+	deque<Contact> list;
 	LoadList("all", list);
 	//MessageBox(manager->OpenedPb, "pb name", 0);
 	TreeCtrl.SetItemText(Agenda, manager->OpenedPb);
@@ -317,15 +317,14 @@ HCURSOR CAgendaDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CAgendaDlg::LoadList(char *type, List list)
+void CAgendaDlg::LoadList(char *type, deque<Contact> list)
 {
 	int item = 0;
 	Phonebook *p = manager->detailsDlg->p;
 	if(_stricmp(type, "this"))
 		list = p->getContacts(p->ContactList, type);
-
 	listCtrl.DeleteAllItems();
-	for(int i = 0; i < list.getSize(); i++)
+	for(int i = 0; i < (int) list.size(); i++)
 	{
 		item = listCtrl.InsertItem(i, list[i].getFirstName().c_str());
 		listCtrl.SetItemText(item, 1, list[i].getLastName().c_str());
@@ -347,7 +346,7 @@ void CAgendaDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	HTREEITEM h = TreeCtrl.GetSelectedItem();
-	List list;
+	deque<Contact> list;
 	if(h == Agenda)
 		LoadList("all", list);
 	else if(h == Acq)
@@ -422,20 +421,20 @@ int CAgendaDlg::GetSelectedContact()
 	listCtrl.GetItemText(sel, 7, data, 1024);
 	str[7] = data;
 	//cout<<"contact1 fn:"<<str[0]<<endl;
-	for(int i = 0; i < p->ContactList.getSize(); i++)
-	{
-		if( p->ContactList[i].getFirstName().compare(str[0]) == 0 &&
-			//p->ContactList[i].getContactType().compare((str[0]) == 0 &&
-			p->ContactList[i].getLastName().compare(str[1]) == 0 &&
-			//p->ContactList[i].getGender().compare(str[0]) == 0 &&
-			//p->ContactList[i].getBirthDate().toString().compare(p->ContactList[sel].getBirthDate().toString()) == 0 &&
-			p->ContactList[i].getAge() == age &&
-			p->ContactList[i].getPhoneNumber().compare(str[2]) == 0 &&
-			p->ContactList[i].getHomeAddress().compare(str[5]) == 0 &&
-			p->ContactList[i].getEmailAddress().compare(str[6]) == 0
-		)
-		return i;
-	}
+	//for(int i = 0; i < p->ContactList.getSize(); i++)
+	//{
+	//	if( p->ContactList[i].getFirstName().compare(str[0]) == 0 &&
+	//		//p->ContactList[i].getContactType().compare((str[0]) == 0 &&
+	//		p->ContactList[i].getLastName().compare(str[1]) == 0 &&
+	//		//p->ContactList[i].getGender().compare(str[0]) == 0 &&
+	//		//p->ContactList[i].getBirthDate().toString().compare(p->ContactList[sel].getBirthDate().toString()) == 0 &&
+	//		p->ContactList[i].getAge() == age &&
+	//		p->ContactList[i].getPhoneNumber().compare(str[2]) == 0 &&
+	//		p->ContactList[i].getHomeAddress().compare(str[5]) == 0 &&
+	//		p->ContactList[i].getEmailAddress().compare(str[6]) == 0
+	//	)
+	//	return i;
+	//}
 	return -1;
 }
 
@@ -445,7 +444,7 @@ void CAgendaDlg::OnBnClickedButton3()
 	Phonebook *p = manager->detailsDlg->p;
 	int sel = listCtrl.GetSelectionMark();
 	int i = GetSelectedContact();
-	p->ContactList.Delete(i);
+	p->ContactList.erase(p->ContactList.begin() + i);
 	listCtrl.DeleteItem(sel);
 }
 

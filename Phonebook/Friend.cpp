@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+
 #include "Friend.h"
 
 Friend::Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType) :
