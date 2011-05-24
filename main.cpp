@@ -1,7 +1,7 @@
 #include "IniFile.h"
 #include "Phonebook.h"
 #include <iomanip>
-#include <sqlite3/sqlite3.h>
+#include "Database.h"
 
 int managePhonebook(Phonebook &p);
 
@@ -20,10 +20,6 @@ int InitPhonebook(Phonebook &p, IniFile &ini)
 	return 1;
 }
 
-void connectToDb()
-{
-	sqlite3 *database;
-	sqlite3_open("test.db", &database);
 
 
 int managePhonebook(Phonebook &p)
@@ -59,6 +55,22 @@ int managePhonebook(Phonebook &p)
 		{
 		case 0:
 			{
+				Database db("test.db");
+				db.openDB();
+				vector<vector<string>> q;
+				try
+				{
+					 q = db.query("Select * from test");
+				}
+				catch(string errmsg)
+				{
+					cout<<"\nError:"<<errmsg<<endl;
+				}
+				vector<vector<string>>::iterator it;
+				for(it = q.begin(); it != q.end(); it++)
+				{
+					cout<<endl<<"at 0:"<<it->at(0)<<" \t at 1:"<<it->at(1)<<endl;
+				}
 				return 0;
 			}
 		case 1:
