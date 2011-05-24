@@ -1,6 +1,7 @@
 #include "IniFile.h"
 #include "Phonebook.h"
 #include <iomanip>
+#include <sqlite3/sqlite3.h>
 
 int managePhonebook(Phonebook &p);
 
@@ -18,6 +19,12 @@ int InitPhonebook(Phonebook &p, IniFile &ini)
 	managePhonebook(p);
 	return 1;
 }
+
+void connectToDb()
+{
+	sqlite3 *database;
+	sqlite3_open("test.db", &database);
+
 
 int managePhonebook(Phonebook &p)
 {
