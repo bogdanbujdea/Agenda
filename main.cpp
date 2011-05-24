@@ -60,7 +60,7 @@ int managePhonebook(Phonebook &p)
 				vector<vector<string>> q;
 				try
 				{
-					 q = db.query("Select * from test");
+					 q = db.query("Select * from Phonebooks");
 				}
 				catch(string errmsg)
 				{
@@ -166,31 +166,76 @@ int managePhonebook(Phonebook &p)
 
 int main()
 {
-	IniFile iniFile("Settings.ini", "Settings");
 	Phonebook &pb = Phonebook::getInstance();
-	int PbNo = iniFile.GetIntValue("Settings", "PbNo");
-	cout << "\nCurrently there are "<<PbNo<<" phone books created"<<endl;
-	if( !PbNo)
-		InitPhonebook(pb, iniFile);
+	IniFile iniFile("Settings.ini", "Settings");
+	Database db("test.db");
+	db.openDB();
+	//cout<<"\nAlege agenda:";
+	/*getline(cin, dir);*/
+	vector<vector<string>> results;
+	vector<vector<string>>::iterator it;
+	string dir;
+	try
+	{
+	db.query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name varchar(10));");
+	results = db.query("SELECT COUNT(*) FROM Phonebooks");
+	string tmp = results.at(0).at(0);
+	int pbs = 0;
+	pbs = atoi(tmp.c_str());
+	if(pbs)
+	{
+		cout<<"Sunt "<<pbs<<" agende create, alege una:\n";
+		results = db.query("Select * from Phonebooks");
+		for(it = results.begin(); it != results.end(); it++)
+		{
+			cout<<it->at(0)<<" -> "<<it->at(1)<<endl;
+		}
+		cin>>dir;
+	}
 	else
 	{
-		string dir;
-		for(int i = 0; i < PbNo; i++)
-		{
-			dir = "Pb";
-			char ch[5];
-			itoa(i, ch, 10);
-			dir += ch;
-			cout << iniFile.GetStringValue(dir, "Owner", "error") << endl;
-			dir.clear();
-		}
-		cout<<"\nAlege agenda:";
-		getline(cin, dir);
-		dir += ".txt";
-		pb.setFile(dir);
-		pb.loadPhonebook();
-		managePhonebook(pb);
+		cout<<"\n Inca nu a fost creata nicio agenda, creati una:";
+		cin>>dir;
+		string q = "INSERT INTO Phonebooks VALUES(0, ";
+		q += "\"";
+		q += dir;
+		q += "\");";
+		db.query(q);
 	}
+	dir += ".txt";
+	pb.setFile(dir);
+	pb.loadPhonebook();
+	managePhonebook(pb);
+	//int PbNo = iniFile.GetIntValue("Settings", "PbNo");
+	//cout << "\nCurrently there are "<<PbNo<<" phone books created"<<endl;
+	//if( !PbNo)
+	//	InitPhonebook(pb, iniFile);
+	//else
+	//{
+	//	string dir;
+	//	for(int i = 0; i < PbNo; i++)
+	//	{
+	//		dir = "Pb";
+	//		char ch[5];
+	//		itoa(i, ch, 10);
+	//		dir += ch;
+	//		cout << iniFile.GetStringValue(dir, "Owner", "error") << endl;
+	//		dir.clear();
+	//	}
+	
+	//results = db.query("Select name from Phonebooks");
+	}
+	catch(string error)
+	{
+		cout<<error<<endl;
+	}
+	
+	
+	for(it = results.begin(); it != results.end(); it++)
+		cout<<it->at(0)<<endl;
+	cin>>dir;
+	
+	managePhonebook(pb);
 	pb.savePhonebook(1);
 	system("pause");
 	return 0;

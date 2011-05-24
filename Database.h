@@ -13,7 +13,8 @@ private:
 	string mDbName;
 public:
 	Database(string DbName);
-int openDB();
+	int openDB();
+	string getDbName();
 	vector<vector<string>> query(string Query);
 	void close();
 

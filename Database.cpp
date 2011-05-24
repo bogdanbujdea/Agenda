@@ -41,9 +41,16 @@ vector<vector<string>> Database::query(string Query)
 		sqlite3_finalize(statement);
 	}
 	string error = sqlite3_errmsg(database);
+	Query += ":";
+	Query += error;
 	if(error.compare("not an error"))
-		throw(error);
+		throw(Query);
 	else return results;
+}
+
+string Database::getDbName()
+{
+	return mDbName;
 }
 
 void Database::close()
