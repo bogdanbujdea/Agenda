@@ -184,13 +184,38 @@ int main()
 	pbs = atoi(tmp.c_str());
 	if(pbs)
 	{
-		cout<<"Sunt "<<pbs<<" agende create, alege una:\n";
-		results = db.query("Select * from Phonebooks");
-		for(it = results.begin(); it != results.end(); it++)
+		cout<<"Sunt "<<pbs<<" agende create\n";
+		cout<<"1.Alege una";
+		cout<<"\n2.Creeaza una noua";
+		int opt;
+		cin>>opt;
+		if(opt == 1)
 		{
-			cout<<it->at(0)<<" -> "<<it->at(1)<<endl;
+			results = db.query("Select * from Phonebooks");
+			for(it = results.begin(); it != results.end(); it++)
+			{
+				cout<<it->at(0)<<" -> "<<it->at(1)<<endl;
+			}
+			cout<<"\nIntrodu numele agendei alese:";
+			cin>>dir;
 		}
-		cin>>dir;
+		else
+		{
+			cout<<"Introdu numele agendei noi:";
+			cin>>dir;
+			pbs++;
+			char p[10];
+			_itoa_s(pbs, p, 10);
+			cout<<pbs<<" agende create "<<"p="<<p<<"\n";
+			string q = "INSERT INTO Phonebooks VALUES(";
+			q += p;
+			q += "0, ";
+			q += "\"";
+			q += dir;
+			q += "\");";
+			db.query(q);
+		}
+
 	}
 	else
 	{
