@@ -18,6 +18,7 @@ int Phonebook::loadPhonebook()
 		return 0;
 	}
 	//ZeroMemory(&ContactList, sizeof(ContactList));
+	ContactList.erase(ContactList.begin(), ContactList.end());
 	int i, k = 0;
 	string str, tmp;
 	string infs[100];
@@ -182,8 +183,8 @@ int Phonebook::savePhonebook(int save)
 {
 	if(!save)
 		memcpy(&ContactList, &tmpList, sizeof(tmpList));
-	deque<Contact>::iterator it;
 	int i = 0;
+	cout<<"\nfile pos="<<mData.tellp()<<endl;
 	for(i = 0; i < (int)ContactList.size(); i++)
 	{
 		mData<<ContactList[i].getContactType()<<"|";
@@ -206,5 +207,5 @@ int Phonebook::savePhonebook(int save)
 
 Phonebook::~Phonebook()
 {
-	savePhonebook(1);
+	//savePhonebook(1);
 }

@@ -323,7 +323,10 @@ void CAgendaDlg::LoadList(char *type, deque<Contact> list)
 	Phonebook *p = manager->detailsDlg->p;
 	if(_stricmp(type, "this"))
 		list = p->getContacts(p->ContactList, type);
-	listCtrl.DeleteAllItems();
+	if(listCtrl.DeleteAllItems() == 0)
+		MessageBox("error emptying list", 0, 0);
+	cout<<"\nlist items count="<<listCtrl.GetItemCount();
+	cout<<"\ndeque items count="<<list.size()<<endl;
 	for(int i = 0; i < (int) list.size(); i++)
 	{
 		item = listCtrl.InsertItem(i, list[i].getFirstName().c_str());
@@ -420,22 +423,22 @@ int CAgendaDlg::GetSelectedContact()
 	str[6] = data;
 	listCtrl.GetItemText(sel, 7, data, 1024);
 	str[7] = data;
-	//cout<<"contact1 fn:"<<str[0]<<endl;
-	//for(int i = 0; i < p->ContactList.getSize(); i++)
-	//{
-	//	if( p->ContactList[i].getFirstName().compare(str[0]) == 0 &&
-	//		//p->ContactList[i].getContactType().compare((str[0]) == 0 &&
-	//		p->ContactList[i].getLastName().compare(str[1]) == 0 &&
-	//		//p->ContactList[i].getGender().compare(str[0]) == 0 &&
-	//		//p->ContactList[i].getBirthDate().toString().compare(p->ContactList[sel].getBirthDate().toString()) == 0 &&
-	//		p->ContactList[i].getAge() == age &&
-	//		p->ContactList[i].getPhoneNumber().compare(str[2]) == 0 &&
-	//		p->ContactList[i].getHomeAddress().compare(str[5]) == 0 &&
-	//		p->ContactList[i].getEmailAddress().compare(str[6]) == 0
-	//	)
-	//	return i;
-	//}
-	return -1;
+	cout<<"contact1 fn:"<<str[0]<<endl;
+	for(int i = 0; i < p->ContactList.size(); i++)
+	{
+		if( p->ContactList[i].getFirstName().compare(str[0]) == 0 &&
+			//p->ContactList[i].getContactType().compare((str[0]) == 0 &&
+			p->ContactList[i].getLastName().compare(str[1]) == 0 &&
+			//p->ContactList[i].getGender().compare(str[0]) == 0 &&
+			//p->ContactList[i].getBirthDate().toString().compare(p->ContactList[sel].getBirthDate().toString()) == 0 &&
+			p->ContactList[i].getAge() == age &&
+			p->ContactList[i].getPhoneNumber().compare(str[2]) == 0 &&
+			p->ContactList[i].getHomeAddress().compare(str[5]) == 0 &&
+			p->ContactList[i].getEmailAddress().compare(str[6]) == 0
+		)
+		return i;
+	}
+	return sel;
 }
 
 void CAgendaDlg::OnBnClickedButton3()
@@ -444,8 +447,21 @@ void CAgendaDlg::OnBnClickedButton3()
 	Phonebook *p = manager->detailsDlg->p;
 	int sel = listCtrl.GetSelectionMark();
 	int i = GetSelectedContact();
-	p->ContactList.erase(p->ContactList.begin() + i);
-	listCtrl.DeleteItem(sel);
+	if(i == -1)
+		MessageBox("invalid index", 0, 0);
+	else
+	{
+		try
+		{
+			cout<<"\ndelete index="<<i;
+			p->ContactList.erase(p->ContactList.begin() + i);
+		}
+		catch(string error)
+		{
+			cout<<"\nerror:"<<error<<endl;
+		}
+		listCtrl.DeleteItem(sel);
+	}
 }
 
 
