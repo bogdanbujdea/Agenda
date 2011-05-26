@@ -4,6 +4,7 @@
 #include "CPictureCtrl/PictureCtrl.h"
 #include "Phonebook/IniFile.h"
 #include "Phonebook/Phonebook.h"
+#include <map>
 
 using namespace std;
 

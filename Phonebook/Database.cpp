@@ -84,10 +84,34 @@ void Database::UpdateValueById(int ID, string TableName, string Column, string V
 	}
 }
 
-void Database::InsertValue(int ID, string *Details)
+void Database::InsertValues(map<string,string> phb, string TableName)
 {
-	char *Query[1024];
-	sprintf(Query, "INSERT INTO %s (%s) VALUES (%s);", TableName.c_str(), Column.c_str(), Value.c_str());
+	string Query;
+	string columns, values;
+	//sprintf(Query, "INSERT INTO %s (%s) VALUES (%s);");
+	map<string, string>::iterator it;
+	columns = values = "(";
+	for (it = phb.begin(); it != phb.end(); it++)
+	{
+		if(it->first.size() && it->second.size())
+		{
+			columns += it->first;
+			columns += ",";
+			values += it->second;
+			values += ",";
+		}
+	}
+	columns.resize(columns.size() - 1);
+	columns += ")";
+	values.resize(values.size() - 1);
+	values += ")";
+	Query = "INSERT INTO ";
+	Query += TableName;
+	Query += " ";
+	Query += columns;
+	Query += " ";
+	Query += values;
+	Query += " ;";
 	try
 	{
 		query(Query);
@@ -130,8 +154,8 @@ vector<vector<string>> Database::query(string Query)
 	   
 		sqlite3_finalize(statement);
 	}
-	else
-		throw(sqlite3_errmsg(database));
+	//else
+	//	throw(sqlite3_errmsg(database));
 	string error = sqlite3_errmsg(database);
 	Query += ":";
 	Query += error;

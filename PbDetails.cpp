@@ -394,7 +394,9 @@ int PbDetails::SaveContact()
 int PbDetails::ValidateInputData()
 {
 	int Pb = theApp.PbNumber;
-	/*Pb = ini.GetIntValue("Settings", "PbNo");*/
+	map<string, string> phb;
+	map<string, string>::iterator it;
+	string details;
 	char tmp[256], section[100];
 	_itoa_s(Pb, section, 10);
 	for(int i = 0; i < (int) chPb->size(); i++)
@@ -402,53 +404,44 @@ int PbDetails::ValidateInputData()
 		if(_stricmp(tmp, chPb[i].c_str()) == 0)
 			return PB_ALREADY_EXISTS;	
 	}
-	//ini.CreateSection(section);
 	string pbPath, Update;
-	string details[15];
+	string ownerName;
 	Update = "Update ";
 	int i = 0;
 	ePbName.GetWindowTextA(tmp, 256);
-	details[i++] = tmp;
+	phb["PbName"] = tmp;
 	int err = 0;
-	pbPath = details = tmp;
-	//ini.WriteValue(section, "Phone Book Name", details);
+
+	eFirstName.GetWindowTextA(tmp, 256);
+	phb["OwnerFName"] = tmp;
+	ownerName = tmp;
+	eLastName.GetWindowTextA(tmp, 256);
+	phb["OwnerLName"] = tmp;
+	ownerName += " ";
+	ownerName += tmp;
+	p->setOwner(ownerName);  
+	ePhoneNumber.GetWindowTextA(tmp, 256); 
+	phb["OwnerPhoneNo"] = tmp;
+	eOccupation.GetWindowTextA(tmp, 256);
+	phb["OwnerOccupation"] = tmp;
+	eAge.GetWindowTextA(tmp, 256);
+	phb["OwnerAge"] = tmp;
+	eHomeAddress.GetWindowTextA(tmp, 256);
+	phb["OwnerAddress"] = tmp;
+	eEmail.GetWindowTextA(tmp, 256);
+	phb["OwnerEmail"] = tmp;
+	eBirthDate.GetWindowTextA(tmp, 256);
+	phb["OwnerBirthDate"] = tmp;
 	try
 	{
-		theApp.db->UpdateValueById(Pb, "Phonebooks",  "PbName", tmp);
-		eFirstName.GetWindowTextA(tmp, 256);
-		details = tmp;
-		//ini.WriteValue(section, "Owner First Name", details);
-		theApp.db->UpdateValueById(Pb, "Phonebooks", "OwnerFName", tmp);
-		eLastName.GetWindowTextA(tmp, 256);
-		details += " ";
-		details += tmp;
-		p->setOwner(details);   /*db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), 
-			OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20),
-			OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500),
-			OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");*/
-		details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerLName", tmp);
-		ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerPhoneNo", tmp);
-		eOccupation.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerOccupation", tmp);
-		eAge.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks","OwnerAge", tmp);
-		eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks","OwnerAddress", tmp);
-		eEmail.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerEmail", tmp);
-		eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerBirthDate", tmp);
-		details = picName.GetBuffer();
-		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerPhotoPath", tmp);
+		theApp.db->InsertValues(phb, "Phonebooks");
 		vector<vector<string>> ret;
 		ret = theApp.db->query("SELECT * FROM Phonebooks");
-		//cout<<"ret[0][0]="<<ret.at(0).at(0)<<endl;
+		//cout<<"ret[0][0]="<<ret.at(0).at(3)<<endl;
 	}
 	catch(string error)
 	{
-		MessageBox(error.c_str(), "ERROR", 0);
+		MessageBox(error.c_str(), 0, 0);
 		cout<<"\nerror="<<error<<endl;
 	}
 	
