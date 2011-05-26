@@ -116,6 +116,7 @@ END_MESSAGE_MAP()
 CAgendaDlg::CAgendaDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CAgendaDlg::IDD, pParent)
 {
+	
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	//p = &Phonebook::getInstance();
 }
@@ -187,9 +188,7 @@ LRESULT CAgendaDlg::OnShowWnd(UINT wParam, LONG lParam)
 
 BOOL CAgendaDlg::OnInitDialog()
 {
-	AllocConsole();
-	AttachConsole( GetCurrentProcessId() ) ;
-	freopen( "CON", "w", stdout ) ;
+
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
@@ -424,7 +423,7 @@ int CAgendaDlg::GetSelectedContact()
 	listCtrl.GetItemText(sel, 7, data, 1024);
 	str[7] = data;
 	cout<<"contact1 fn:"<<str[0]<<endl;
-	for(int i = 0; i < p->ContactList.size(); i++)
+	for(int i = 0; i < (int) p->ContactList.size(); i++)
 	{
 		if( p->ContactList[i].getFirstName().compare(str[0]) == 0 &&
 			//p->ContactList[i].getContactType().compare((str[0]) == 0 &&

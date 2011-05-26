@@ -6,6 +6,7 @@
 #include "AgendaPH.h"
 #include "AgendaDlg.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -19,11 +20,66 @@ END_MESSAGE_MAP()
 
 
 // CAgenda construction
+bool CAgenda::CreateDatabase()
+{
+	bool error = true;
+	db = new Database("PhoneBookDb.db");
+	if(db->openDB())
+		error = false;
+	else
+		error = true;
+	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");
+	
+	return !error;
+}
 
+bool CAgenda::LoadSettings()
+{
+	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");
+	return true;
+}
+
+bool CAgenda::InitiateProgram()
+{
+	char* dir;
+	dir = new char[1024];
+	bool bExists = false;
+	DWORD size = 1024;
+	GetCurrentDirectory(size, dir);
+	string sDir = dir;
+	folderPath = sDir;
+	sDir += "\\";
+	filePath = sDir + "AgendaPH.exe";
+	sDir += "Database.db";
+	cout<<"\n\nCurrent directory:"<<folderPath<<endl;
+	cout<<"\nFile Path: "<<filePath<<endl;
+	cout<<"\nDatabase path: "<<sDir<<endl;
+	HANDLE hDB = CreateFile(sDir.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if(GetLastError() == ERROR_FILE_NOT_FOUND)
+		bExists = false;
+	else
+	{
+		cout<<"\nDatabase exists\n";
+		CloseHandle(hDB);
+		bExists = true;
+	}
+	if(!bExists)
+	{
+		CreateDatabase();
+		LoadSettings();
+	}
+	else
+	LoadSettings();
+	return true;
+}
 CAgenda::CAgenda()
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
+	AllocConsole();
+	AttachConsole( GetCurrentProcessId() ) ;
+	freopen( "CON", "w", stdout ) ;
+	InitiateProgram();
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }

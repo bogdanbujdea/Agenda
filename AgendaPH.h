@@ -9,23 +9,32 @@
 #endif
 
 #include "resource.h"		// main symbols
+#include "Phonebook/Database.h"
+#include <string>
 
-
+using namespace std;
 // CAgenda:
 // See AgendaPH.cpp for the implementation of this class
 //
 
 class CAgenda : public CWinApp
 {
+private:
+	string filePath, folderPath;
+
 public:
 	CAgenda();
-	
+
 // Overrides
 public:
 	virtual BOOL InitInstance();
-
+	Database *db;
 // Implementation
-
+	string getFilePath() { return filePath; }
+	string getFolderPath() { return folderPath; }
+	bool CreateDatabase();
+	bool InitiateProgram();
+	bool LoadSettings();
 	DECLARE_MESSAGE_MAP()
 };
 

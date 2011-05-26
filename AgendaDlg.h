@@ -11,6 +11,7 @@
 // CAgendaDlg dialog
 class CAgendaDlg : public CDialogEx
 {
+
 // Construction
 public:
 	CAgendaDlg(CWnd* pParent = NULL);	// standard constructor
@@ -35,8 +36,8 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	//afx_msg void OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult);
-	//afx_msg void OnTcnSelchangeTab2(NMHDR *pNMHDR, LRESULT *pResult);
+
+
 	CTreeCtrl TreeCtrl;
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
