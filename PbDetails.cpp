@@ -14,13 +14,7 @@ IMPLEMENT_DYNAMIC(PbDetails, CDialogEx)
 PbDetails::PbDetails(CWnd* pParent /*=NULL*/)
 	: CDialogEx(PbDetails::IDD, pParent), ini("Settings.ini", "Settings")
 {
-	CString temp = (LPCTSTR) ini.GetIniPath().c_str(); // Force CString to make a copy
-	cout<<"ini path="<<ini.GetIniPath()<<endl;
-	char path[2048];
 	picLoaded = 0;
-	::GetCurrentDirectoryA(sizeof(path) - 1, path);
-	photoDir = path;
-	cout<<"photo dir="<<photoDir<<endl;
 	p = &Phonebook::getInstance();
 	mode = ADD_PHONEBOOK;
 }
@@ -65,32 +59,50 @@ END_MESSAGE_MAP()
 
 
 //browse
+//load picture
 void PbDetails::OnBnClickedButton3() 
 {
 	// TODO: Add your control notification handler code here
 	CString name;
 	char fileName[1024];
-	char Filter[] = { "BMP Files (*.bmp)|*.bmp|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg||" };
+	char Filter[] = { "Image Files (*.bmp;*.jpg;*.png)|*.bmp;*.jpg;*.png|All files (*.*)|*.*|" };
 	CFileDialog FileDlg(TRUE, ".txt", NULL, 0, Filter, 0, 0, 1);
 	if(FileDlg.DoModal() == IDOK)
 	{
 		name = FileDlg.GetFileName();
-		cout<<"\nsizeof filename="<<sizeof(fileName)<<endl;
 		strcpy_s(fileName, name.GetBuffer());
-		photoName = name.GetBuffer();
+		photoName = fileName;
 		name = FileDlg.GetFolderPath();
 		name.Append("\\");
 		name.Append(fileName);
+		
+		if(mPic.LoadFromFile(name) == 0)
+		{
+			theApp.sp.SpeakText("Can't load this photo");
+			photoName = "";
+		}
+		else
+			picLoaded = 1;
+		if(picLoaded)
+		{		
+			photoPath  = theApp.getFolderPath();
+			photoPath += "\\";
+			ePbName.GetWindowTextA(fileName, sizeof(fileName) - 1);
+			photoPath += fileName;
+			if(!CreateDirectory(photoPath.c_str(), NULL))
+				theApp.sp.SpeakText("Can't create directory for new phone book!");
+			else {
+			photoPath += "\\";
+			photoPath += photoName;
+			if(CopyFile(name.GetBuffer(), photoPath.c_str(), 0) == 0)
+			{
+				theApp.sp.SpeakText("Can't copy photo");
+				theApp.sp.SpeakText(theApp.sp.IntToChar(GetLastError()));
+				//MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+			}
+			}
+		}
 	}
-	strcpy_s(fileName,  name.GetBuffer());	
-	if(mPic.LoadFromFile(name) == 0)
-	{
-		MessageBox("Can't open this photo", "ERROR", MB_ICONERROR);
-		photoName = "";
-	}
-	else
-		picName = name;
-	picLoaded = 1;
 
 } //browse
 
@@ -408,67 +420,85 @@ int PbDetails::ValidateInputData()
 	string ownerName;
 	Update = "Update ";
 	int i = 0;
-	ePbName.GetWindowTextA(tmp, 256);
+	ePbName.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["PbName"] = tmp;
 	int err = 0;
 
-	eFirstName.GetWindowTextA(tmp, 256);
-	phb["OwnerFName"] = tmp;
+	eFirstName.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
+	phb["OwnerFName"] = tmp; details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	ownerName = tmp;
-	eLastName.GetWindowTextA(tmp, 256);
+	eLastName.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerLName"] = tmp;
 	ownerName += " ";
 	ownerName += tmp;
 	p->setOwner(ownerName);  
-	ePhoneNumber.GetWindowTextA(tmp, 256); 
+	ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerPhoneNo"] = tmp;
-	eOccupation.GetWindowTextA(tmp, 256);
+	eOccupation.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerOccupation"] = tmp;
-	eAge.GetWindowTextA(tmp, 256);
+	eAge.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerAge"] = tmp;
-	eHomeAddress.GetWindowTextA(tmp, 256);
+	eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerAddress"] = tmp;
-	eEmail.GetWindowTextA(tmp, 256);
+	eEmail.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerEmail"] = tmp;
-	eBirthDate.GetWindowTextA(tmp, 256);
+	eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
+	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerBirthDate"] = tmp;
 	try
 	{
-		theApp.db->InsertValues(phb, "Phonebooks");
-		vector<vector<string>> ret;
-		ret = theApp.db->query("SELECT * FROM Phonebooks");
-		//cout<<"ret[0][0]="<<ret.at(0).at(3)<<endl;
+		if(theApp.db->openDB())
+		{
+			theApp.db->InsertValues(phb, "Phonebooks");
+			vector<vector<string>> ret;
+			theApp.db->close();
+		}
+		else MessageBox("Can't Open Phone Book Database", "ERROR", 0);
 	}
 	catch(string error)
 	{
 		MessageBox(error.c_str(), 0, 0);
 		cout<<"\nerror="<<error<<endl;
 	}
-	
-	string photoPath = photoDir;
-	if(picLoaded)
-	{		
-		photoPath += "\\";
-		photoPath += photoName;
-		if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
-			MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
-		cout<<"photo path="<<photoPath<<endl;
-		picLoaded = 0;
-	}
-	Pb++;
-	char pbNo[10];
-	_itoa_s(Pb, pbNo, 10);
-	theApp.PbNumber++;
-	photoPath = photoDir;
-	photoPath += pbPath;
-	photoPath += ".txt";
-	ofstream f(photoPath.c_str());
-	if(!f)
-		return FILE_ERROR;
-	else
-		f.close();
+	details = photoPath;
+	sprintf(tmp, "'%s'", details.c_str());
+	phb["OwnerPhotoPath"] = tmp;
+	details = theApp.getFolderPath();
+	sprintf(tmp, "'%s'", details.c_str());
+	phb["Directory"] = theApp.getFolderPath();
+	//string photoPath = photoDir;
+	//if(picLoaded)
+	//{		
+	//	photoPath += "\\";
+	//	photoPath += photoName;
+	//	if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
+	//		MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+	//	cout<<"photo path="<<photoPath<<endl;
+	//	picLoaded = 0;
+	//}
+	//Pb++;
+	//char pbNo[10];
+	//_itoa_s(Pb, pbNo, 10);
+	//theApp.PbNumber++;
+	//photoPath = photoDir;
+	//photoPath += pbPath;
+	//photoPath += ".txt";
+	//ofstream f(photoPath.c_str());
+	//if(!f)
+	//	return FILE_ERROR;
+	//else
+	//	f.close();
 	PbSection = "";
-	photoDir = "";
+	//photoDir = "";
 	photoPath = "";
 	this->EndDialog(IDOK);
 	return SUCCESS;

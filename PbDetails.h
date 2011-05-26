@@ -63,7 +63,7 @@ public:
 	CEdit eHomeAddress;
 	CEdit eEmail;
 	CString picName;
-	string photoDir;
+	string photoPath;
 	string photoName;
 	int save, add;
 	string PbSection;

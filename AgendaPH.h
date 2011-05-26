@@ -11,11 +11,14 @@
 #include "resource.h"		// main symbols
 #include "Phonebook/Database.h"
 #include <string>
+#include "SpeechEngine/SpeechEngine.h"
 
 using namespace std;
 // CAgenda:
 // See AgendaPH.cpp for the implementation of this class
 //
+
+
 
 class CAgenda : public CWinApp
 {
@@ -29,6 +32,7 @@ public:
 public:
 	virtual BOOL InitInstance();
 	Database *db;
+	SpeechEngine sp;
 // Implementation
 	string getFilePath() { return filePath; }
 	string getFolderPath() { return folderPath; }

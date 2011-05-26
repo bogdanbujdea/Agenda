@@ -30,8 +30,13 @@ void PbManager::InitCbList()
 	cbList.ResetContent();
 	vector<vector<string>> retVal;
 	try
+	{
+		if(theApp.db->openDB())
 		{
 			retVal = theApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
+			
+		}
+		else MessageBox("Can't Open Phone Book Database", "ERROR", 0); 
 	}
 	catch(string error)
 	{
@@ -44,21 +49,30 @@ void PbManager::InitCbList()
 	theApp.PbNumber = Pb;
 	if(Pb)
 	{
-		retVal = theApp.db->query("SELECT PbName FROM Phonebooks;");
-
+		try
+		{
+			retVal = theApp.db->query("SELECT PbName FROM Phonebooks;");
+			theApp.db->close();
+		}
+		catch(string error)
+		{
+			MessageBox(error.c_str(), "ERROR initCbList()", 0);
+			cout<<"\ncaught error in initCbList:"<<error<<endl;
+		}
 		/*string tmp;
 		char ch[256];
 		int pbLoaded = 0;
 		detailsDlg->chPb->clear();*/
-		vector<vector<string>>::iterator PbList;
-		for(int i = 0; i < Pb; i++)
+		vector<vector<string>>::iterator it;
+		it = retVal.begin();
+		for(int i = 0; i < Pb; i++, it++)
 		{
 			
 			//_itoa_s(i, ch, 10);
 			//tmp = detailsDlg->ini.GetStringValue(ch, "Phone Book Name", "error");
-			cbList.AddString(PbList[i].at(0).c_str());
-			detailsDlg->chPb[i] = PbList[i].at(0).c_str();
-			cout<<"\npb "<<i<<"="<<PbList[i].at(0)<<endl;
+			cbList.AddString(it->at(0).c_str());
+			detailsDlg->chPb[i] = it->at(0).c_str();
+			cout<<"\npb "<<i<<"="<<it->at(0)<<endl;
 			//pbLoaded++;
 			/*if(pbLoaded == Pb)
 				break;*/

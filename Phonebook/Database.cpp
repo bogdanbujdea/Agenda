@@ -109,9 +109,9 @@ void Database::InsertValues(map<string,string> phb, string TableName)
 	Query += TableName;
 	Query += " ";
 	Query += columns;
-	Query += " ";
+	Query += " VALUES ";
 	Query += values;
-	Query += " ;";
+	Query += ";";
 	try
 	{
 		query(Query);
@@ -141,8 +141,10 @@ vector<vector<string>> Database::query(string Query)
 				vector<string> row;
 				for(int col = 0; col < cols; col++)
 				{
-					row.push_back((char*)sqlite3_column_text(statement, col));
-					cout<<"statement:"<<(char*)sqlite3_column_text(statement, col)<<endl;
+					//cout<<"statement:"<<(char*)sqlite3_column_text(statement, col)<<endl;
+					cout<<"\ncol = "<<col<<"\tcols="<<cols<<endl;
+					string x = (char*)sqlite3_column_text(statement, col);
+					row.push_back(x);
 				}
 				results.push_back(row);
 			}
