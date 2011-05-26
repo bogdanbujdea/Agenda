@@ -37,7 +37,6 @@ bool CAgenda::CreateDatabase()
 
 bool CAgenda::LoadSettings()
 {
-	//db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, PbName VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , OwnerBirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500));");
 	return true;
 }
 
@@ -80,14 +79,14 @@ bool CAgenda::InitiateProgram()
 	LoadSettings();
 	return true;
 }
-CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 2, 70)
+CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 5, 90)
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
 	AllocConsole();
 	AttachConsole( GetCurrentProcessId() ) ;
 	freopen( "CON", "w", stdout ) ;
-	theApp.sp.SpeakText("Hi! Welcome to my Phone Book program !!");
+	//PbApp.sp.SpeakText("Hi! Welcome to my Phone Book program !!");
 	InitiateProgram();
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -96,7 +95,7 @@ CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 2, 70)
 
 // The one and only CAgenda object
 
-CAgenda theApp;
+CAgenda PbApp;
 
 // CAgenda initialization
 

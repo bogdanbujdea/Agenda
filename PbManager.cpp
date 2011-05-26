@@ -31,9 +31,9 @@ void PbManager::InitCbList()
 	vector<vector<string>> retVal;
 	try
 	{
-		if(theApp.db->openDB())
+		if(PbApp.db->openDB())
 		{
-			retVal = theApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
+			retVal = PbApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
 			
 		}
 		else MessageBox("Can't Open Phone Book Database", "ERROR", 0); 
@@ -46,13 +46,13 @@ void PbManager::InitCbList()
 	Pb = atoi(retVal.at(0).at(0).c_str());
 	//Pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
 	cout<<"\nNumber of phonebooks="<<Pb<<endl;
-	theApp.PbNumber = Pb;
+	PbApp.PbNumber = Pb;
 	if(Pb)
 	{
 		try
 		{
-			retVal = theApp.db->query("SELECT PbName FROM Phonebooks;");
-			theApp.db->close();
+			retVal = PbApp.db->query("SELECT PbName FROM Phonebooks;");
+			PbApp.db->close();
 		}
 		catch(string error)
 		{
@@ -169,39 +169,30 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 		}
 	else
 	{
-		char s[100], section[5];
+		char s[100];
 		cbList.GetLBText(sel, s);
-		for(int i = 0; i < 1000; i++)
+		if(PbApp.db->openDB())
 		{
-			_itoa_s(i, section, 10);
-			string tmp = detailsDlg->ini.GetStringValue(section, "Phone Book Name", "error");
-			cout<<"s="<<s<<"\ttmp="<<tmp<<endl;
-			if(tmp.compare("error") != 0)
-			if(_stricmp(tmp.c_str(), s) == 0)
-			{
-				sel = i;
-				break;
-			}
-		}
-		if(MessageBox("Are you sure you want to delete this phone book?", "", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2 | MB_APPLMODAL) == IDYES)
-		{	
-		//	OpenedPb = NULL;
-			_itoa_s(sel, s, 10);
-			int ret = detailsDlg->ini.DeleteSection(s);
-			if(ret != 0)
-				MessageBox("Can't delete phonebook", "ERROR", MB_ICONERROR);
-			else
-			{
+			if(MessageBox("Are you sure you want to delete this phone book?", "", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2 | MB_APPLMODAL) == IDYES)
+			{	
+				char Query[256];
+				try
+				{
+					sprintf(Query, "DELETE FROM Phonebooks WHERE PbName='%s';", s);
+					PbApp.db->query(Query);
+				}
+				catch(string error)
+				{
+					char err[1024];
+					strcpy(err, error.c_str());
+					PbApp.sp.SpeakText(err);
+				}
 				InitCbList();
-				int pb;
-				pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
-				cout<<"\npbno="<<pb<<endl;
-				pb--;
-				_itoa_s(pb, s, 10);
-				detailsDlg->ini.WriteValue("Settings", "PbNo", s);
 				MessageBox("Phone Book Deleted",0,0);
+				PbApp.db->close();
 			}
 		}
+		else PbApp.sp.SpeakText("Can't open database!");
 	}
 }
 

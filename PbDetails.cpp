@@ -78,26 +78,29 @@ void PbDetails::OnBnClickedButton3()
 		
 		if(mPic.LoadFromFile(name) == 0)
 		{
-			theApp.sp.SpeakText("Can't load this photo");
+			PbApp.sp.SpeakText("Can't load this photo");
 			photoName = "";
 		}
 		else
 			picLoaded = 1;
 		if(picLoaded)
 		{		
-			photoPath  = theApp.getFolderPath();
+			photoPath  = PbApp.getFolderPath();
 			photoPath += "\\";
 			ePbName.GetWindowTextA(fileName, sizeof(fileName) - 1);
 			photoPath += fileName;
 			if(!CreateDirectory(photoPath.c_str(), NULL))
-				theApp.sp.SpeakText("Can't create directory for new phone book!");
+			{
+				PbApp.sp.GetStringError(GetLastError());
+					//PbApp.sp.SpeakText("Can't create directory for new phone book!");
+			}
 			else {
 			photoPath += "\\";
 			photoPath += photoName;
 			if(CopyFile(name.GetBuffer(), photoPath.c_str(), 0) == 0)
 			{
-				theApp.sp.SpeakText("Can't copy photo");
-				theApp.sp.SpeakText(theApp.sp.IntToChar(GetLastError()));
+				PbApp.sp.SpeakText("Can't copy photo");
+				PbApp.sp.SpeakText(PbApp.sp.IntToChar(GetLastError()));
 				//MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
 			}
 			}
@@ -402,28 +405,39 @@ int PbDetails::SaveContact()
 
 }
 
-
+	
 int PbDetails::ValidateInputData()
 {
-	int Pb = theApp.PbNumber;
+	int Pb = PbApp.PbNumber;
 	map<string, string> phb;
 	map<string, string>::iterator it;
 	string details;
 	char tmp[256], section[100];
-	_itoa_s(Pb, section, 10);
-	for(int i = 0; i < (int) chPb->size(); i++)
-	{
-		if(_stricmp(tmp, chPb[i].c_str()) == 0)
-			return PB_ALREADY_EXISTS;	
-	}
-	string pbPath, Update;
-	string ownerName;
-	Update = "Update ";
-	int i = 0;
 	ePbName.GetWindowTextA(tmp, 256); details = tmp;
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["PbName"] = tmp;
-	int err = 0;
+	_itoa_s(Pb, section, 10);
+	try
+	{
+		if(PbApp.db->openDB())
+		{
+			char Query[200];
+			sprintf(Query, "SELECT COUNT (PbName) From Phonebooks WHERE PbName=%s;", tmp);
+			vector<vector<string>> ret;
+			ret = PbApp.db->query(Query);
+			if(_stricmp(ret.at(0).at(0).c_str(), "0"))
+				return PB_ALREADY_EXISTS;
+			PbApp.db->close();
+		}
+		else
+			MessageBox("Can't open database", "ERROR", 0);
+	}
+	catch(string error)
+	{
+		MessageBox(error.c_str(), 0, 0);
+	}
+	string pbPath;
+	string ownerName;
 
 	eFirstName.GetWindowTextA(tmp, 256); details = tmp;
 	sprintf(tmp, "'%s'", details.c_str());
@@ -456,11 +470,11 @@ int PbDetails::ValidateInputData()
 	phb["OwnerBirthDate"] = tmp;
 	try
 	{
-		if(theApp.db->openDB())
+		if(PbApp.db->openDB())
 		{
-			theApp.db->InsertValues(phb, "Phonebooks");
+			PbApp.db->InsertValues(phb, "Phonebooks");
 			vector<vector<string>> ret;
-			theApp.db->close();
+			PbApp.db->close();
 		}
 		else MessageBox("Can't Open Phone Book Database", "ERROR", 0);
 	}
@@ -472,9 +486,9 @@ int PbDetails::ValidateInputData()
 	details = photoPath;
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerPhotoPath"] = tmp;
-	details = theApp.getFolderPath();
+	details = PbApp.getFolderPath();
 	sprintf(tmp, "'%s'", details.c_str());
-	phb["Directory"] = theApp.getFolderPath();
+	phb["Directory"] = PbApp.getFolderPath();
 	//string photoPath = photoDir;
 	//if(picLoaded)
 	//{		
@@ -488,7 +502,7 @@ int PbDetails::ValidateInputData()
 	//Pb++;
 	//char pbNo[10];
 	//_itoa_s(Pb, pbNo, 10);
-	//theApp.PbNumber++;
+	//PbApp.PbNumber++;
 	//photoPath = photoDir;
 	//photoPath += pbPath;
 	//photoPath += ".txt";

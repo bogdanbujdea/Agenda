@@ -42,4 +42,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CAgenda theApp;
+extern CAgenda PbApp;
