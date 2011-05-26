@@ -1,4 +1,5 @@
 acquaintance|Popescu|Ionut|0723423423|male
+acquaintance|Ionescu|Alex|0231111111|male
 acquaintance|Alexandrescu|Andreea|0232111111|female
 colleague|Radu|Bogdan|0232222222|male|20|bogdan@yahoo.com|student
 colleague|John|Smith|0232111111|male|35|john@yahoo.com|student

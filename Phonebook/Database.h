@@ -3,7 +3,6 @@
 
 #include <sqlite3/sqlite3.h>
 #include <vector>
-
 using namespace std;
 
 class Database
