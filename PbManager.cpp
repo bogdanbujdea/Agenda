@@ -29,14 +29,22 @@ void PbManager::InitCbList()
 	int Pb = 0;
 	cbList.ResetContent();
 	vector<vector<string>> retVal;
-	retVal = theApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
+	try
+		{
+			retVal = theApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
+	}
+	catch(string error)
+	{
+		cout<<"\nError:"<<error<<endl;
+	}
+	cout<<"\ncount returned:"<<retVal.at(0).at(0)<<endl;
 	Pb = atoi(retVal.at(0).at(0).c_str());
 	//Pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
 	cout<<"\nNumber of phonebooks="<<Pb<<endl;
 	theApp.PbNumber = Pb;
 	if(Pb)
 	{
-		retVal = theApp.db->query("SELECT name FROM Phonebooks;");
+		retVal = theApp.db->query("SELECT PbName FROM Phonebooks;");
 
 		/*string tmp;
 		char ch[256];
@@ -50,6 +58,7 @@ void PbManager::InitCbList()
 			//tmp = detailsDlg->ini.GetStringValue(ch, "Phone Book Name", "error");
 			cbList.AddString(PbList[i].at(0).c_str());
 			detailsDlg->chPb[i] = PbList[i].at(0).c_str();
+			cout<<"\npb "<<i<<"="<<PbList[i].at(0)<<endl;
 			//pbLoaded++;
 			/*if(pbLoaded == Pb)
 				break;*/

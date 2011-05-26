@@ -403,9 +403,12 @@ int PbDetails::ValidateInputData()
 			return PB_ALREADY_EXISTS;	
 	}
 	//ini.CreateSection(section);
-	string details, pbPath, Update;
+	string pbPath, Update;
+	string details[15];
 	Update = "Update ";
+	int i = 0;
 	ePbName.GetWindowTextA(tmp, 256);
+	details[i++] = tmp;
 	int err = 0;
 	pbPath = details = tmp;
 	//ini.WriteValue(section, "Phone Book Name", details);
@@ -439,12 +442,16 @@ int PbDetails::ValidateInputData()
 		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerBirthDate", tmp);
 		details = picName.GetBuffer();
 		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerPhotoPath", tmp);
+		vector<vector<string>> ret;
+		ret = theApp.db->query("SELECT * FROM Phonebooks");
+		//cout<<"ret[0][0]="<<ret.at(0).at(0)<<endl;
 	}
 	catch(string error)
 	{
 		MessageBox(error.c_str(), "ERROR", 0);
 		cout<<"\nerror="<<error<<endl;
 	}
+	
 	string photoPath = photoDir;
 	if(picLoaded)
 	{		
@@ -458,7 +465,7 @@ int PbDetails::ValidateInputData()
 	Pb++;
 	char pbNo[10];
 	_itoa_s(Pb, pbNo, 10);
-	PbNumber++;
+	theApp.PbNumber++;
 	photoPath = photoDir;
 	photoPath += pbPath;
 	photoPath += ".txt";

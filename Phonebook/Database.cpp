@@ -83,6 +83,22 @@ void Database::UpdateValueById(int ID, string TableName, string Column, string V
 		throw(error);
 	}
 }
+
+void Database::InsertValue(int ID, string *Details)
+{
+	char *Query[1024];
+	sprintf(Query, "INSERT INTO %s (%s) VALUES (%s);", TableName.c_str(), Column.c_str(), Value.c_str());
+	try
+	{
+		query(Query);
+	}
+	catch(string error)
+	{
+		throw(error);
+	}
+}
+
+
 vector<vector<string>> Database::query(string Query)
 {
 	sqlite3_stmt *statement;
@@ -102,6 +118,7 @@ vector<vector<string>> Database::query(string Query)
 				for(int col = 0; col < cols; col++)
 				{
 					row.push_back((char*)sqlite3_column_text(statement, col));
+					cout<<"statement:"<<(char*)sqlite3_column_text(statement, col)<<endl;
 				}
 				results.push_back(row);
 			}
@@ -113,6 +130,8 @@ vector<vector<string>> Database::query(string Query)
 	   
 		sqlite3_finalize(statement);
 	}
+	else
+		throw(sqlite3_errmsg(database));
 	string error = sqlite3_errmsg(database);
 	Query += ":";
 	Query += error;
