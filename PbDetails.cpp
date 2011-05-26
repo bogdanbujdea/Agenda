@@ -393,8 +393,8 @@ int PbDetails::SaveContact()
 
 int PbDetails::ValidateInputData()
 {
-	int Pb;
-	Pb = ini.GetIntValue("Settings", "PbNo");
+	int Pb = theApp.PbNumber;
+	/*Pb = ini.GetIntValue("Settings", "PbNo");*/
 	char tmp[256], section[100];
 	_itoa_s(Pb, section, 10);
 	for(int i = 0; i < (int) chPb->size(); i++)
@@ -402,34 +402,49 @@ int PbDetails::ValidateInputData()
 		if(_stricmp(tmp, chPb[i].c_str()) == 0)
 			return PB_ALREADY_EXISTS;	
 	}
-	ini.CreateSection(section);
-	string details, pbPath;
+	//ini.CreateSection(section);
+	string details, pbPath, Update;
+	Update = "Update ";
 	ePbName.GetWindowTextA(tmp, 256);
 	int err = 0;
 	pbPath = details = tmp;
-	ini.WriteValue(section, "Phone Book Name", details);
-	eFirstName.GetWindowTextA(tmp, 256);
-	details = tmp;
-	ini.WriteValue(section, "Owner First Name", details);
-	eLastName.GetWindowTextA(tmp, 256);
-	details += tmp;
-	p->setOwner(details);
-	details = tmp;
-	ini.WriteValue(section, "Owner Last Name", details);
-	ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Phone Number", details);
-	eOccupation.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Occupation", details);
-	eAge.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Age", details);
-	eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Home Address", details);
-	eEmail.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Email Address", details);
-	eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
-	ini.WriteValue(section, "Owner Birth Date", details);
-	details = picName.GetBuffer();
-	ini.WriteValue(section, "Owner Photo", details);
+	//ini.WriteValue(section, "Phone Book Name", details);
+	try
+	{
+		theApp.db->UpdateValueById(Pb, "Phonebooks",  "PbName", tmp);
+		eFirstName.GetWindowTextA(tmp, 256);
+		details = tmp;
+		//ini.WriteValue(section, "Owner First Name", details);
+		theApp.db->UpdateValueById(Pb, "Phonebooks", "OwnerFName", tmp);
+		eLastName.GetWindowTextA(tmp, 256);
+		details += " ";
+		details += tmp;
+		p->setOwner(details);   /*db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), 
+			OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20),
+			OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500),
+			OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");*/
+		details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerLName", tmp);
+		ePhoneNumber.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerPhoneNo", tmp);
+		eOccupation.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerOccupation", tmp);
+		eAge.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks","OwnerAge", tmp);
+		eHomeAddress.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks","OwnerAddress", tmp);
+		eEmail.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerEmail", tmp);
+		eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerBirthDate", tmp);
+		details = picName.GetBuffer();
+		theApp.db->UpdateValueById(Pb,"Phonebooks", "OwnerPhotoPath", tmp);
+	}
+	catch(string error)
+	{
+		MessageBox(error.c_str(), "ERROR", 0);
+		cout<<"\nerror="<<error<<endl;
+	}
 	string photoPath = photoDir;
 	if(picLoaded)
 	{		
@@ -441,14 +456,17 @@ int PbDetails::ValidateInputData()
 		picLoaded = 0;
 	}
 	Pb++;
-	_itoa_s(Pb, tmp, 10);
-	ini.WriteValue("Settings", "PbNo", tmp);
+	char pbNo[10];
+	_itoa_s(Pb, pbNo, 10);
+	PbNumber++;
 	photoPath = photoDir;
 	photoPath += pbPath;
 	photoPath += ".txt";
 	ofstream f(photoPath.c_str());
 	if(!f)
 		return FILE_ERROR;
+	else
+		f.close();
 	PbSection = "";
 	photoDir = "";
 	photoPath = "";

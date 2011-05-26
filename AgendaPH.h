@@ -21,10 +21,10 @@ class CAgenda : public CWinApp
 {
 private:
 	string filePath, folderPath;
-
+	
 public:
 	CAgenda();
-
+	int PbNumber;
 // Overrides
 public:
 	virtual BOOL InitInstance();

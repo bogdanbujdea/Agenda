@@ -28,26 +28,31 @@ void PbManager::InitCbList()
 {
 	int Pb = 0;
 	cbList.ResetContent();
-	Pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
-	cout<<"Pb="<<Pb;
+	vector<vector<string>> retVal;
+	retVal = theApp.db->query("SELECT COUNT(*) FROM Phonebooks;");
+	Pb = atoi(retVal.at(0).at(0).c_str());
+	//Pb = detailsDlg->ini.GetIntValue("Settings", "PbNo");
+	cout<<"\nNumber of phonebooks="<<Pb<<endl;
+	theApp.PbNumber = Pb;
 	if(Pb)
 	{
-		string tmp;
+		retVal = theApp.db->query("SELECT name FROM Phonebooks;");
+
+		/*string tmp;
 		char ch[256];
 		int pbLoaded = 0;
-		detailsDlg->chPb->clear();
-		for(int i = 0; i < 1000; i++)
+		detailsDlg->chPb->clear();*/
+		vector<vector<string>>::iterator PbList;
+		for(int i = 0; i < Pb; i++)
 		{
-			_itoa_s(i, ch, 10);
-			tmp = detailsDlg->ini.GetStringValue(ch, "Phone Book Name", "error");
-			if(tmp != "error")
-			{
-				cbList.AddString(tmp.c_str());
-				detailsDlg->chPb[i] = tmp;
-				pbLoaded++;
-			}
-			if(pbLoaded == Pb)
-				break;
+			
+			//_itoa_s(i, ch, 10);
+			//tmp = detailsDlg->ini.GetStringValue(ch, "Phone Book Name", "error");
+			cbList.AddString(PbList[i].at(0).c_str());
+			detailsDlg->chPb[i] = PbList[i].at(0).c_str();
+			//pbLoaded++;
+			/*if(pbLoaded == Pb)
+				break;*/
 		}
 	}
 }

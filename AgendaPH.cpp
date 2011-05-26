@@ -28,14 +28,14 @@ bool CAgenda::CreateDatabase()
 		error = false;
 	else
 		error = true;
-	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");
+	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, PbName VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , OwnerBirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500));");
 	
 	return !error;
 }
 
 bool CAgenda::LoadSettings()
 {
-	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, name VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , BirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500), OwnerPhotoName VARCHAR(50));");
+	db->query("CREATE TABLE IF NOT EXISTS Phonebooks(id INTEGER, PbName VARCHAR(50), OwnerFName VARCHAR(50), OwnerLName VARCHAR(50),  OwnerAddress VARCHAR(100), OwnerPhoneNo VARCHAR(20), OwnerEmail VARCHAR(50), OwnerAge INTEGER, OwnerOccupation VARCHAR(50) , OwnerBirthDate DATE, Directory VARCHAR(500), OwnerPhotoPath VARCHAR(500));");
 	return true;
 }
 
@@ -72,7 +72,7 @@ bool CAgenda::InitiateProgram()
 	LoadSettings();
 	return true;
 }
-CAgenda::CAgenda()
+CAgenda::CAgenda() : PbNumber(0)
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
