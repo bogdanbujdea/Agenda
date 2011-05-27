@@ -188,7 +188,17 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 					PbApp.sp.SpeakText(err);
 				}
 				InitCbList();
-				MessageBox("Phone Book Deleted",0,0);
+				string dbPath = PbApp.getFolderPath();
+				dbPath += "\\";
+				dbPath += s;
+				dbPath += ".txt";
+				if(!DeleteFile(dbPath.c_str()))
+				{
+					MessageBox("Can't delete database file", PbApp.sp.IntToChar(GetLastError()), 0);
+					PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
+				}
+				else
+					MessageBox("Phone Book Deleted",0,0);
 				PbApp.db->close();
 			}
 		}

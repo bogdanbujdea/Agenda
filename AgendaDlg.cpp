@@ -275,10 +275,7 @@ void CAgendaDlg::OpenPb()
 {
 	//int item;
 	string file;
-	file = manager->OpenedPb;
-	file += ".txt";
 	Phonebook *p = &manager->detailsDlg->p->getInstance();
-	p->setFile(file);
 	p->loadPhonebook();
 
 }

@@ -487,8 +487,16 @@ int PbDetails::ValidateInputData()
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerPhotoPath"] = tmp;
 	details = PbApp.getFolderPath();
+	details += "\\";
+	ePbName.GetWindowTextA(tmp, 256);
+	details += tmp;
 	sprintf(tmp, "'%s'", details.c_str());
-	phb["Directory"] = PbApp.getFolderPath();
+	phb["Directory"] = tmp;
+	details += "\\";
+	ePbName.GetWindowTextA(tmp, 256);
+	details += tmp;
+	details += ".txt";
+	cout<<"\npb file name ="<<details<<endl;
 	//string photoPath = photoDir;
 	//if(picLoaded)
 	//{		
@@ -506,11 +514,12 @@ int PbDetails::ValidateInputData()
 	//photoPath = photoDir;
 	//photoPath += pbPath;
 	//photoPath += ".txt";
-	//ofstream f(photoPath.c_str());
-	//if(!f)
-	//	return FILE_ERROR;
-	//else
-	//	f.close();
+	ofstream f(details.c_str());
+	if(!f)
+		return FILE_ERROR;
+	else
+		f.close();
+	p->setFile(details);
 	PbSection = "";
 	//photoDir = "";
 	photoPath = "";
@@ -535,7 +544,8 @@ void PbDetails::OnBnClickedButton2() //save
 		MessageBox("Enter a different phone book name, this one already exists", "ERROR", MB_ICONERROR);
 		break;
 	case FILE_ERROR:
-		MessageBox("Error creating phone book file", "ERROR", MB_ICONERROR);
+		//MessageBox("Error creating phone book file", "ERROR", MB_ICONERROR);
+		PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
 		break;
 	case SUCCESS:
 		MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);

@@ -19,6 +19,7 @@ int Phonebook::loadPhonebook()
 	}
 	//ZeroMemory(&ContactList, sizeof(ContactList));
 	ContactList.erase(ContactList.begin(), ContactList.end());
+	cout<<"\npb load file="<<mFile<<endl;
 	int i, k = 0;
 	string str, tmp;
 	string infs[100];

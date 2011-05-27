@@ -79,7 +79,7 @@ bool CAgenda::InitiateProgram()
 	LoadSettings();
 	return true;
 }
-CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 5, 90)
+CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 2, 100)
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
