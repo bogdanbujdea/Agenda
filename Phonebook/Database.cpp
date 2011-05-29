@@ -39,13 +39,9 @@ string Database::GetValueById(int ID, string TableName, string Column)
 
 string Database::GetValue(string TableName, string Column, string Options)
 {
-	string Query;
-	Query = "SELECT ";
-	Query += Column;
-	Query += " FROM ";
-	Query += TableName;
-	Query += Options;
-	Query += ";";
+	char  Query[500];
+	sprintf(Query, "SELECT %s FROM %s %s;", Column.c_str(), TableName.c_str(), Options.c_str());
+	cout<<"\nselect photo query="<<Query<<endl;
 	vector<vector<string>> retVal;
 	try
 	{
@@ -55,7 +51,7 @@ string Database::GetValue(string TableName, string Column, string Options)
 	{
 		throw(error);
 	}
-	Query = retVal[0][0];
+	strcpy(Query ,retVal[0][0].c_str());
 	return Query;
 }
 

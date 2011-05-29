@@ -170,6 +170,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 	else
 	{
 		char s[100];
+		string photoPath;
 		cbList.GetLBText(sel, s);
 		if(PbApp.db->openDB())
 		{
@@ -178,24 +179,27 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 				char Query[256];
 				try
 				{
+					sprintf(Query, " WHERE PbName  ='%s';", s);
+					photoPath = PbApp.db->GetValue("Phonebooks", "OwnerPhotoPath", Query);
 					sprintf(Query, "DELETE FROM Phonebooks WHERE PbName='%s';", s);
 					PbApp.db->query(Query);
 				}
 				catch(string error)
 				{
-					char err[1024];
-					strcpy(err, error.c_str());
-					PbApp.sp.SpeakText(err);
+					MessageBox(error.c_str(), 0, 0);
 				}
 				InitCbList();
 				string dbPath = PbApp.getFolderPath();
 				dbPath += "\\";
 				dbPath += s;
+				dbPath += "\\";
+				dbPath += s;
 				dbPath += ".txt";
-				if(!DeleteFile(dbPath.c_str()))
+				if(!DeleteFile(dbPath.c_str()) || !DeleteFile(photoPath.c_str()))
 				{
-					MessageBox("Can't delete database file", PbApp.sp.IntToChar(GetLastError()), 0);
-					PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
+					cout<<"\nerror="<<PbApp.sp.GetStringError(GetLastError())<<endl;
+					MessageBox("Can't delete all files", PbApp.sp.IntToChar(GetLastError()), 0);
+					//PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
 				}
 				else
 					MessageBox("Phone Book Deleted",0,0);
@@ -216,20 +220,10 @@ void PbManager::OnBnClickedButton5()
 		}
 	else
 	{
-		char pb[256], section[20];
+		char pb[256];
 		cbList.GetLBText(sel, pb);
 		detailsDlg->OpenedPb = pb;
 		cout<<"\nOpened Pb="<<detailsDlg->OpenedPb<<endl;
-	/*	for(int i = 0; i < 100; i++)
-		{
-			_itoa_s(i, section, 10);
-			string str = detailsDlg->ini.GetStringValue(section, "Phone Book Name", "");
-			if(_stricmp(pb, str.c_str()) == 0)
-			{
-				_itoa_s(i, pb, 10);
-				detailsDlg->PbSection = pb;
-			break;
-			}*/
 		detailsDlg->mode = VIEW_PHONEBOOK;
 		detailsDlg->DoModal();
 	}

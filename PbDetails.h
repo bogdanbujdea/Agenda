@@ -59,6 +59,7 @@ public:
 	CEdit eFirstName;
 	CEdit eLastName;
 	CEdit ePhoneNumber;
+	string RemotePhotoPath;
 	CEdit eOccupation;
 	CEdit eAge;
 	CEdit eHomeAddress;

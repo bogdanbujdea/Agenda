@@ -75,7 +75,14 @@ void PbDetails::OnBnClickedButton3()
 		name = FileDlg.GetFolderPath();
 		name.Append("\\");
 		name.Append(fileName);
-		photoPath = name.GetBuffer();
+		photoPath = PbApp.getFolderPath();
+		photoPath += "\\";
+		ePbName.GetWindowTextA(fileName, 1024);
+		photoPath += fileName;
+		photoPath += "\\";
+		photoPath += photoName;
+		cout<<"\nphoto path="<<endl;
+		RemotePhotoPath = name.GetBuffer();
 		if(mPic.LoadFromFile(name) == 0)
 		{
 			PbApp.sp.SpeakText("Can't load this photo");
@@ -474,8 +481,7 @@ int PbDetails::ValidateInputData()
 	eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerBirthDate"] = tmp;
-	details = photoPath;
-	sprintf(tmp, "'%s'", details.c_str());
+	sprintf(tmp, "'%s'", photoPath.c_str());
 	phb["OwnerPhotoPath"] = tmp;
 	details = PbApp.getFolderPath();
 	details += "\\";
@@ -507,10 +513,7 @@ int PbDetails::ValidateInputData()
 	//Copy photo
 	if(picLoaded)
 	{	
-		details = PbApp.getFolderPath();
-		details += "\\";
-		details += photoName;
-		if(CopyFile(photoPath.c_str(), details.c_str(), 0) == 0)
+		if(CopyFile(RemotePhotoPath.c_str(), photoPath.c_str(), 0) == 0)
 		{
 			MessageBox("Can't copy photo", PbApp.sp.GetStringError(GetLastError()), 0);
 				
@@ -519,7 +522,6 @@ int PbDetails::ValidateInputData()
 		
 	}
 	
-	cout<<"\npb photo name ="<<details<<endl;
 	try
 	{
 		if(PbApp.db->openDB())
