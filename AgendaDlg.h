@@ -71,7 +71,7 @@ public:
 	CButton bDetails;
 	afx_msg void OnBnClickedButton8();
 	afx_msg void AddNewContact();
-	afx_msg void OnBnClickedButton4();
+	afx_msg void EditContact();
 	afx_msg void OnFileNewphonebook();
 	afx_msg void OnFileNewcontact32798();
 	afx_msg void OnFileExit32795();
