@@ -42,7 +42,7 @@ public:
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
 	CListCtrl listCtrl;
-	afx_msg void OnBnClickedButton1();
+	afx_msg void SearchContact();
 	void OpenPb();
 	InfoDlg *info;
 	PbManager *manager;

@@ -126,7 +126,7 @@ void CAgendaDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TREE1, TreeCtrl);
 	DDX_Control(pDX, IDC_LIST1, listCtrl);
-	DDX_Control(pDX, IDC_BUTTON1, bSearch);
+	DDX_Control(pDX, IDC_BTN_SEARCH, bSearch);
 	DDX_Control(pDX, IDC_BTN_EDIT_CONTACT, bEdit);
 	DDX_Control(pDX, IDC_BTN_DELETE_CONTACT, bDelete);
 	DDX_Control(pDX, IDC_NEWCONTACT, bNew);
@@ -144,7 +144,7 @@ BEGIN_MESSAGE_MAP(CAgendaDlg, CDialogEx)
 //	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB2, &CAgendaDlg::OnTcnSelchangeTab2)
 ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CAgendaDlg::OnTvnSelchangedTree1)
 ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &CAgendaDlg::OnLvnItemchangedList1)
-ON_BN_CLICKED(IDC_BUTTON1, &CAgendaDlg::OnBnClickedButton1)
+ON_BN_CLICKED(IDC_BTN_SEARCH, &CAgendaDlg::SearchContact)
 ON_MESSAGE(SHOW_WINDOW, &CAgendaDlg::OnShowWnd)
 ON_MESSAGE(SEARCH, &CAgendaDlg::Search)
 ON_BN_CLICKED(IDC_BTN_DELETE_CONTACT, &CAgendaDlg::DeleteContact)
@@ -368,7 +368,7 @@ void CAgendaDlg::OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
-void CAgendaDlg::OnBnClickedButton1()
+void CAgendaDlg::SearchContact()
 {
 	// TODO: Add your control notification handler code here
 	info->Show = !info->Show;

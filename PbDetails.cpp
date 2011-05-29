@@ -29,7 +29,7 @@ void PbDetails::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_DELETE_CONTACT, bBrowse);
 	DDX_Control(pDX, IDC_PICTURE, mPic);
 	DDX_Control(pDX, IDC_NEWCONTACT, bSave);
-	DDX_Control(pDX, IDC_BUTTON1, bClear);
+	DDX_Control(pDX, IDC_BTN_SEARCH, bClear);
 	DDX_Control(pDX, IDC_BTN_EDIT_CONTACT, bCancel);
 	DDX_Control(pDX, IDC_EDIT1, eFirstName);
 	DDX_Control(pDX, IDC_EDIT2, eLastName);
@@ -46,7 +46,7 @@ void PbDetails::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(PbDetails, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_DELETE_CONTACT, &PbDetails::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON1, &PbDetails::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BTN_SEARCH, &PbDetails::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbDetails::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_NEWCONTACT, &PbDetails::AddNewContact)
 	ON_EN_CHANGE(IDC_EDIT1, &PbDetails::OnEnChangeEdit1)
