@@ -109,7 +109,7 @@ void PbManager::OnCbnSelchangeCombo1()
 	// TODO: Add your control notification handler code here
 }
 
-
+//open Pb
 void PbManager::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
@@ -129,7 +129,7 @@ void PbManager::OnBnClickedButton2()
 	}
 }
 
-
+//create Pb
 void PbManager::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
@@ -159,7 +159,7 @@ BOOL PbManager::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-
+//delete Pb
 void PbManager::OnBnClickedButton4() //Delete Phone Book
 {
 	// TODO: Add your control notification handler code here
@@ -217,8 +217,10 @@ void PbManager::OnBnClickedButton5()
 	else
 	{
 		char pb[256], section[20];
-		detailsDlg->OpenedPb = cbList.GetLBText(sel, pb);
-		for(int i = 0; i < 100; i++)
+		cbList.GetLBText(sel, pb);
+		detailsDlg->OpenedPb = pb;
+		cout<<"\nOpened Pb="<<detailsDlg->OpenedPb<<endl;
+	/*	for(int i = 0; i < 100; i++)
 		{
 			_itoa_s(i, section, 10);
 			string str = detailsDlg->ini.GetStringValue(section, "Phone Book Name", "");
@@ -227,11 +229,12 @@ void PbManager::OnBnClickedButton5()
 				_itoa_s(i, pb, 10);
 				detailsDlg->PbSection = pb;
 			break;
-			}
-		}
+			}*/
 		detailsDlg->mode = VIEW_PHONEBOOK;
 		detailsDlg->DoModal();
 	}
+		
+
 }
 
 

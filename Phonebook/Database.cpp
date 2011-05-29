@@ -141,10 +141,9 @@ vector<vector<string>> Database::query(string Query)
 				vector<string> row;
 				for(int col = 0; col < cols; col++)
 				{
-					//cout<<"statement:"<<(char*)sqlite3_column_text(statement, col)<<endl;
-					cout<<"\ncol = "<<col<<"\tcols="<<cols<<endl;
-					string x = (char*)sqlite3_column_text(statement, col);
-					row.push_back(x);
+					char *x = (char*)sqlite3_column_text(statement, col);
+					if(x)
+						row.push_back(x);
 				}
 				results.push_back(row);
 			}

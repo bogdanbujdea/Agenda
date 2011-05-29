@@ -75,7 +75,7 @@ void PbDetails::OnBnClickedButton3()
 		name = FileDlg.GetFolderPath();
 		name.Append("\\");
 		name.Append(fileName);
-		
+		photoPath = name.GetBuffer();
 		if(mPic.LoadFromFile(name) == 0)
 		{
 			PbApp.sp.SpeakText("Can't load this photo");
@@ -83,28 +83,7 @@ void PbDetails::OnBnClickedButton3()
 		}
 		else
 			picLoaded = 1;
-		if(picLoaded)
-		{		
-			photoPath  = PbApp.getFolderPath();
-			photoPath += "\\";
-			ePbName.GetWindowTextA(fileName, sizeof(fileName) - 1);
-			photoPath += fileName;
-			if(!CreateDirectory(photoPath.c_str(), NULL))
-			{
-				PbApp.sp.GetStringError(GetLastError());
-					//PbApp.sp.SpeakText("Can't create directory for new phone book!");
-			}
-			else {
-			photoPath += "\\";
-			photoPath += photoName;
-			if(CopyFile(name.GetBuffer(), photoPath.c_str(), 0) == 0)
-			{
-				PbApp.sp.SpeakText("Can't copy photo");
-				PbApp.sp.SpeakText(PbApp.sp.IntToChar(GetLastError()));
-				//MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
-			}
-			}
-		}
+
 	}
 
 } //browse
@@ -242,17 +221,44 @@ void PbDetails::ViewPhonebook()
 	eEmail.SetReadOnly(1);
 	eBirthDate.SetReadOnly(1);
 	string tmp[256];
-	eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
-	eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
-	ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
-	ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
-	eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
-	eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
-	eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
-	eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
-	eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
-	CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
+	vector<vector<string>> Result;
+	if(PbApp.db->openDB())
+		try
+		{
+			string Query;
+			Query = "SELECT * FROM Phonebooks WHERE PbName='";
+			Query += OpenedPb;
+			Query += "';\"";
+			
+			Result = PbApp.db->query(Query);
+			cout<<"\nsize="<<Result.at(0).size()<<endl;
+			for(int i = 0; i < Result.at(0).size(); i++)
+				cout<<"\ni="<<i<<"---"<<Result.at(0).at(i);
+			PbApp.db->close();
+	}
+	catch(string error)
+	{
+		cout<<"\nquery error="<<error<<endl;
+		MessageBox(error.c_str(), "Query Error", 0);
+	}
+	else
+		MessageBox("Can't open phone book database", 0, 0);
+
+	//Load info to dialog
+	eFirstName.SetWindowTextA(Result.at(0).at(1).c_str());
+	eLastName.SetWindowTextA(Result.at(0).at(2).c_str());
+	ePbName.SetWindowTextA(Result.at(0).at(0).c_str());
+	ePhoneNumber.SetWindowTextA(Result.at(0).at(4).c_str());
+	eOccupation.SetWindowTextA(Result.at(0).at(7).c_str());
+	eAge.SetWindowTextA(Result.at(0).at(6).c_str());
+	eHomeAddress.SetWindowTextA(Result.at(0).at(3).c_str());
+	eEmail.SetWindowTextA(Result.at(0).at(5).c_str());
+	eBirthDate.SetWindowTextA(Result.at(0).at(8).c_str());
+	
 	::ShowWindow(PbName, 1);
+	//copy photo path to a CString variable
+	CString str = Result.at(0).at(10).c_str();
+	//load the photo in the dialog
 	mPic.LoadFromFile(str);
 	::SetWindowTextA(PbName, "Phone Book Name:");
 }
@@ -468,6 +474,52 @@ int PbDetails::ValidateInputData()
 	eBirthDate.GetWindowTextA(tmp, 256); details = tmp;
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["OwnerBirthDate"] = tmp;
+	details = photoPath;
+	sprintf(tmp, "'%s'", details.c_str());
+	phb["OwnerPhotoPath"] = tmp;
+	details = PbApp.getFolderPath();
+	details += "\\";
+	ePbName.GetWindowTextA(tmp, 256);
+	details += tmp;
+	sprintf(tmp, "'%s'", details.c_str());
+	cout<<"\ndirectory="<<details<<endl;
+	phb["Directory"] = tmp;
+
+	//Create directory for phone book files
+	if(!CreateDirectory(details.c_str(), NULL))
+	{
+			MessageBox(PbApp.sp.GetStringError(GetLastError()), "Create Directory Error", 0);
+			return FILE_ERROR;
+	}
+	details += "\\";
+	ePbName.GetWindowTextA(tmp, 256);
+	details += tmp;
+	details += ".txt";
+
+	//Create phone book .txt file
+	ofstream f(details.c_str());
+	if(!f)
+		return FILE_ERROR;
+	else
+		f.close();
+	p->setFile(details);
+
+	//Copy photo
+	if(picLoaded)
+	{	
+		details = PbApp.getFolderPath();
+		details += "\\";
+		details += photoName;
+		if(CopyFile(photoPath.c_str(), details.c_str(), 0) == 0)
+		{
+			MessageBox("Can't copy photo", PbApp.sp.GetStringError(GetLastError()), 0);
+				
+			//MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+		}
+		
+	}
+	
+	cout<<"\npb photo name ="<<details<<endl;
 	try
 	{
 		if(PbApp.db->openDB())
@@ -483,43 +535,7 @@ int PbDetails::ValidateInputData()
 		MessageBox(error.c_str(), 0, 0);
 		cout<<"\nerror="<<error<<endl;
 	}
-	details = photoPath;
-	sprintf(tmp, "'%s'", details.c_str());
-	phb["OwnerPhotoPath"] = tmp;
-	details = PbApp.getFolderPath();
-	details += "\\";
-	ePbName.GetWindowTextA(tmp, 256);
-	details += tmp;
-	sprintf(tmp, "'%s'", details.c_str());
-	phb["Directory"] = tmp;
-	details += "\\";
-	ePbName.GetWindowTextA(tmp, 256);
-	details += tmp;
-	details += ".txt";
-	cout<<"\npb file name ="<<details<<endl;
-	//string photoPath = photoDir;
-	//if(picLoaded)
-	//{		
-	//	photoPath += "\\";
-	//	photoPath += photoName;
-	//	if(CopyFile(details.c_str(), photoPath.c_str(), 0) == 0 && photoPath.size() != 0)
-	//		MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
-	//	cout<<"photo path="<<photoPath<<endl;
-	//	picLoaded = 0;
-	//}
-	//Pb++;
-	//char pbNo[10];
-	//_itoa_s(Pb, pbNo, 10);
-	//PbApp.PbNumber++;
-	//photoPath = photoDir;
-	//photoPath += pbPath;
-	//photoPath += ".txt";
-	ofstream f(details.c_str());
-	if(!f)
-		return FILE_ERROR;
-	else
-		f.close();
-	p->setFile(details);
+	
 	PbSection = "";
 	//photoDir = "";
 	photoPath = "";
@@ -545,7 +561,7 @@ void PbDetails::OnBnClickedButton2() //save
 		break;
 	case FILE_ERROR:
 		//MessageBox("Error creating phone book file", "ERROR", MB_ICONERROR);
-		PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
+		MessageBox(PbApp.sp.GetStringError(GetLastError()), "File Error", 0);
 		break;
 	case SUCCESS:
 		MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);
