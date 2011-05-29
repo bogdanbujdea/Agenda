@@ -58,7 +58,7 @@ public:
 	afx_msg LRESULT Search(UINT wParam, LONG lParam);
 	afx_msg void DeleteContact();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnBnClickedButton5();
+	afx_msg void ClosePhoneBook();
 	CButton bClosePb;
 	CButton bSavePb;
 	int GetSelectedContact();

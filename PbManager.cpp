@@ -88,7 +88,7 @@ void PbManager::DoDataExchange(CDataExchange* pDX)
 	//DDX_Control(pDX, IDC_BTN_DELETE_CONTACT, bClosePb);
 	DDX_Control(pDX, IDC_BTN_EDIT_CONTACT, bDeletePb);
 	DDX_Control(pDX, IDC_COMBO1, cbList);
-	DDX_Control(pDX, IDC_BUTTON5, bDetails);
+	DDX_Control(pDX, IDC_BTN_CLOSEPB, bDetails);
 }
 
 
@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(PbManager, CDialogEx)
 	ON_BN_CLICKED(IDC_NEWCONTACT, &PbManager::AddNewContact)
 	ON_BN_CLICKED(IDC_BTN_SEARCH, &PbManager::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbManager::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BUTTON5, &PbManager::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BTN_CLOSEPB, &PbManager::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 

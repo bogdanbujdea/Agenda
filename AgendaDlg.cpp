@@ -130,7 +130,7 @@ void CAgendaDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_EDIT_CONTACT, bEdit);
 	DDX_Control(pDX, IDC_BTN_DELETE_CONTACT, bDelete);
 	DDX_Control(pDX, IDC_NEWCONTACT, bNew);
-	DDX_Control(pDX, IDC_BUTTON5, bClosePb);
+	DDX_Control(pDX, IDC_BTN_CLOSEPB, bClosePb);
 	DDX_Control(pDX, IDC_BUTTON6, bSavePb);
 	DDX_Control(pDX, IDC_BUTTON7, bDeletePb);
 	//DDX_Control(pDX, IDC_BUTTON8, bDetails);
@@ -148,7 +148,7 @@ ON_BN_CLICKED(IDC_BTN_SEARCH, &CAgendaDlg::SearchContact)
 ON_MESSAGE(SHOW_WINDOW, &CAgendaDlg::OnShowWnd)
 ON_MESSAGE(SEARCH, &CAgendaDlg::Search)
 ON_BN_CLICKED(IDC_BTN_DELETE_CONTACT, &CAgendaDlg::DeleteContact)
-ON_BN_CLICKED(IDC_BUTTON5, &CAgendaDlg::OnBnClickedButton5)
+ON_BN_CLICKED(IDC_BTN_CLOSEPB, &CAgendaDlg::ClosePhoneBook)
 ON_BN_CLICKED(IDC_BUTTON8, &CAgendaDlg::OnBnClickedButton8)
 ON_BN_CLICKED(IDC_NEWCONTACT, &CAgendaDlg::AddNewContact)
 ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &CAgendaDlg::EditContact)
@@ -475,7 +475,7 @@ BOOL CAgendaDlg::PreTranslateMessage(MSG* pMsg)
 }
 
 
-void CAgendaDlg::OnBnClickedButton5()
+void CAgendaDlg::ClosePhoneBook()
 {
 	// TODO: Add your control notification handler code here
 	manager->detailsDlg->p->savePhonebook(1);
