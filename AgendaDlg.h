@@ -56,7 +56,7 @@ public:
 	void LoadList(char *type, deque<Contact> list);
 	afx_msg LRESULT OnShowWnd(UINT wParam, LONG lParam);
 	afx_msg LRESULT Search(UINT wParam, LONG lParam);
-	afx_msg void OnBnClickedButton3();
+	afx_msg void DeleteContact();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedButton5();
 	CButton bClosePb;

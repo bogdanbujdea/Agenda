@@ -85,7 +85,7 @@ void PbManager::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON1, bAddPb);
 	DDX_Control(pDX, IDC_NEWCONTACT, bOpenPb);
-	//DDX_Control(pDX, IDC_BUTTON3, bClosePb);
+	//DDX_Control(pDX, IDC_BTN_DELETE_CONTACT, bClosePb);
 	DDX_Control(pDX, IDC_BUTTON4, bDeletePb);
 	DDX_Control(pDX, IDC_COMBO1, cbList);
 	DDX_Control(pDX, IDC_BUTTON5, bDetails);
