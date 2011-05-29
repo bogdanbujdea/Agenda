@@ -122,6 +122,15 @@ void PbManager::OnBnClickedButton2()
 	{	
 	//	OpenedPb = NULL;
 		cbList.GetLBText(sel, OpenedPb);
+		string path;
+		path = PbApp.getFolderPath();
+		path += "\\";
+		path += OpenedPb;
+		path += "\\";
+		path += OpenedPb;
+		path += ".txt";
+		cout<<"\npb file path="<<path<<endl;
+		detailsDlg->p->setFile(path);
 		this->ShowWindow(0);
 		CWnd *cwnd = this->GetOwner();
 		cwnd->SendMessage(SHOW_WINDOW, 0, 0);
@@ -181,7 +190,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 				{
 					sprintf(Query, " WHERE PbName  ='%s';", s);
 					photoPath = PbApp.db->GetValue("Phonebooks", "OwnerPhotoPath", Query);
-					sprintf(Query, "DELETE FROM Phonebooks WHERE PbName='%s';", s);
+					sprintf(Query, "DELETE FROM Phonebooks WHERE PbName='%s';",	 s);
 					PbApp.db->query(Query);
 				}
 				catch(string error)
@@ -202,11 +211,17 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 					//PbApp.sp.SpeakText(PbApp.sp.GetStringError(GetLastError()));
 				}
 				else
+				{
+					dbPath = PbApp.getFolderPath();
+					dbPath += "\\";
+					dbPath += s;
+					RemoveDirectory(dbPath.c_str());
 					MessageBox("Phone Book Deleted",0,0);
+				}
 				PbApp.db->close();
 			}
 		}
-		else PbApp.sp.SpeakText("Can't open database!");
+		else MessageBox("Can't open database!", 0, 0);
 	}
 }
 

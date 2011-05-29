@@ -157,6 +157,7 @@ ON_COMMAND(ID_FILE_NEWCONTACT32798, &CAgendaDlg::OnFileNewcontact32798)
 ON_COMMAND(ID_FILE_EXIT32795, &CAgendaDlg::OnFileExit32795)
 ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::OnEditDeletephonebook)
 ON_WM_CLOSE()
+ON_COMMAND(ID_EDIT_DELETECONTACT, &CAgendaDlg::OnEditDeletecontact)
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -563,4 +564,10 @@ void CAgendaDlg::OnClose()
 	// TODO: Add your message handler code here and/or call default
 	manager->detailsDlg->p->savePhonebook(1);
 	CDialogEx::OnClose();
+}
+
+
+void CAgendaDlg::OnEditDeletecontact()
+{
+	// TODO: Add your command handler code here
 }

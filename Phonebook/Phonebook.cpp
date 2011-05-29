@@ -12,6 +12,7 @@ Phonebook::Phonebook()
 int Phonebook::loadPhonebook()
 {
 	ifstream phb(mFile,ios::app);
+	cout<<"\nphb load file="<<mFile<<endl;
 	if(!phb)
 	{
 		cout<<"\nCould not open phonebook file";
