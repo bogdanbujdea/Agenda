@@ -27,7 +27,7 @@ public:
 	CButton bDeletePb;
 	CComboBox cbList;
 	afx_msg void OnCbnSelchangeCombo1();
-	afx_msg void OnBnClickedButton2();
+	afx_msg void AddNewContact();
 	afx_msg void OnBnClickedButton1();
 	void InitCbList();
 	int Hide;

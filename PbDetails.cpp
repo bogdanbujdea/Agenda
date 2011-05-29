@@ -28,7 +28,7 @@ void PbDetails::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON3, bBrowse);
 	DDX_Control(pDX, IDC_PICTURE, mPic);
-	DDX_Control(pDX, IDC_BUTTON2, bSave);
+	DDX_Control(pDX, IDC_NEWCONTACT, bSave);
 	DDX_Control(pDX, IDC_BUTTON1, bClear);
 	DDX_Control(pDX, IDC_BUTTON4, bCancel);
 	DDX_Control(pDX, IDC_EDIT1, eFirstName);
@@ -48,7 +48,7 @@ BEGIN_MESSAGE_MAP(PbDetails, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &PbDetails::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON1, &PbDetails::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON4, &PbDetails::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BUTTON2, &PbDetails::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_NEWCONTACT, &PbDetails::AddNewContact)
 	ON_EN_CHANGE(IDC_EDIT1, &PbDetails::OnEnChangeEdit1)
 	ON_EN_CHANGE(IDC_EDIT2, &PbDetails::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT9, &PbDetails::OnEnChangeEdit9)
@@ -545,7 +545,7 @@ int PbDetails::ValidateInputData()
 	return SUCCESS;
 }
 //save
-void PbDetails::OnBnClickedButton2() //save
+void PbDetails::AddNewContact() //save
 {
 	// TODO: Add your control notification handler code here
 	if(mode == ADD_CONTACT)
@@ -580,7 +580,7 @@ BOOL PbDetails::PreTranslateMessage(MSG* pMsg)
 	{
 	   // Enter key was hit -> do whatever you want
 		if(bSave.EnableWindow(0) == 0)
-			OnBnClickedButton2();
+			AddNewContact();
 		else bSave.EnableWindow(0);
 	   return TRUE;
 	}

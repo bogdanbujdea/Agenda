@@ -59,7 +59,7 @@ ON_BN_CLICKED(IDC_RADIO12, &InfoDlg::OnBnClickedRadio12)
 ON_BN_CLICKED(IDC_RADIO13, &InfoDlg::OnBnClickedRadio13)
 ON_BN_CLICKED(IDC_RADIO14, &InfoDlg::OnBnClickedRadio14)
 ON_BN_CLICKED(IDC_RADIO15, &InfoDlg::OnBnClickedRadio15)
-ON_BN_CLICKED(IDC_BUTTON2, &InfoDlg::OnBnClickedButton2)
+ON_BN_CLICKED(IDC_NEWCONTACT, &InfoDlg::AddNewContact)
 END_MESSAGE_MAP()
 
 
@@ -236,7 +236,7 @@ void InfoDlg::OnBnClickedRadio15()
 }
 
 
-void InfoDlg::OnBnClickedButton2()
+void InfoDlg::AddNewContact()
 {
 	// TODO: Add your control notification handler code here
 

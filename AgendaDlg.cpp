@@ -129,7 +129,7 @@ void CAgendaDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON1, bSearch);
 	DDX_Control(pDX, IDC_BUTTON4, bEdit);
 	DDX_Control(pDX, IDC_BUTTON3, bDelete);
-	DDX_Control(pDX, IDC_BUTTON2, bNew);
+	DDX_Control(pDX, IDC_NEWCONTACT, bNew);
 	DDX_Control(pDX, IDC_BUTTON5, bClosePb);
 	DDX_Control(pDX, IDC_BUTTON6, bSavePb);
 	DDX_Control(pDX, IDC_BUTTON7, bDeletePb);
@@ -150,7 +150,7 @@ ON_MESSAGE(SEARCH, &CAgendaDlg::Search)
 ON_BN_CLICKED(IDC_BUTTON3, &CAgendaDlg::OnBnClickedButton3)
 ON_BN_CLICKED(IDC_BUTTON5, &CAgendaDlg::OnBnClickedButton5)
 ON_BN_CLICKED(IDC_BUTTON8, &CAgendaDlg::OnBnClickedButton8)
-ON_BN_CLICKED(IDC_BUTTON2, &CAgendaDlg::OnBnClickedButton2)
+ON_BN_CLICKED(IDC_NEWCONTACT, &CAgendaDlg::AddNewContact)
 ON_BN_CLICKED(IDC_BUTTON4, &CAgendaDlg::OnBnClickedButton4)
 ON_COMMAND(ID_FILE_NEWPHONEBOOK, &CAgendaDlg::OnFileNewphonebook)
 ON_COMMAND(ID_FILE_NEWCONTACT32798, &CAgendaDlg::OnFileNewcontact32798)
@@ -507,7 +507,7 @@ void CAgendaDlg::OnBnClickedButton8()
 }
 
 
-void CAgendaDlg::OnBnClickedButton2()
+void CAgendaDlg::AddNewContact()
 {
 	// TODO: Add your control notification handler code here
 	manager->detailsDlg->mode = ADD_CONTACT;
@@ -540,7 +540,7 @@ void CAgendaDlg::OnFileNewphonebook()
 
 void CAgendaDlg::OnFileNewcontact32798()
 {
-	this->OnBnClickedButton2();
+	this->AddNewContact();
 	// TODO: Add your command handler code here
 }
 

@@ -70,11 +70,12 @@ public:
 	virtual BOOL DestroyWindow();
 	CButton bDetails;
 	afx_msg void OnBnClickedButton8();
-	afx_msg void OnBnClickedButton2();
+	afx_msg void AddNewContact();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnFileNewphonebook();
 	afx_msg void OnFileNewcontact32798();
 	afx_msg void OnFileExit32795();
 	afx_msg void OnEditDeletephonebook();
 	afx_msg void OnClose();
+	afx_msg void OnEditDeletecontact();
 };
