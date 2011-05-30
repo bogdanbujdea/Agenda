@@ -60,6 +60,8 @@ END_MESSAGE_MAP()
 
 //browse
 //load picture
+
+//load photo
 void PbDetails::OnBnClickedButton3() 
 {
 	// TODO: Add your control notification handler code here
@@ -229,6 +231,7 @@ void PbDetails::ViewPhonebook()
 	eBirthDate.SetReadOnly(1);
 	string tmp[256];
 	vector<vector<string>> Result;
+
 	if(PbApp.db->openDB())
 		try
 		{
@@ -242,12 +245,12 @@ void PbDetails::ViewPhonebook()
 			for(int i = 0; i < Result.at(0).size(); i++)
 				cout<<"\ni="<<i<<"---"<<Result.at(0).at(i);
 			PbApp.db->close();
-	}
-	catch(string error)
-	{
-		cout<<"\nquery error="<<error<<endl;
-		MessageBox(error.c_str(), "Query Error", 0);
-	}
+		}
+		catch(string error)
+		{
+			cout<<"\nquery error="<<error<<endl;
+			MessageBox(error.c_str(), "Query Error", 0);
+		}
 	else
 		MessageBox("Can't open phone book database", 0, 0);
 

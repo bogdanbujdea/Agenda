@@ -60,5 +60,36 @@ public:
 	void setOwner(string owner);
 	int closePhonebook();
 	~Phonebook();
+	friend class Iterator;
+	Iterator *createIterator() ;
+};
+
+	
+class Iterator
+{
+private:
+	int index;
+	Phonebook *phoneBook;
+public:
+	Iterator(Phonebook *p) { phoneBook = p; index = 0; }
+	void first()
+	{
+		index = 0;
+	}
+	void next()
+	{
+		if(!isDone())
+			index++;
+	}
+	bool isDone()
+	{
+		return index == phoneBook->ContactList.size();
+	}
+
+	Contact *currentItem()
+	{
+		return &phoneBook->ContactList[index];
+	}
+	
 };
 #endif

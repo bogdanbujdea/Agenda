@@ -443,6 +443,9 @@ void CAgendaDlg::DeleteContact()
 	// TODO: Add your control notification handler code here
 	Phonebook *p = manager->detailsDlg->p;
 	int sel = listCtrl.GetSelectionMark();
+	Iterator *it = p->createIterator();
+///	cout<<"age="<<it->currentItem().getFirstName()<<endl;
+	
 	int i = GetSelectedContact();
 	if(i == -1)
 		MessageBox("invalid index", 0, 0);

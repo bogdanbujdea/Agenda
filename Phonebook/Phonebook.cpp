@@ -211,3 +211,8 @@ Phonebook::~Phonebook()
 {
 	//savePhonebook(1);
 }
+
+Iterator *Phonebook::createIterator() 
+{
+	return new Iterator(this);
+}
