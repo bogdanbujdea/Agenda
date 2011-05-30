@@ -42,7 +42,7 @@ public:
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
 	CListCtrl listCtrl;
-	afx_msg void OnBnClickedButton1();
+	afx_msg void SearchContact();
 	void OpenPb();
 	InfoDlg *info;
 	PbManager *manager;
@@ -56,9 +56,9 @@ public:
 	void LoadList(char *type, deque<Contact> list);
 	afx_msg LRESULT OnShowWnd(UINT wParam, LONG lParam);
 	afx_msg LRESULT Search(UINT wParam, LONG lParam);
-	afx_msg void OnBnClickedButton3();
+	afx_msg void DeleteContact();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnBnClickedButton5();
+	afx_msg void ClosePhoneBook();
 	CButton bClosePb;
 	CButton bSavePb;
 	int GetSelectedContact();
@@ -70,11 +70,12 @@ public:
 	virtual BOOL DestroyWindow();
 	CButton bDetails;
 	afx_msg void OnBnClickedButton8();
-	afx_msg void OnBnClickedButton2();
-	afx_msg void OnBnClickedButton4();
+	afx_msg void AddNewContact();
+	afx_msg void EditContact();
 	afx_msg void OnFileNewphonebook();
 	afx_msg void OnFileNewcontact32798();
 	afx_msg void OnFileExit32795();
 	afx_msg void DeletePhoneBook();
 	afx_msg void OnClose();
+	afx_msg void OnEditDeletecontact();
 };

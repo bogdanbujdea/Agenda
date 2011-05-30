@@ -34,7 +34,7 @@ void InfoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT6, eAddress);
 	DDX_Control(pDX, IDC_EDIT7, eEmail);
 	DDX_Control(pDX, IDC_SLIDER1, tSlider);
-	DDX_Control(pDX, IDC_BUTTON1, bClear);
+	DDX_Control(pDX, IDC_BTN_SEARCH, bClear);
 	DDX_Control(pDX, IDC_RADIO10, rLast);
 	DDX_Control(pDX, IDC_RADIO11, rPhone);
 	DDX_Control(pDX, IDC_RADIO12, rOccupation);
@@ -46,7 +46,7 @@ void InfoDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(InfoDlg, CDialogEx)
-	ON_BN_CLICKED(IDC_BUTTON1, &InfoDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BTN_SEARCH, &InfoDlg::OnBnClickedButton1)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER1, &InfoDlg::OnNMReleasedcaptureSlider1)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER1, &InfoDlg::OnNMCustomdrawSlider1)
 	ON_WM_CLOSE()
@@ -59,7 +59,7 @@ ON_BN_CLICKED(IDC_RADIO12, &InfoDlg::OnBnClickedRadio12)
 ON_BN_CLICKED(IDC_RADIO13, &InfoDlg::OnBnClickedRadio13)
 ON_BN_CLICKED(IDC_RADIO14, &InfoDlg::OnBnClickedRadio14)
 ON_BN_CLICKED(IDC_RADIO15, &InfoDlg::OnBnClickedRadio15)
-ON_BN_CLICKED(IDC_BUTTON2, &InfoDlg::OnBnClickedButton2)
+ON_BN_CLICKED(IDC_NEWCONTACT, &InfoDlg::AddNewContact)
 END_MESSAGE_MAP()
 
 
@@ -236,7 +236,7 @@ void InfoDlg::OnBnClickedRadio15()
 }
 
 
-void InfoDlg::OnBnClickedButton2()
+void InfoDlg::AddNewContact()
 {
 	// TODO: Add your control notification handler code here
 

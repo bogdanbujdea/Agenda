@@ -62,5 +62,5 @@ public:
 	afx_msg void OnBnClickedRadio13();
 	afx_msg void OnBnClickedRadio14();
 	afx_msg void OnBnClickedRadio15();
-	afx_msg void OnBnClickedButton2();
+	afx_msg void AddNewContact();
 };
