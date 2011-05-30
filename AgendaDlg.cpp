@@ -155,7 +155,7 @@ ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &CAgendaDlg::EditContact)
 ON_COMMAND(ID_FILE_NEWPHONEBOOK, &CAgendaDlg::OnFileNewphonebook)
 ON_COMMAND(ID_FILE_NEWCONTACT32798, &CAgendaDlg::OnFileNewcontact32798)
 ON_COMMAND(ID_FILE_EXIT32795, &CAgendaDlg::OnFileExit32795)
-ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::DeletePphonebook)
+ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::DeletePhoneBook)
 ON_WM_CLOSE()
 ON_COMMAND(ID_EDIT_DELETECONTACT, &CAgendaDlg::DeleteContact)
 END_MESSAGE_MAP()
@@ -552,7 +552,7 @@ void CAgendaDlg::OnFileExit32795()
 }
 
 
-void CAgendaDlg::OnEditDeletephonebook()
+void CAgendaDlg::DeletePhoneBook()
 {
 	// TODO: Add your command handler code here
 	manager->OnBnClickedButton4();
@@ -567,7 +567,7 @@ void CAgendaDlg::OnClose()
 }
 
 
-void CAgendaDlg::DeleteContact()
-{
-	// TODO: Add your command handler code here
-}
+//void CAgendaDlg::DeleteContact()
+//{
+//	// TODO: Add your command handler code here
+//}
