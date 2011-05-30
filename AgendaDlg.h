@@ -75,6 +75,6 @@ public:
 	afx_msg void OnFileNewphonebook();
 	afx_msg void OnFileNewcontact32798();
 	afx_msg void OnFileExit32795();
-	afx_msg void OnEditDeletephonebook();
+	afx_msg void DeletePhoneBook();
 	afx_msg void OnClose();
 };
