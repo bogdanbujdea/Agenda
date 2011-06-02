@@ -18,6 +18,7 @@ public:
 	Database(string DbName);
 	int openDB();
 	string getDbName();
+	void setDbName(string Name) { mDbName = Name; }
 	string GetValueById(int ID, string TableName, string Column);
 	string GetValue(string TableName, string Column, string Options);
 	void UpdateValueById(int ID, string TableName, string Column, string Value);

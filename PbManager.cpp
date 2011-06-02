@@ -130,7 +130,7 @@ void PbManager::AddNewContact()
 		path += OpenedPb;
 		path += ".txt";
 		cout<<"\npb file path="<<path<<endl;
-		detailsDlg->p->setFile(path);
+		detailsDlg->p->setDbName(path);
 		this->ShowWindow(0);
 		CWnd *cwnd = this->GetOwner();
 		cwnd->SendMessage(SHOW_WINDOW, 0, 0);

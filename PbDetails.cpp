@@ -47,7 +47,7 @@ BEGIN_MESSAGE_MAP(PbDetails, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_DELETE_CONTACT, &PbDetails::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BTN_SEARCH, &PbDetails::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbDetails::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_NEWCONTACT, &PbDetails::AddNewContact)
+	ON_BN_CLICKED(IDC_NEWCONTACT, &PbDetails::Save)
 	ON_EN_CHANGE(IDC_EDIT1, &PbDetails::OnEnChangeEdit1)
 	ON_EN_CHANGE(IDC_EDIT2, &PbDetails::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT9, &PbDetails::OnEnChangeEdit9)
@@ -241,7 +241,7 @@ void PbDetails::ViewPhonebook()
 			
 			Result = PbApp.db->query(Query);
 			cout<<"\nsize="<<Result.at(0).size()<<endl;
-			for(int i = 0; i < Result.at(0).size(); i++)
+			for(int i = 0; i < (int)Result.at(0).size(); i++)
 				cout<<"\ni="<<i<<"---"<<Result.at(0).at(i);
 			PbApp.db->close();
 		}
@@ -506,15 +506,31 @@ int PbDetails::ValidateInputData()
 	details += "\\";
 	ePbName.GetWindowTextA(tmp, 256);
 	details += tmp;
-	details += ".txt";
+	details += ".db";
 
 	//Create phone book .txt file
-	ofstream f(details.c_str());
-	if(!f)
-		return FILE_ERROR;
+	p->ContactDB->setDbName(details);
+	bool success = true;
+	
+	if(p->ContactDB->openDB())
+	{
+		success = true;
+		char Query[1024];
+		cout<<"\ndb name="<<tmp<<endl;
+		sprintf(Query, "CREATE TABLE IF NOT EXISTS %s(Id INTEGER PRIMARY KEY, FirstName VARCHAR(50), LastName VARCHAR(50), Gender VARCHAR(50),  Address VARCHAR(100), PhoneNumber VARCHAR(20), Email VARCHAR(50), Age INTEGER, Occupation VARCHAR(50) , BirthDate DATE, ContactType VARCHAR[15], PhotoPath VARCHAR(500));", tmp);
+		cout<<"\nCreate contact db query=\n"<<Query<<endl;
+		try
+		{
+			p->ContactDB->query(Query);
+		}
+		catch(string error)
+		{
+			MessageBox(error.c_str(), "Can't create new contact db", 0);
+		}
+		p->ContactDB->close();
+	}
 	else
-		f.close();
-	p->setFile(details);
+		success = false;
 
 	//Copy photo
 	if(picLoaded)
@@ -551,7 +567,7 @@ int PbDetails::ValidateInputData()
 	return SUCCESS;
 }
 //save
-void PbDetails::AddNewContact() //save
+void PbDetails::Save() //save
 {
 	// TODO: Add your control notification handler code here
 	if(mode == ADD_CONTACT)
@@ -586,7 +602,7 @@ BOOL PbDetails::PreTranslateMessage(MSG* pMsg)
 	{
 	   // Enter key was hit -> do whatever you want
 		if(bSave.EnableWindow(0) == 0)
-			AddNewContact();
+			Save();
 		else bSave.EnableWindow(0);
 	   return TRUE;
 	}

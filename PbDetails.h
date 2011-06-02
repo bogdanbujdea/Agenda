@@ -72,7 +72,7 @@ public:
 	string OpenedPb;
 	CEdit eBirthDate;
 	bool contactView, contactAdd;
-	afx_msg void AddNewContact();
+	afx_msg void Save();
 	Phonebook *p;
 	int contact;
 	HWND PbName;

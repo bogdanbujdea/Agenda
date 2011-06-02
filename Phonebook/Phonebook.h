@@ -4,6 +4,7 @@
 #include "Acquaintance.h"
 #include "Colleague.h"
 #include "Friend.h"
+#include "Database.h"
 #include <windows.h>
 #include <algorithm>
 #include <fstream>
@@ -20,7 +21,7 @@ enum TypeOfSort
 class Phonebook
 {
 private:
-	string mFile, mOwner;
+	string mDbName, mOwner;
 	ofstream mData;
 	static Phonebook *mInstance;
 	static bool mInstanceFlag;
@@ -28,6 +29,7 @@ private:
 	Phonebook();
 	Phonebook(const Phonebook&);
 public:
+	Database *ContactDB;
 	deque<Contact> ContactList;
 	static Phonebook& getInstance()
 	{
@@ -42,7 +44,7 @@ public:
 			return *mInstance;
 		}
 	}
-	void setFile(string File) { mFile = File; }
+	void setDbName(string Name) { mDbName = Name; }
 	void operator=(Phonebook&);
 	int addAcquaintance(string *s);
 	int addColleague(string *s);

@@ -6,6 +6,7 @@ Database::Database(string DbName) : mDbName(DbName)
 
 int Database::openDB()
 {	
+	cout<<"\ndb OPEN name="<<mDbName<<endl;
 	if(sqlite3_open(mDbName.c_str(), &database) == SQLITE_OK)
 		return 1;
 	else return 0;

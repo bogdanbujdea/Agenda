@@ -9,7 +9,6 @@
 #endif
 
 #include "resource.h"		// main symbols
-#include "Phonebook/Database.h"
 #include <string>
 #include "Phonebook/Phonebook.h"
 #include "SpeechEngine/SpeechEngine.h"

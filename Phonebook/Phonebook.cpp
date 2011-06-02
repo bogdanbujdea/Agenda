@@ -7,12 +7,13 @@ Phonebook *Phonebook::mInstance = NULL;
 
 Phonebook::Phonebook()
 {
+	ContactDB = new Database(mDbName);
 }
 
 int Phonebook::loadPhonebook()
 {
-	ifstream phb(mFile,ios::app);
-	cout<<"\nphb load file="<<mFile<<endl;
+	ifstream phb(mDbName,ios::app);
+	cout<<"\nphb load file="<<mDbName<<endl;
 	if(!phb)
 	{
 		cout<<"\nCould not open phonebook file";
@@ -20,7 +21,7 @@ int Phonebook::loadPhonebook()
 	}
 	//ZeroMemory(&ContactList, sizeof(ContactList));
 	ContactList.erase(ContactList.begin(), ContactList.end());
-	cout<<"\npb load file="<<mFile<<endl;
+	cout<<"\npb load file="<<mDbName<<endl;
 	int i, k = 0;
 	string str, tmp;
 	string infs[100];
@@ -53,7 +54,7 @@ int Phonebook::loadPhonebook()
 	}
 	phb.close();
 	memcpy(&tmpList, &ContactList, sizeof(ContactList));
-	mData.open(mFile);
+	mData.open(mDbName);
 	if(!mData)
 		return 0;
 	return 1;
