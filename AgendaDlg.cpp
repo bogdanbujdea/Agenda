@@ -63,7 +63,7 @@ void CAgendaDlg::InitList()
 	LVCOLUMN col;
 	col.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	col.fmt = LVCFMT_LEFT;
-	col.cx = 70;
+	col.cx = 100;
 	col.pszText = "First Name";
 	listCtrl.InsertColumn(0, &col);
 	col.pszText = "Last Name";
@@ -71,16 +71,22 @@ void CAgendaDlg::InitList()
 	col.pszText = "Phone Number";
 	listCtrl.InsertColumn(2, &col);
 	col.pszText = "Occupation";
+	col.cx = 70;
 	listCtrl.InsertColumn(3, &col);
 	col.pszText = "Age";
+	col.cx = 45;
 	listCtrl.InsertColumn(4, &col);
 	col.pszText = "Address";
+	col.cx = 120;
 	listCtrl.InsertColumn(5, &col);
 	col.pszText = "Email";
+	col.cx = 110;
 	listCtrl.InsertColumn(6, &col);
 	col.pszText = "Type";
+	col.cx = 90;
 	listCtrl.InsertColumn(7, &col);
 	col.pszText = "ID";
+	col.cx = 30;
 	listCtrl.InsertColumn(8, &col);
 	listCtrl.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 }

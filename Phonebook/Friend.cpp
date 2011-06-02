@@ -24,32 +24,33 @@ Friend::Friend(const Friend &fr)
 
 Friend::Friend(string *s)
 {
-	mContactType = s[0];
-	mFirstName = s[1];
-	mLastName = s[2];
-	mPhoneNumber = s[3];
-	mGender = s[4];
 	stringstream str;
+	str<<s[0];
+	str>>mID;
 	str.str("");
 	str.clear();
-	str<<s[5];
+	mContactType = s[1];
+	mFirstName = s[2];
+	mLastName = s[3];
+	mPhoneNumber = s[4];
+	mGender = s[5];
+	str<<s[6];
 	str>>mAge;
+	mEmailAddress = s[7];
+	mOccupation = s[8];
 	str.str("");
 	str.clear();
 	int day, month, year;
 	day = month = year = 0;
-	str<<s[8];
+	str<<s[9];
 	str>>day;
 	str>>month;
 	str>>year;
-	str<<s[10];
-	str>>mID;
 	mBirthDate.setDay(day);
 	mBirthDate.setMonth(month);
 	mBirthDate.setYear(year);
-	mHomeAddress = s[9];
-	mEmailAddress = s[6];
-	mOccupation = s[7];
+	mHomeAddress = s[10];
+
 }
 //
 //Friend::Friend() : Contact()

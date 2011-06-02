@@ -24,33 +24,44 @@ int Phonebook::loadPhonebook()
 	char Query[500];
 	try
 	{
+		cout<<"\npb to be opened="<<mPbName<<endl;
 		sprintf(Query, "SELECT * FROM %s;", mPbName.c_str());
 		retVal = ContactDB->query(Query);
 		int i, j;
 		string info[20];
 		string type;
+		cout<<"\nretval size()="<<retVal.size()<<endl;
+		
 		for(i = 0; i < retVal.size(); i++)
 		{
-			info[0] = retVal.at(i).at(10);
-			info[1] = retVal.at(i).at(1);
-			info[2] = retVal.at(i).at(2);
-			info[3] = retVal.at(i).at(5);
-			info[4] = retVal.at(i).at(3);
-			info[5] = retVal.at(i).at(7);
-			info[6] = retVal.at(i).at(6);
-			info[7] = retVal.at(i).at(8);
-			info[8] = retVal.at(i).at(9);
-			info[9] = retVal.at(i).at(4);
-			info[10] = retVal.at(i).at(0);
+			for(int j = 0; j < retVal.at(i).size(); j++)
+				cout<<"at["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j)<<endl;
+			cout<<endl;
+		}
+		for(i = 0; i < retVal.size(); i++)
+		{
+			for(int j = 0; j < retVal.at(i).size(); j++)
+				info[j] = retVal.at(i).at(j);
 			
-			if(info[0].compare("acquaintance") == 0)
+			cout<<"\nctc type="<<info[1]<<endl;
+			
+			if(info[1].compare("acquaintance") == 0)
 				addAcquaintance(info);
-			else if(info[0].compare("colleague") == 0)
+			else if(info[1].compare("colleague") == 0)
 					addColleague(info);
-			else if(info[0].compare("friend") == 0)
+			else if(info[1].compare("friend") == 0)
 					addFriend(info);
-			else cout<<info[0]<<"\nThe phonebook file is corrupt\n";
+			else 
+				{
+					cout<<info[1]<<"\nThe phonebook file is corrupt\n";
+					ContactDB->close();
+					return 0;
+			}
 			info->clear();
+		}
+		for(int i = 0; i < ContactList.size(); i++)
+		{
+			cout<<"\ni="<<i<<" contact name="<<ContactList[i].getFirstName()<<endl;
 		}
 	/*			cout<<"\nat["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j);
 			cout<<endl;
@@ -59,6 +70,7 @@ int Phonebook::loadPhonebook()
 	catch(string error)
 	{
 		MessageBox(0, error.c_str(), "exception load pb", 0);
+		ContactDB->close();
 	}
 	ContactDB->close();
 

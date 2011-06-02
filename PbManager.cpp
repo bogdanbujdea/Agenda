@@ -132,6 +132,7 @@ void PbManager::Open()
 		path += ".db";
 		cout<<"\npb file path="<<path<<endl;
 		detailsDlg->p->setDbName(path);
+		detailsDlg->p->ContactDB->setDbName(path);
 		this->ShowWindow(0);
 		CWnd *cwnd = this->GetOwner();
 		cwnd->SendMessage(SHOW_WINDOW, 0, 0);

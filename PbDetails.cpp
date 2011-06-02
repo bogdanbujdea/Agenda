@@ -382,7 +382,8 @@ int PbDetails::SaveContact()
 	cbType.EnableWindow(1);
 	cbType.ShowWindow(1);
 	char tmp[1024];
-	string details[10];
+	string details[15];
+	for(int i = 0; i < 15; i++) details[i] = "";
 	int sel = cbType.GetCurSel();
 		
 	if(sel == CB_ERR)
@@ -390,56 +391,58 @@ int PbDetails::SaveContact()
 	else cbType.GetLBText(sel, tmp);
 	contact["Id"] = "NULL";
 	contact["Gender"] = "'Unknown'";
-	details[0] = tmp;
-	sprintf(tmp, "'%s'", details[0].c_str());
+	details[0] = "0";
+	details[1] = tmp;
+	sprintf(tmp, "'%s'", details[1].c_str());
 	contact["ContactType"] = tmp;
 	if(eFirstName.GetWindowTextA(tmp, 256))
 	{
-		details[1] = tmp;
-		sprintf(tmp, "'%s'", details[1].c_str());
+		details[2] = tmp;
+		sprintf(tmp, "'%s'", details[2].c_str());
 		contact["FirstName"] = tmp;
 	}
 	if(eLastName.GetWindowTextA(tmp, 256))
 	{
-		details[2] = tmp;
-		sprintf(tmp, "'%s'", details[2].c_str());
+		details[3] = tmp;
+		sprintf(tmp, "'%s'", details[3].c_str());
 		contact["LastName"] = tmp;
 	}
 	if(ePhoneNumber.GetWindowTextA(tmp, 256))
 	{
-		details[3] = tmp;
-		sprintf(tmp, "'%s'", details[3].c_str());
+		details[4] = tmp;
+		sprintf(tmp, "'%s'", details[4].c_str());
 		contact["PhoneNumber"] = tmp;
 	}
+	details[5] = "";
 	if(eAge.GetWindowTextA(tmp, 256))
-	{
-		details[5] = tmp;
-		sprintf(tmp, "'%s'", details[5].c_str());
-		contact["Age"] = tmp;
-	}
-		details[4] = "";
-	if(eEmail.GetWindowTextA(tmp, 256))
 	{
 		details[6] = tmp;
 		sprintf(tmp, "'%s'", details[6].c_str());
+		contact["Age"] = tmp;
+	}
+		//details[4] = "Unknown";
+	if(eEmail.GetWindowTextA(tmp, 256))
+	{
+		details[7] = tmp;
+		sprintf(tmp, "'%s'", details[7].c_str());
 		contact["Email"] = tmp;
 	}
 	if(eOccupation.GetWindowTextA(tmp, 256))
 	{
-		details[7] = tmp;
-		sprintf(tmp, "'%s'", details[7].c_str());
+		details[8] = tmp;
+		sprintf(tmp, "'%s'", details[8].c_str());
 		contact["Occupation"] = tmp;
 	}
 	if(eBirthDate.GetWindowTextA(tmp, 256))
 	{
-		details[8] = tmp;
-		sprintf(tmp, "'%s'", details[8].c_str());
+		details[9] = tmp;
+		sprintf(tmp, "'%s'", details[9].c_str());
 		contact["BirthDate"] = tmp;
 	}
 	if(eHomeAddress.GetWindowTextA(tmp, 256))
 	{
-		details[9] = tmp;
-		sprintf(tmp, "'%s'", details[9].c_str());
+		details[10] = tmp;
+		sprintf(tmp, "'%s'", details[10].c_str());
 		contact["Address"] = tmp;
 	}
 	cout<<"\npb name="<<p->ContactDB->getDbName()<<endl;
@@ -451,6 +454,7 @@ int PbDetails::SaveContact()
 		char Query[100];
 		sprintf(Query, "SELECT * FROM %s;",  p->getPbName().c_str());
 		retVal = p->ContactDB->query(Query);
+		p->ContactDB->close();
 		for(int i = 0; i < retVal.size(); i++)
 			for(int j = 0; j < retVal.at(i).size(); j++)
 				cout<<"\ndb["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j)<<endl;
@@ -461,10 +465,6 @@ int PbDetails::SaveContact()
 	}
 	else
 		MessageBox("Can't Open Database", 0, 0);
-	for(int i = 0; i < 10; i++)
-	{
-		cout<<"\ndetails["<<i<<"="<<details[i];
-	}
 	int err = 0;
 	if(details[0].compare("acquaintance") == 0)
 		p->addAcquaintance(details);
@@ -579,7 +579,7 @@ int PbDetails::ValidateInputData()
 		success = true;
 		char Query[1024];
 		cout<<"\ndb name="<<tmp<<endl;
-		sprintf(Query, "CREATE TABLE IF NOT EXISTS %s(Id INTEGER PRIMARY KEY, FirstName VARCHAR(50), LastName VARCHAR(50), Gender VARCHAR(50),  Address VARCHAR(100), PhoneNumber VARCHAR(20), Email VARCHAR(50), Age INTEGER, Occupation VARCHAR(50) , BirthDate DATE, ContactType VARCHAR[15], PhotoPath VARCHAR(500));", tmp);
+		sprintf(Query, "CREATE TABLE IF NOT EXISTS %s(Id INTEGER PRIMARY KEY, ContactType VARCHAR[15], FirstName VARCHAR(50), LastName VARCHAR(50), PhoneNumber VARCHAR(30), Gender VARCHAR(10), Age INTEGER, Email VARCHAR(50), Occupation VARCHAR(50) , BirthDate DATE,  Address VARCHAR(100), PhotoPath VARCHAR(500));", tmp);
 		cout<<"\nCreate contact db query=\n"<<Query<<endl;
 		try
 		{

@@ -10,15 +10,14 @@ Acquaintance::Acquaintance(Date BirthDate, string HomeAddress, string EmailAddre
 
 Acquaintance::Acquaintance(string *s)
 {
-	mContactType = s[0];
-	mFirstName = s[1];
-	mLastName = s[2];
-	mPhoneNumber = s[3];
-	mGender = s[4];
 	stringstream str;
-	str<<s[10];
+	str<<s[0];
 	str>>mID;
-	cout<<"\nmID="<<mID<<endl;
+	mContactType = s[1];
+	mFirstName = s[2];
+	mLastName = s[3];
+	mPhoneNumber = s[4];
+	mGender = s[5];
 }
 
 //

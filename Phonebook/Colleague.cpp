@@ -25,18 +25,20 @@ Colleague::Colleague(const Colleague &col)
 
 Colleague::Colleague(string *s)
 {
-	mContactType = s[0];
-	mFirstName = s[1];
-	mLastName = s[2];
-	mPhoneNumber = s[3];
-	mGender = s[4];
 	stringstream str;
-	str<<s[5];
-	str>>mAge;
-	str<<s[10];
+	str<<s[0];
 	str>>mID;
-	mEmailAddress = s[6];
-	mOccupation = s[7];
+	str.str("");
+	str.clear();
+	mContactType = s[1];
+	mFirstName = s[2];
+	mLastName = s[3];
+	mPhoneNumber = s[4];
+	mGender = s[5];
+	str<<s[6];
+	str>>mAge;
+	mEmailAddress = s[7];
+	mOccupation = s[8];
 }
 
 //Colleague::Colleague() : Contact()
