@@ -241,6 +241,9 @@ void InfoDlg::AddNewContact()
 	// TODO: Add your control notification handler code here
 
 	CWnd *cwnd = this->GetOwner();
+	if(!cwnd)
+		MessageBox("error", 0, 0);
+	cwnd->SetWindowTextA("adsad");
 	edit[rOption]->GetWindowTextA(text, 1023);
 	switch(rOption)
 	{

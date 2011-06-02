@@ -11,6 +11,7 @@
 #include "resource.h"		// main symbols
 #include "Phonebook/Database.h"
 #include <string>
+#include "Phonebook/Phonebook.h"
 #include "SpeechEngine/SpeechEngine.h"
 
 using namespace std;
@@ -39,6 +40,7 @@ public:
 	bool CreateDatabase();
 	bool InitiateProgram();
 	bool LoadSettings();
+	void Notify();
 	DECLARE_MESSAGE_MAP()
 };
 

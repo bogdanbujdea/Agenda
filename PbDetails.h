@@ -2,8 +2,8 @@
 #include "afxwin.h"
 #include <iostream>
 #include "CPictureCtrl/PictureCtrl.h"
-#include "Phonebook/IniFile.h"
-#include "Phonebook/Phonebook.h"
+#include "AgendaPH.h"
+
 #include <map>
 
 using namespace std;
@@ -50,7 +50,7 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButton1();
 	CButton bClear;
-	IniFile ini;
+//	IniFile ini;
 	Mode mode;
 	CButton bCancel;
 	afx_msg void OnBnClickedButton4();

@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "AgendaPH.h"
 #include "PbDetails.h"
 #include "afxdialogex.h"
 
@@ -12,7 +11,7 @@
 IMPLEMENT_DYNAMIC(PbDetails, CDialogEx)
 
 PbDetails::PbDetails(CWnd* pParent /*=NULL*/)
-	: CDialogEx(PbDetails::IDD, pParent), ini("Settings.ini", "Settings")
+	: CDialogEx(PbDetails::IDD, pParent)//, ini("Settings.ini", "Settings")
 {
 	picLoaded = 0;
 	p = &Phonebook::getInstance();
@@ -290,19 +289,19 @@ void PbDetails::EditPhonebook()
 	eEmail.SetReadOnly(1);
 	eBirthDate.SetReadOnly(1);
 	string tmp[256];
-	eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
-	eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
-	ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
-	ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
-	eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
-	eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
-	eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
-	eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
-	eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
-	CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
+	//eFirstName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner First Name", "").c_str());
+	//eLastName.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Last Name", "").c_str());
+	//ePbName.SetWindowTextA(ini.GetStringValue(PbSection, "Phone Book Name", "").c_str());
+	//ePhoneNumber.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Phone Number", "").c_str());
+	//eOccupation.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Occupation", "").c_str());
+	//eAge.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Age", "").c_str());
+	//eHomeAddress.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Home Address", "").c_str());
+	//eEmail.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Email Address", "").c_str());
+	//eBirthDate.SetWindowTextA(ini.GetStringValue(PbSection, "Owner Birth Date", "").c_str());
+	//CString str = ini.GetStringValue(PbSection, "Owner Photo", "").c_str();
 	::ShowWindow(PbName, 1);
 	::SetWindowTextA(PbName, "Phone Book Name:");
-	mPic.LoadFromFile(str);
+	//mPic.LoadFromFile(str);
 }
 
 BOOL PbDetails::OnInitDialog()
