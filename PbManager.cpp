@@ -94,7 +94,7 @@ void PbManager::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(PbManager, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &PbManager::OnCbnSelchangeCombo1)
-	ON_BN_CLICKED(IDC_NEWCONTACT, &PbManager::AddNewContact)
+	ON_BN_CLICKED(IDC_NEWCONTACT, &PbManager::Open)
 	ON_BN_CLICKED(IDC_BTN_SEARCH, &PbManager::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbManager::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BTN_CLOSEPB, &PbManager::OnBnClickedButton5)
@@ -110,7 +110,7 @@ void PbManager::OnCbnSelchangeCombo1()
 }
 
 //open Pb
-void PbManager::AddNewContact()
+void PbManager::Open()
 {
 	// TODO: Add your control notification handler code here
 	int sel = 0;
@@ -122,13 +122,14 @@ void PbManager::AddNewContact()
 	{	
 	//	OpenedPb = NULL;
 		cbList.GetLBText(sel, OpenedPb);
+		detailsDlg->p->setPbName(OpenedPb);
 		string path;
 		path = PbApp.getFolderPath();
 		path += "\\";
 		path += OpenedPb;
 		path += "\\";
 		path += OpenedPb;
-		path += ".txt";
+		path += ".db";
 		cout<<"\npb file path="<<path<<endl;
 		detailsDlg->p->setDbName(path);
 		this->ShowWindow(0);
@@ -203,7 +204,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 				dbPath += s;
 				dbPath += "\\";
 				dbPath += s;
-				dbPath += ".txt";
+				dbPath += ".db";
 				if(!DeleteFile(dbPath.c_str()) || !DeleteFile(photoPath.c_str()))
 				{
 					cout<<"\nerror="<<PbApp.sp.GetStringError(GetLastError())<<endl;

@@ -42,7 +42,7 @@ Friend::Friend(string *s)
 	str>>day;
 	str>>month;
 	str>>year;
-	str<<s[9];
+	str<<s[10];
 	str>>mID;
 	mBirthDate.setDay(day);
 	mBirthDate.setMonth(month);

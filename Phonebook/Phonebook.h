@@ -21,7 +21,7 @@ enum TypeOfSort
 class Phonebook
 {
 private:
-	string mDbName, mOwner;
+	string mDbName, mOwner, mPbName;
 	ofstream mData;
 	static Phonebook *mInstance;
 	static bool mInstanceFlag;
@@ -29,6 +29,8 @@ private:
 	Phonebook();
 	Phonebook(const Phonebook&);
 public:
+	string getPbName() { return mPbName; }
+	void setPbName(string PbName) { mPbName = PbName; }
 	Database *ContactDB;
 	deque<Contact> ContactList;
 	static Phonebook& getInstance()

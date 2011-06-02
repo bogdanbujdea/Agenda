@@ -377,30 +377,90 @@ int PbDetails::SaveContact()
 {
 	if(mode == EDIT_CONTACT)
 		return ChangeContact();
+	map<string, string> contact;
+	map<string, string>::iterator it;
+	cbType.EnableWindow(1);
+	cbType.ShowWindow(1);
 	char tmp[1024];
 	string details[10];
 	int sel = cbType.GetCurSel();
+		
 	if(sel == CB_ERR)
 		MessageBox("Choose a contact type", "ERROR", MB_ICONWARNING);
 	else cbType.GetLBText(sel, tmp);
+	contact["Id"] = "NULL";
+	contact["Gender"] = "'Unknown'";
 	details[0] = tmp;
+	sprintf(tmp, "'%s'", details[0].c_str());
+	contact["ContactType"] = tmp;
 	if(eFirstName.GetWindowTextA(tmp, 256))
+	{
 		details[1] = tmp;
+		sprintf(tmp, "'%s'", details[1].c_str());
+		contact["FirstName"] = tmp;
+	}
 	if(eLastName.GetWindowTextA(tmp, 256))
+	{
 		details[2] = tmp;
+		sprintf(tmp, "'%s'", details[2].c_str());
+		contact["LastName"] = tmp;
+	}
 	if(ePhoneNumber.GetWindowTextA(tmp, 256))
+	{
 		details[3] = tmp;
+		sprintf(tmp, "'%s'", details[3].c_str());
+		contact["PhoneNumber"] = tmp;
+	}
 	if(eAge.GetWindowTextA(tmp, 256))
+	{
 		details[5] = tmp;
+		sprintf(tmp, "'%s'", details[5].c_str());
+		contact["Age"] = tmp;
+	}
 		details[4] = "";
 	if(eEmail.GetWindowTextA(tmp, 256))
+	{
 		details[6] = tmp;
+		sprintf(tmp, "'%s'", details[6].c_str());
+		contact["Email"] = tmp;
+	}
 	if(eOccupation.GetWindowTextA(tmp, 256))
+	{
 		details[7] = tmp;
+		sprintf(tmp, "'%s'", details[7].c_str());
+		contact["Occupation"] = tmp;
+	}
 	if(eBirthDate.GetWindowTextA(tmp, 256))
+	{
 		details[8] = tmp;
+		sprintf(tmp, "'%s'", details[8].c_str());
+		contact["BirthDate"] = tmp;
+	}
 	if(eHomeAddress.GetWindowTextA(tmp, 256))
+	{
 		details[9] = tmp;
+		sprintf(tmp, "'%s'", details[9].c_str());
+		contact["Address"] = tmp;
+	}
+	cout<<"\npb name="<<p->ContactDB->getDbName()<<endl;
+	if(p->ContactDB->openDB())
+	try
+	{
+		p->ContactDB->InsertValues(contact, p->getPbName());
+		vector<vector<string>> retVal;
+		char Query[100];
+		sprintf(Query, "SELECT * FROM %s;",  p->getPbName().c_str());
+		retVal = p->ContactDB->query(Query);
+		for(int i = 0; i < retVal.size(); i++)
+			for(int j = 0; j < retVal.at(i).size(); j++)
+				cout<<"\ndb["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j)<<endl;
+	}
+	catch(string error)
+	{
+		MessageBox(error.c_str(), "Can't add contact", 0);
+	}
+	else
+		MessageBox("Can't Open Database", 0, 0);
 	for(int i = 0; i < 10; i++)
 	{
 		cout<<"\ndetails["<<i<<"="<<details[i];
@@ -418,9 +478,10 @@ int PbDetails::SaveContact()
 	if(!err)
 	{
 		MessageBox("Contact saved", 0, 0);
+		this->EndDialog(IDOK);
 		return SUCCESS;
 	}
-	return SUCCESS;
+	return 1;
 
 }
 
@@ -433,6 +494,7 @@ int PbDetails::ValidateInputData()
 	string details;
 	char tmp[256], section[100];
 	ePbName.GetWindowTextA(tmp, 256); details = tmp;
+	p->setPbName(details);
 	sprintf(tmp, "'%s'", details.c_str());
 	phb["PbName"] = tmp;
 	_itoa_s(Pb, section, 10);
@@ -589,6 +651,7 @@ void PbDetails::Save() //save
 		break;
 	case SUCCESS:
 		MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);
+		this->EndDialog(IDOK);
 		break;
 	}
 	this->EndDialog(IDOK);

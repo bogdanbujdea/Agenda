@@ -33,7 +33,7 @@ Colleague::Colleague(string *s)
 	stringstream str;
 	str<<s[5];
 	str>>mAge;
-	str<<s[8];
+	str<<s[10];
 	str>>mID;
 	mEmailAddress = s[6];
 	mOccupation = s[7];

@@ -16,7 +16,7 @@ Acquaintance::Acquaintance(string *s)
 	mPhoneNumber = s[3];
 	mGender = s[4];
 	stringstream str;
-	str<<s[5];
+	str<<s[10];
 	str>>mID;
 	cout<<"\nmID="<<mID<<endl;
 }

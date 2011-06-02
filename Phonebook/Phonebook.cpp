@@ -12,52 +12,92 @@ Phonebook::Phonebook()
 
 int Phonebook::loadPhonebook()
 {
-	ifstream phb(mDbName,ios::app);
-	cout<<"\nphb load file="<<mDbName<<endl;
-	if(!phb)
+	ifstream phb;//("c:\\l.txt",ios::app);
+	if(!ContactDB->openDB())
 	{
-		cout<<"\nCould not open phonebook file";
+		MessageBox(0, "Can't open database", "ERROR", 0);
 		return 0;
 	}
 	//ZeroMemory(&ContactList, sizeof(ContactList));
 	ContactList.erase(ContactList.begin(), ContactList.end());
-	cout<<"\npb load file="<<mDbName<<endl;
-	int i, k = 0;
-	string str, tmp;
-	string infs[100];
-	while(phb)
+	vector<vector<string>> retVal;
+	char Query[500];
+	try
 	{
-		getline(phb,str);
-		if(str.size() <= 0) 
-			continue;
-		i = 0;
-		k = 0;
-		for(i = 0; i <= (int)str.size(); i++)
+		sprintf(Query, "SELECT * FROM %s;", mPbName.c_str());
+		retVal = ContactDB->query(Query);
+		int i, j;
+		string info[20];
+		string type;
+		for(i = 0; i < retVal.size(); i++)
 		{
-			tmp.clear();
-			while(i < (int)str.size() && str[i] != '|')
-			{
-				tmp += str[i++];
-			}
-			infs[k++]=tmp;
+			info[0] = retVal.at(i).at(10);
+			info[1] = retVal.at(i).at(1);
+			info[2] = retVal.at(i).at(2);
+			info[3] = retVal.at(i).at(5);
+			info[4] = retVal.at(i).at(3);
+			info[5] = retVal.at(i).at(7);
+			info[6] = retVal.at(i).at(6);
+			info[7] = retVal.at(i).at(8);
+			info[8] = retVal.at(i).at(9);
+			info[9] = retVal.at(i).at(4);
+			info[10] = retVal.at(i).at(0);
 			
+			if(info[0].compare("acquaintance") == 0)
+				addAcquaintance(info);
+			else if(info[0].compare("colleague") == 0)
+					addColleague(info);
+			else if(info[0].compare("friend") == 0)
+					addFriend(info);
+			else cout<<info[0]<<"\nThe phonebook file is corrupt\n";
+			info->clear();
 		}
-		if(infs[0].compare("acquaintance") == 0)
-			addAcquaintance(infs);
-		else if(infs[0].compare("colleague") == 0)
-				addColleague(infs);
-		else if(infs[0].compare("friend") == 0)
-				addFriend(infs);
-		else cout<<infs[0]<<"\nThe phonebook file is corrupt\n";
-		infs->clear();
-		str.clear();
+	/*			cout<<"\nat["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j);
+			cout<<endl;
+		}*/
 	}
-	phb.close();
-	memcpy(&tmpList, &ContactList, sizeof(ContactList));
-	mData.open(mDbName);
-	if(!mData)
-		return 0;
-	return 1;
+	catch(string error)
+	{
+		MessageBox(0, error.c_str(), "exception load pb", 0);
+	}
+	ContactDB->close();
+
+	//int i, k = 0;
+	//string str, tmp;
+	//string infs[100];
+	//while(phb)
+	//{
+	//	getline(phb,str);
+	//	if(str.size() <= 0) 
+	//		continue;
+	//	i = 0;
+	//	k = 0;
+	//	for(i = 0; i <= (int)str.size(); i++)
+	//	{
+	//		tmp.clear();
+	//		while(i < (int)str.size() && str[i] != '|')
+	//		{
+	//			tmp += str[i++];
+	//		}
+	//		infs[k++]=tmp;
+	//		
+	//	}
+	//	if(infs[0].compare("acquaintance") == 0)
+	//		addAcquaintance(infs);
+	//	else if(infs[0].compare("colleague") == 0)
+	//			addColleague(infs);
+	//	else if(infs[0].compare("friend") == 0)
+	//			addFriend(infs);
+	//	else cout<<infs[0]<<"\nThe phonebook file is corrupt\n";
+	//	infs->clear();
+	//	str.clear();
+	//}
+	//phb.close();
+	//memcpy(&tmpList, &ContactList, sizeof(ContactList));
+	////mData.open(mDbName);
+	//if(!mData)
+	//	return 0;
+	//return 1;
 }
 
 string Phonebook::getOwner() { return mOwner; }
@@ -184,27 +224,27 @@ void Phonebook::Sort(int SortType)
 
 int Phonebook::savePhonebook(int save)
 {
-	if(!save)
-		memcpy(&ContactList, &tmpList, sizeof(tmpList));
-	int i = 0;
-	cout<<"\nfile pos="<<mData.tellp()<<endl;
-	for(i = 0; i < (int)ContactList.size(); i++)
-	{
-		mData<<ContactList[i].getContactType()<<"|";
-		mData<<ContactList[i].getFirstName()<<"|";
-		mData<<ContactList[i].getLastName()<<"|";
-		mData<<ContactList[i].getPhoneNumber()<<"|";
-		mData<<ContactList[i].getGender();
-		if(ContactList[i].getContactType().compare("colleague") == 0 )
-			mData<<"|"<<ContactList[i].getAge()<<"|"<<ContactList[i].getEmailAddress()<<"|"<<ContactList[i].getOccupation();
-		if(ContactList[i].getContactType().compare("friend") == 0)
-			{
-				mData<<"|"<<ContactList[i].getAge()<<"|"<<ContactList[i].getEmailAddress()<<"|"<<ContactList[i].getOccupation();
-				mData<<"|"<<ContactList[i].getBirthDate().toString()<<"|"<<ContactList[i].getHomeAddress();
-		}
-		mData<<endl;
-	}
-	mData.close();
+	//if(!save)
+	//	memcpy(&ContactList, &tmpList, sizeof(tmpList));
+	//int i = 0;
+	//cout<<"\nfile pos="<<mData.tellp()<<endl;
+	//for(i = 0; i < (int)ContactList.size(); i++)
+	//{
+	//	mData<<ContactList[i].getContactType()<<"|";
+	//	mData<<ContactList[i].getFirstName()<<"|";
+	//	mData<<ContactList[i].getLastName()<<"|";
+	//	mData<<ContactList[i].getPhoneNumber()<<"|";
+	//	mData<<ContactList[i].getGender();
+	//	if(ContactList[i].getContactType().compare("colleague") == 0 )
+	//		mData<<"|"<<ContactList[i].getAge()<<"|"<<ContactList[i].getEmailAddress()<<"|"<<ContactList[i].getOccupation();
+	//	if(ContactList[i].getContactType().compare("friend") == 0)
+	//		{
+	//			mData<<"|"<<ContactList[i].getAge()<<"|"<<ContactList[i].getEmailAddress()<<"|"<<ContactList[i].getOccupation();
+	//			mData<<"|"<<ContactList[i].getBirthDate().toString()<<"|"<<ContactList[i].getHomeAddress();
+	//	}
+	//	mData<<endl;
+	//}
+	//mData.close();
 	return 0;
 }
 
