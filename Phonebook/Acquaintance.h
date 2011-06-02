@@ -7,8 +7,8 @@
 class Acquaintance : public Contact
 {
 public:
-	Acquaintance(string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType);
-	Acquaintance(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType);
+	Acquaintance(string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
+	Acquaintance(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Acquaintance(string *s);
 	Acquaintance(const Acquaintance &acq);
 	//Acquaintance& operator= (const Acquaintance &acq);
@@ -17,7 +17,9 @@ public:
 	Contact::getPhoneNumber;
 	Contact::getGender;
 	Contact::getContactType;
+	Contact::getID;
 
+	Contact::setID;
 	Contact::setContactType;
 	Contact::setFirstName;
 	Contact::setLastName;

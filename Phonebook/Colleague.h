@@ -6,8 +6,8 @@
 class Colleague : public Contact
 {
 public:
-	Colleague(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType);
-	Colleague(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType);
+	Colleague(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
+	Colleague(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Colleague(string *s);
 	Colleague(const Colleague &col);
 	Contact::getFirstName;
@@ -18,7 +18,9 @@ public:
 	Contact::getGender;
 	Contact::getAge;
 	Contact::getContactType;
+	Contact::getID;
 
+	Contact::setID;
 	Contact::setContactType;
 	Contact::setFirstName;
 	Contact::setLastName;

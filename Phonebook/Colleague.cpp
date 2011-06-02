@@ -2,12 +2,12 @@
 #include "Colleague.h"
 
 
-Colleague::Colleague(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType) : 
-Contact(EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType)
+Colleague::Colleague(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID) : 
+Contact(EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType, ID)
 {}
 
-Colleague::Colleague(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType):
-Contact(EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType)
+Colleague::Colleague(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID):
+Contact(EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType, ID)
 {}
 
 Colleague::Colleague(const Colleague &col)
@@ -33,6 +33,8 @@ Colleague::Colleague(string *s)
 	stringstream str;
 	str<<s[5];
 	str>>mAge;
+	str<<s[8];
+	str>>mID;
 	mEmailAddress = s[6];
 	mOccupation = s[7];
 }

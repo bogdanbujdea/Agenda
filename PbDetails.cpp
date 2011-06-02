@@ -384,23 +384,27 @@ int PbDetails::SaveContact()
 		MessageBox("Choose a contact type", "ERROR", MB_ICONWARNING);
 	else cbType.GetLBText(sel, tmp);
 	details[0] = tmp;
-	eFirstName.GetWindowTextA(tmp, 256);
-	details[1] = tmp;
-	eLastName.GetWindowTextA(tmp, 256);
-	details[2] = tmp;
-	ePhoneNumber.GetWindowTextA(tmp, 256);
-	details[3] = tmp;
-	eAge.GetWindowTextA(tmp, 256);
-	details[4] = "";
-	details[5] = tmp;
-	eEmail.GetWindowTextA(tmp, 256);
-	details[6] = tmp;
-	eOccupation.GetWindowTextA(tmp, 256);
-	details[7] = tmp;
-	eBirthDate.GetWindowTextA(tmp, 256);
-	details[8] = tmp;
-	eHomeAddress.GetWindowTextA(tmp, 256);
-	details[9] = tmp;
+	if(eFirstName.GetWindowTextA(tmp, 256))
+		details[1] = tmp;
+	if(eLastName.GetWindowTextA(tmp, 256))
+		details[2] = tmp;
+	if(ePhoneNumber.GetWindowTextA(tmp, 256))
+		details[3] = tmp;
+	if(eAge.GetWindowTextA(tmp, 256))
+		details[5] = tmp;
+		details[4] = "";
+	if(eEmail.GetWindowTextA(tmp, 256))
+		details[6] = tmp;
+	if(eOccupation.GetWindowTextA(tmp, 256))
+		details[7] = tmp;
+	if(eBirthDate.GetWindowTextA(tmp, 256))
+		details[8] = tmp;
+	if(eHomeAddress.GetWindowTextA(tmp, 256))
+		details[9] = tmp;
+	for(int i = 0; i < 10; i++)
+	{
+		cout<<"\ndetails["<<i<<"="<<details[i];
+	}
 	int err = 0;
 	if(details[0].compare("acquaintance") == 0)
 		p->addAcquaintance(details);
@@ -571,7 +575,7 @@ void PbDetails::AddNewContact() //save
 		MessageBox("New Phone Book Saved Succesfully!", "Saved", MB_ICONINFORMATION);
 		break;
 	}
-
+	this->EndDialog(IDOK);
 }
 
 BOOL PbDetails::PreTranslateMessage(MSG* pMsg)

@@ -63,21 +63,25 @@ void CAgendaDlg::InitList()
 	LVCOLUMN col;
 	col.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	col.fmt = LVCFMT_LEFT;
-	col.cx = 120;
-	col.pszText = "Nume";
+	col.cx = 70;
+	col.pszText = "First Name";
 	listCtrl.InsertColumn(0, &col);
-	col.pszText = "Prenume";
+	col.pszText = "Last Name";
 	listCtrl.InsertColumn(1, &col);
-	col.pszText = "Numar Telefon";
+	col.pszText = "Phone Number";
 	listCtrl.InsertColumn(2, &col);
-	col.pszText = "Ocupatie";
+	col.pszText = "Occupation";
 	listCtrl.InsertColumn(3, &col);
-	col.pszText = "Varsta";
+	col.pszText = "Age";
 	listCtrl.InsertColumn(4, &col);
-	col.pszText = "Adresa";
+	col.pszText = "Address";
 	listCtrl.InsertColumn(5, &col);
 	col.pszText = "Email";
 	listCtrl.InsertColumn(6, &col);
+	col.pszText = "Type";
+	listCtrl.InsertColumn(7, &col);
+	col.pszText = "ID";
+	listCtrl.InsertColumn(8, &col);
 	listCtrl.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 }
 
@@ -324,6 +328,7 @@ void CAgendaDlg::LoadList(char *type, deque<Contact> list)
 		MessageBox("error emptying list", 0, 0);
 	cout<<"\nlist items count="<<listCtrl.GetItemCount();
 	cout<<"\ndeque items count="<<list.size()<<endl;
+	char tmp[5]; //tmp array of chars for converting from int to char*
 	for(int i = 0; i < (int) list.size(); i++)
 	{
 		item = listCtrl.InsertItem(i, list[i].getFirstName().c_str());
@@ -331,12 +336,20 @@ void CAgendaDlg::LoadList(char *type, deque<Contact> list)
 		listCtrl.SetItemText(item, 2, list[i].getPhoneNumber().c_str());
 		listCtrl.SetItemText(item, 3, list[i].getOccupation().c_str());
 		int age =list[i].getAge();
-		char a[3];
-		_itoa_s(age, a, 10);
 		if(age)
-			listCtrl.SetItemText(item, 4, a);
+		{
+			_itoa_s(age, tmp, 10);
+			listCtrl.SetItemText(item, 4, tmp);
+		}
 		listCtrl.SetItemText(item, 5, list[i].getHomeAddress().c_str());
 		listCtrl.SetItemText(item, 6, list[i].getEmailAddress().c_str());
+		listCtrl.SetItemText(item, 7, list[i].getContactType().c_str());
+		int id = list[i].getID();
+		if(id >= 0)
+		{
+			_itoa_s(id, tmp, 10);
+			listCtrl.SetItemText(item, 8, tmp);
+		}
 	}
 
 }

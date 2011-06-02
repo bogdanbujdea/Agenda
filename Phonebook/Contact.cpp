@@ -14,24 +14,27 @@ Contact::Contact()
 	mHomeAddress	= "";
 	mBirthDate.setYear(0);
 	mAge			= 0;
+	mID = -1;
 }
 
-Contact::Contact(string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType)
+Contact::Contact(string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID)
 {
 	mContactType	= ContactType;
 	mGender			= Gender;
 	mFirstName		= FirstName;
 	mLastName		= LastName;
 	mPhoneNumber	= PhoneNumber;
+	mID				= ID;
 
 	mEmailAddress	= "";
 	mOccupation		= "";
 	mHomeAddress	= "";
 	mBirthDate.setYear(0);
-	mAge			= 0;
+	mAge			= -1;
+
 }
 
-Contact::Contact(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType)
+Contact::Contact(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID)
 {
 	mContactType	= ContactType;
 	mGender			= Gender;
@@ -43,9 +46,10 @@ Contact::Contact(Date BirthDate, string HomeAddress, string EmailAddress, string
 	mHomeAddress	= HomeAddress;
 	mBirthDate		= BirthDate;
 	mAge			= Age;
+	mID = ID;
 }
 
-Contact::Contact(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType)
+Contact::Contact(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID)
 {
 	mContactType	= ContactType;
 	mEmailAddress	= EmailAddress;
@@ -55,7 +59,8 @@ Contact::Contact(string EmailAddress, string Occupation, int Age,string Gender, 
 	mFirstName		= FirstName;
 	mLastName		= LastName;
 	mPhoneNumber	= PhoneNumber;
-	
+	mID = ID;
+
 	mHomeAddress	= "";
 	mBirthDate.setYear(0);
 	
@@ -71,7 +76,9 @@ string Contact::getEmailAddress() { return mEmailAddress; }
 string Contact::getHomeAddress() { return mHomeAddress; }
 string Contact::getGender() { return mGender; }
 int Contact::getAge() { return mAge; }
+int Contact::getID() { cout<<"\nreturned id="<<mID<<endl; return mID; }
 
+void Contact::setID(int ID) { mID = ID; }
 void Contact::setFirstName(string FirstName) { mFirstName = FirstName; }
 void Contact::setLastName(string LastName) { mLastName = LastName; }
 void Contact::setPhoneNumber(string PhoneNumber) { mPhoneNumber = PhoneNumber; }

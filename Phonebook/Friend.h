@@ -6,7 +6,7 @@
 class Friend : public Contact
 {
 public:
-	Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType);
+	Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Friend(string *s);
 	Friend(const Friend &fr);
 	Contact::getFirstName;
@@ -19,7 +19,9 @@ public:
 	Contact::getBirthDate;
 	Contact::getHomeAddress;
 	Contact::getContactType;
+	Contact::getID;
 
+	Contact::setID;
 	Contact::setContactType;
 	Contact::setFirstName;
 	Contact::setLastName;

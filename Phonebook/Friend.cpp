@@ -1,8 +1,8 @@
 
 #include "Friend.h"
 
-Friend::Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType) :
-Contact(BirthDate, HomeAddress, EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType)
+Friend::Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID) :
+Contact(BirthDate, HomeAddress, EmailAddress, Occupation, Age, Gender, FirstName, LastName, PhoneNumber, ContactType, ID)
 {}
 
 Friend::Friend(const Friend &fr)
@@ -13,6 +13,7 @@ Friend::Friend(const Friend &fr)
 	mPhoneNumber = fr.mPhoneNumber;
 	mGender = fr.mGender;
 	mAge = fr.mAge;
+	mID = fr.mID;
 	mBirthDate.setDay(fr.mBirthDate.getDay());
 	mBirthDate.setMonth(fr.mBirthDate.getMonth());
 	mBirthDate.setYear(fr.mBirthDate.getYear());
@@ -41,6 +42,8 @@ Friend::Friend(string *s)
 	str>>day;
 	str>>month;
 	str>>year;
+	str<<s[9];
+	str>>mID;
 	mBirthDate.setDay(day);
 	mBirthDate.setMonth(month);
 	mBirthDate.setYear(year);
