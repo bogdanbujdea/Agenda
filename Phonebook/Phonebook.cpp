@@ -123,7 +123,7 @@ deque<Contact> Phonebook::getContacts(deque<Contact> list, string contactType)
 //	stringstream str;
 //	int age;
 //	str<<crt;
-//	str>>age;
+//str>>age;
 //	for(int i = 0; i < ContactList.getSize(); i++)
 //	{
 //		if(attribute == "occupation" && ContactList[i].getOccupation().find(crt) != string::npos)
