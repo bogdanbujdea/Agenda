@@ -287,7 +287,9 @@ void CAgendaDlg::OpenPb()
 	//int item;
 	string file;
 	Phonebook *p = &manager->detailsDlg->p->getInstance();
-	p->loadPhonebook();
+	if(!p->loadPhonebook())
+		MessageBox("Error at loading contacts!!", 0, 0);
+	
 
 }
 
@@ -481,6 +483,7 @@ void CAgendaDlg::DeleteContact()
 		}
 		listCtrl.DeleteItem(sel);
 	}
+	manager->detailsDlg->p->setChanged(true);
 }
 
 
@@ -500,12 +503,20 @@ BOOL CAgendaDlg::PreTranslateMessage(MSG* pMsg)
 void CAgendaDlg::ClosePhoneBook()
 {
 	// TODO: Add your control notification handler code here
-	manager->detailsDlg->p->savePhonebook(1);
+	if(manager->detailsDlg->p->isChanged())
+	{
+		if(MessageBox("Do you want to save the changes made to this phone book?", "Save", MB_ICONQUESTION | MB_YESNO) == IDYES)
+			manager->detailsDlg->p->savePhonebook(1);
+	}
+	else
+		manager->detailsDlg->p->savePhonebook(0);
+	manager->detailsDlg->p->setChanged(false);
 	if(listCtrl.DeleteAllItems() == 0)
 		MessageBox("Error deleting items", "ERROR", MB_ICONERROR);
 	cout<<"deleted\n";
 	ShowControls(0);
 	manager->ShowWindow(1);
+	
 }
 
 
@@ -533,7 +544,9 @@ void CAgendaDlg::AddNewContact()
 {
 	// TODO: Add your control notification handler code here
 	manager->detailsDlg->mode = ADD_CONTACT;
-	manager->detailsDlg->DoModal();
+	if(manager->detailsDlg->DoModal() == IDOK)
+		manager->detailsDlg->p->setChanged(true);
+
 }
 
 
@@ -548,7 +561,8 @@ void CAgendaDlg::EditContact()
 	{
 		manager->detailsDlg->mode = EDIT_CONTACT;
 		manager->detailsDlg->contact = sel;
-		manager->detailsDlg->DoModal();
+		if(manager->detailsDlg->DoModal() == IDOK)
+			manager->detailsDlg->p->setChanged(true);
 	}
 }
 
@@ -584,7 +598,13 @@ void CAgendaDlg::DeletePhoneBook()
 void CAgendaDlg::OnClose()
 {
 	// TODO: Add your message handler code here and/or call default
-	manager->detailsDlg->p->savePhonebook(1);
+	if(manager->detailsDlg->p->isChanged())
+	{
+		if(MessageBox("Do you want to save the changes made to this phone book before you exit?", "Save", MB_ICONQUESTION | MB_YESNO) == IDYES)
+			manager->detailsDlg->p->savePhonebook(1);
+	}
+	else
+		manager->detailsDlg->p->savePhonebook(0);
 	CDialogEx::OnClose();
 }
 

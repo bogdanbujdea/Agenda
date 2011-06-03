@@ -21,7 +21,8 @@ enum TypeOfSort
 class Phonebook
 {
 private:
-	string mDbName, mOwner, mPbName;
+	bool Changed;
+	string mDbName, mOwner, mPbName, mPbFolderPath;
 	ofstream mData;
 	static Phonebook *mInstance;
 	static bool mInstanceFlag;
@@ -29,6 +30,10 @@ private:
 	Phonebook();
 	Phonebook(const Phonebook&);
 public:
+	string getFolderPath() { return mPbFolderPath; }
+	void setFolderPath(string Path) { mPbFolderPath = Path; }
+	bool isChanged() { return Changed; }
+	void setChanged(bool Value) { Changed = Value; }
 	string getPbName() { return mPbName; }
 	void setPbName(string PbName) { mPbName = PbName; }
 	Database *ContactDB;

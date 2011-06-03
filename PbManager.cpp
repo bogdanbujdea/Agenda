@@ -127,6 +127,7 @@ void PbManager::Open()
 		path = PbApp.getFolderPath();
 		path += "\\";
 		path += OpenedPb;
+		detailsDlg->p->setFolderPath(path);
 		path += "\\";
 		path += OpenedPb;
 		path += ".db";

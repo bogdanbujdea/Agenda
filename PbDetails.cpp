@@ -565,6 +565,7 @@ int PbDetails::ValidateInputData()
 			MessageBox(PbApp.sp.GetStringError(GetLastError()), "Create Directory Error", 0);
 			return FILE_ERROR;
 	}
+	p->setFolderPath(details);
 	details += "\\";
 	ePbName.GetWindowTextA(tmp, 256);
 	details += tmp;
