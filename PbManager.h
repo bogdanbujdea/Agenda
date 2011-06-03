@@ -35,8 +35,8 @@ public:
 	int contact;
 	virtual void OnOK();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnBnClickedButton4();
-	afx_msg void OnBnClickedButton5();
+	afx_msg void DeletePhoneBook();
+	afx_msg void ViewPhoneBook();
 	virtual BOOL OnInitDialog();
 	CButton bDetails;
 };

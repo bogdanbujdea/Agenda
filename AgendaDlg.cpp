@@ -618,7 +618,9 @@ void CAgendaDlg::OnFileExit32795()
 void CAgendaDlg::DeletePhoneBook()
 {
 	// TODO: Add your command handler code here
-	manager->OnBnClickedButton4();
+	manager->DeletePhoneBook();
+	ShowControls(0);
+	manager->ShowWindow(1);
 }
 
 

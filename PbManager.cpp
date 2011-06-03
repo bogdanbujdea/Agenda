@@ -96,8 +96,8 @@ BEGIN_MESSAGE_MAP(PbManager, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &PbManager::OnCbnSelchangeCombo1)
 	ON_BN_CLICKED(IDC_NEWCONTACT, &PbManager::Open)
 	ON_BN_CLICKED(IDC_BTN_SEARCH, &PbManager::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbManager::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BTN_CLOSEPB, &PbManager::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BTN_EDIT_CONTACT, &PbManager::DeletePhoneBook)
+	ON_BN_CLICKED(IDC_BTN_CLOSEPB, &PbManager::ViewPhoneBook)
 END_MESSAGE_MAP()
 
 
@@ -172,7 +172,7 @@ BOOL PbManager::PreTranslateMessage(MSG* pMsg)
 }
 
 //delete Pb
-void PbManager::OnBnClickedButton4() //Delete Phone Book
+void PbManager::DeletePhoneBook() //Delete Phone Book
 {
 	// TODO: Add your control notification handler code here
 	int sel = cbList.GetCurSel();
@@ -229,7 +229,7 @@ void PbManager::OnBnClickedButton4() //Delete Phone Book
 }
 
 
-void PbManager::OnBnClickedButton5()
+void PbManager::ViewPhoneBook()
 {
 	// TODO: Add your control notification handler code here
 	int sel = cbList.GetCurSel();
