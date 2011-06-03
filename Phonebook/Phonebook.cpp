@@ -1,5 +1,6 @@
 #include "Phonebook.h"
 #include <sstream>
+#pragma warning( disable : 4290 )
 
 bool Phonebook::mInstanceFlag = false;
 Phonebook *Phonebook::mInstance = NULL;
@@ -12,6 +13,15 @@ Phonebook::Phonebook()
 	ContactDB = new Database(mDbName);
 }
 
+Contact* Contact::factory(const string& type, string *val)
+	throw(Contact::WrongContactCreation)
+{
+	if(type == "acquaintance") return new Acquaintance(val);
+	if(type == "colleague") return new Colleague(val);
+	if(type == "friend") return new Friend(val);
+	throw WrongContactCreation(type);
+}
+
 int Phonebook::loadPhonebook()
 {
 	if(!ContactDB->openDB())
@@ -19,7 +29,6 @@ int Phonebook::loadPhonebook()
 		MessageBox(0, "Can't open database", "ERROR", 0);
 		return 0;
 	}
-
 	ContactList.erase(ContactList.begin(), ContactList.end());
 	vector<vector<string>> retVal;
 	char Query[500];
@@ -31,25 +40,18 @@ int Phonebook::loadPhonebook()
 		string info[20];
 		string type;
 		
-		
 		for(i = 0; i < (int) retVal.size(); i++)
 		{
 			for(int j = 0; j < (int) retVal.at(i).size(); j++)
 				info[j] = retVal.at(i).at(j);
-			
-			
-			
-			if(info[1].compare("acquaintance") == 0)
-				addAcquaintance(info);
-			else if(info[1].compare("colleague") == 0)
-					addColleague(info);
-			else if(info[1].compare("friend") == 0)
-					addFriend(info);
-			else 
-				{
-					cout<<info[1]<<"\nThe phonebook file is corrupt\n";
-					ContactDB->close();
-					return 0;
+			try
+			{
+				ContactList.push_back(*Contact::factory(info[1], info));
+			}
+			catch(Contact::WrongContactCreation ct)
+			{
+				MessageBox(0, ct.what(), "Wrong Contact Type", MB_ICONWARNING);
+				return 0;
 			}
 			info->clear();
 		}

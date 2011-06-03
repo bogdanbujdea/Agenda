@@ -53,5 +53,12 @@ public:
 	void setAge(int Age);
 	void setID(int ID);
 	void setBirthDate(Date BirthDate);
+	class WrongContactCreation : public logic_error {
+  public:
+    WrongContactCreation(string type)
+    : logic_error("Cannot create type " + type) {}
+  };
+	static Contact* factory(const string& type, string *val)
+		throw(WrongContactCreation);
 };
 #endif

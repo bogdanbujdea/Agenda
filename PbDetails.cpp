@@ -494,14 +494,7 @@ int PbDetails::SaveContact()
 	try
 	{
 		p->ContactDB->InsertValues(contact, p->getPbName());
-		vector<vector<string>> retVal;
-		char Query[100];
-		sprintf(Query, "SELECT * FROM %s;",  p->getPbName().c_str());
-		retVal = p->ContactDB->query(Query);
 		p->ContactDB->close();
-		for(int i = 0; i < retVal.size(); i++)
-			for(int j = 0; j < retVal.at(i).size(); j++)
-				cout<<"\ndb["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j)<<endl;
 	}
 	catch(string error)
 	{
@@ -509,22 +502,17 @@ int PbDetails::SaveContact()
 	}
 	else
 		MessageBox("Can't Open Database", 0, 0);
-	int err = 0;
-	if(details[1].compare("acquaintance") == 0)
-		p->addAcquaintance(details);
-	else
-		if(details[1].compare("colleague") == 0)
-			p->addColleague(details);
-		else if(details[1].compare("friend") == 0)
-			p->addFriend(details);
-		else
-			err = 1;
-	if(!err)
+	try
 	{
-		MessageBox("Contact saved", 0, 0);
-		this->EndDialog(IDOK);
-		return SUCCESS;
+		p->ContactList.push_back(*Contact::factory(details[1], details));
 	}
+	catch(Contact::WrongContactCreation ct)
+	{
+		MessageBox(ct.what(), "Wrong Contact Type", MB_ICONWARNING);
+		return 1;
+	}
+	
+	MessageBox("Contact saved", 0, 0);
 	this->EndDialog(IDOK);
 	return SUCCESS;
 

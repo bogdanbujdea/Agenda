@@ -67,6 +67,8 @@ Contact::Contact(string EmailAddress, string Occupation, int Age,string Gender, 
 }
 
 
+
+
 string Contact::getFirstName() { return mFirstName; }
 string Contact::getLastName() { return mLastName; }
 string Contact::getPhoneNumber() { return mPhoneNumber; }
