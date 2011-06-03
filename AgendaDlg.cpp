@@ -170,6 +170,7 @@ ON_COMMAND(ID_FILE_EXIT32795, &CAgendaDlg::OnFileExit32795)
 ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::DeletePhoneBook)
 ON_WM_CLOSE()
 ON_COMMAND(ID_EDIT_DELETECONTACT, &CAgendaDlg::DeleteContact)
+ON_COMMAND(ID_EDIT_EDITCONTACT, &CAgendaDlg::OnEditContact)
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -209,7 +210,8 @@ BOOL CAgendaDlg::OnInitDialog()
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
-
+	
+	
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != NULL)
 	{
@@ -612,6 +614,7 @@ void CAgendaDlg::OnFileExit32795()
 {
 	// TODO: Add your command handler code here
 	this->CloseWindow();
+	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }
 
 
@@ -642,3 +645,10 @@ void CAgendaDlg::OnClose()
 //{
 //	// TODO: Add your command handler code here
 //}
+
+
+void CAgendaDlg::OnEditContact()
+{
+	// TODO: Add your command handler code here
+	this->EditContact();
+}

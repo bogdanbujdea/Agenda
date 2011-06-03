@@ -33,6 +33,7 @@ public:
 	virtual BOOL InitInstance();
 	Database *db;
 	SpeechEngine sp;
+	HACCEL m_hAccelTable;
 // Implementation
 	string getFilePath() { return filePath; }
 	string getFolderPath() { return folderPath; }
@@ -41,6 +42,7 @@ public:
 	bool LoadSettings();
 	void Notify();
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 };
 
 extern CAgenda PbApp;

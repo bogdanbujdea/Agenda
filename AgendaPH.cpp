@@ -151,6 +151,18 @@ BOOL CAgenda::InitInstance()
 	}
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
+	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDD_ACCELERATOR));
 	return FALSE;
 }
 
+
+
+BOOL CAgenda::ProcessMessageFilter(int code, LPMSG lpMsg)
+{
+  if (code >= 0 && m_pMainWnd && m_hAccelTable)
+  {
+    if (::TranslateAccelerator(m_pMainWnd->m_hWnd, m_hAccelTable, lpMsg))
+      return TRUE;
+  }
+	return CWinApp::ProcessMessageFilter(code, lpMsg);
+}

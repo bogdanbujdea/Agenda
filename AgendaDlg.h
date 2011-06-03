@@ -78,4 +78,5 @@ public:
 	afx_msg void DeletePhoneBook();
 	afx_msg void OnClose();
 	afx_msg void OnEditDeletecontact();
+	afx_msg void OnEditContact();
 };
