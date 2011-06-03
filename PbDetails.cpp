@@ -99,34 +99,78 @@ void PbDetails::OnBnClickedButton3()
 int PbDetails::ChangeContact()
 {
 	char tmp[1024];
-	string details[10];
-	ePbName.GetWindowTextA(tmp, 256);
-	details[0] = tmp;
-	eFirstName.GetWindowTextA(tmp, 256);
-	details[1] = tmp;
-	eLastName.GetWindowTextA(tmp, 256);
-	details[2] = tmp;
-	ePhoneNumber.GetWindowTextA(tmp, 256);
-	details[3] = tmp;
-	eAge.GetWindowTextA(tmp, 256);
-	details[4] = "";
-	details[5] = tmp;
-	eEmail.GetWindowTextA(tmp, 256);
-	details[6] = tmp;
-	eOccupation.GetWindowTextA(tmp, 256);
-	details[7] = tmp;
-	eBirthDate.GetWindowTextA(tmp, 256);
-	details[8] = tmp;
-	eHomeAddress.GetWindowTextA(tmp, 256);
-	details[9] = tmp;
-	p->ContactList[contact].setFirstName(details[1]);
-	p->ContactList[contact].setLastName(details[2]);
-	p->ContactList[contact].setEmailAddress(details[6]);
-	p->ContactList[contact].setHomeAddress(details[9]);
-	p->ContactList[contact].setPhoneNumber(details[3]);
-	p->ContactList[contact].setOccupation(details[7]);
-	int age = atoi(details[5].c_str());
-	p->ContactList[contact].setAge(age);
+	string details[15];
+	for(int i = 0; i < 14; i++) details[i] = "";
+	//ePbName.GetWindowTextA(tmp, 256);
+	if(p->ContactDB->openDB())
+	{
+		try
+		{
+			if(eFirstName.GetWindowTextA(tmp, 256))
+			{
+				details[1] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "FirstName", tmp);
+			}
+			if(eLastName.GetWindowTextA(tmp, 256))
+			{
+				details[2] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "LastName", tmp);
+			}
+			if(ePhoneNumber.GetWindowTextA(tmp, 256))
+			{
+				details[3] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "PhoneNumber", tmp);
+			}
+			details[4] = "UNKNOWN";
+			if(eAge.GetWindowTextA(tmp, 256))
+			{
+				details[5] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "Age", tmp);
+			}
+			if(eEmail.GetWindowTextA(tmp, 256))
+			{
+				details[6] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "Email", tmp);
+			}
+			if(eOccupation.GetWindowTextA(tmp, 256))
+			{
+				details[7] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "Occupation", tmp);
+			}
+			if(eBirthDate.GetWindowTextA(tmp, 256))
+			{
+				details[8] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "BirthDate", tmp);
+			}
+			if(eHomeAddress.GetWindowTextA(tmp, 256))
+			{
+				details[9] = tmp;
+				p->ContactDB->UpdateValueById(ID, p->getPbName(), "Address", tmp);
+			}
+			Iterator *it = p->createIterator();
+			it->first();
+			while(it->getIndex() != contact && !it->isDone()) it->next();
+			it->currentItem()->setFirstName(details[1]);
+			it->currentItem()->setLastName(details[2]);
+			it->currentItem()->setPhoneNumber(details[3]);
+			it->currentItem()->setGender(details[4]);
+			int age = atoi(details[5].c_str());
+			it->currentItem()->setAge(age);
+			it->currentItem()->setEmailAddress(details[6]);
+			it->currentItem()->setOccupation(details[7]);
+			//it->currentItem()->setBirthDate(details[8]);
+			it->currentItem()->setHomeAddress(details[9]);
+			p->ContactDB->close();
+		}
+		catch(string error)
+		{
+			MessageBox(error.c_str(), "Update error", MB_ICONWARNING);
+			p->ContactDB->close();
+		}
+	}
+	else
+		MessageBox("Can't open database", 0, MB_ICONWARNING);
+	
 	this->EndDialog(IDOK);
 	return SUCCESS;
 }
@@ -466,12 +510,12 @@ int PbDetails::SaveContact()
 	else
 		MessageBox("Can't Open Database", 0, 0);
 	int err = 0;
-	if(details[0].compare("acquaintance") == 0)
+	if(details[1].compare("acquaintance") == 0)
 		p->addAcquaintance(details);
 	else
-		if(details[0].compare("colleague") == 0)
+		if(details[1].compare("colleague") == 0)
 			p->addColleague(details);
-		else if(details[0].compare("friend") == 0)
+		else if(details[1].compare("friend") == 0)
 			p->addFriend(details);
 		else
 			err = 1;
@@ -481,7 +525,8 @@ int PbDetails::SaveContact()
 		this->EndDialog(IDOK);
 		return SUCCESS;
 	}
-	return 1;
+	this->EndDialog(IDOK);
+	return SUCCESS;
 
 }
 

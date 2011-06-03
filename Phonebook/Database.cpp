@@ -57,18 +57,10 @@ string Database::GetValue(string TableName, string Column, string Options)
 
 void Database::UpdateValueById(int ID, string TableName, string Column, string Value)
 {
-	string Query;
-	Query = "Update ";
-	Query += TableName;
-	Query += " SET ";
-	Query += Column;
-	Query += "='";
-	Query += Value;
-	Query += "' WHERE ID='";
+	char Query[256];
 	char id[10];
 	_itoa_s(ID, id, 10);
-	Query += id;
-	Query += "';";
+	sprintf(Query, "Update %s SET %s='%s' WHERE ID=%s;", TableName.c_str(), Column.c_str(), Value.c_str(), id);
 	cout<<"\n\nQuery = "<< Query << endl;
 	try
 	{

@@ -63,31 +63,33 @@ void CAgendaDlg::InitList()
 	LVCOLUMN col;
 	col.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	col.fmt = LVCFMT_LEFT;
-	col.cx = 100;
-	col.pszText = "First Name";
-	listCtrl.InsertColumn(0, &col);
-	col.pszText = "Last Name";
-	listCtrl.InsertColumn(1, &col);
-	col.pszText = "Phone Number";
-	listCtrl.InsertColumn(2, &col);
-	col.pszText = "Occupation";
-	col.cx = 70;
-	listCtrl.InsertColumn(3, &col);
-	col.pszText = "Age";
-	col.cx = 45;
-	listCtrl.InsertColumn(4, &col);
-	col.pszText = "Address";
-	col.cx = 120;
-	listCtrl.InsertColumn(5, &col);
-	col.pszText = "Email";
-	col.cx = 110;
-	listCtrl.InsertColumn(6, &col);
-	col.pszText = "Type";
-	col.cx = 90;
-	listCtrl.InsertColumn(7, &col);
 	col.pszText = "ID";
 	col.cx = 30;
+	listCtrl.InsertColumn(0, &col);
+	col.cx = 100;
+	col.pszText = "First Name";
+	listCtrl.InsertColumn(1, &col);
+	col.pszText = "Last Name";
+	listCtrl.InsertColumn(2, &col);
+	col.pszText = "Phone Number";
+	listCtrl.InsertColumn(3, &col);
+	col.pszText = "Occupation";
+	col.cx = 70;
+	listCtrl.InsertColumn(4, &col);
+	col.pszText = "Age";
+	col.cx = 45;
+	listCtrl.InsertColumn(5, &col);
+	col.pszText = "Address";
+	col.cx = 120;
+	listCtrl.InsertColumn(6, &col);
+	col.pszText = "Email";
+	col.cx = 110;
+	listCtrl.InsertColumn(7, &col);
+	col.pszText = "Type";
+	col.cx = 90;
 	listCtrl.InsertColumn(8, &col);
+	
+	
 	listCtrl.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 }
 
@@ -173,7 +175,7 @@ END_MESSAGE_MAP()
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
 {
 	LRESULT x = NULL;
-	//LoadList("this", manager->detailsDlg->p->search(info->attribute, info->text, "all"));
+	LoadList("this", manager->detailsDlg->p->search(info->attribute, info->text, "all"));
 	return x;
 }
 
@@ -339,25 +341,26 @@ void CAgendaDlg::LoadList(char *type, deque<Contact> list)
 	char tmp[5]; //tmp array of chars for converting from int to char*
 	for(int i = 0; i < (int) list.size(); i++)
 	{
-		item = listCtrl.InsertItem(i, list[i].getFirstName().c_str());
-		listCtrl.SetItemText(item, 1, list[i].getLastName().c_str());
-		listCtrl.SetItemText(item, 2, list[i].getPhoneNumber().c_str());
-		listCtrl.SetItemText(item, 3, list[i].getOccupation().c_str());
-		int age =list[i].getAge();
-		if(age)
-		{
-			_itoa_s(age, tmp, 10);
-			listCtrl.SetItemText(item, 4, tmp);
-		}
-		listCtrl.SetItemText(item, 5, list[i].getHomeAddress().c_str());
-		listCtrl.SetItemText(item, 6, list[i].getEmailAddress().c_str());
-		listCtrl.SetItemText(item, 7, list[i].getContactType().c_str());
 		int id = list[i].getID();
 		if(id >= 0)
 		{
 			_itoa_s(id, tmp, 10);
-			listCtrl.SetItemText(item, 8, tmp);
+			item = listCtrl.InsertItem(i, tmp);
 		}
+		listCtrl.SetItemText(item, 1, list[i].getFirstName().c_str());
+		listCtrl.SetItemText(item, 2, list[i].getLastName().c_str());
+		listCtrl.SetItemText(item, 3, list[i].getPhoneNumber().c_str());
+		listCtrl.SetItemText(item, 4, list[i].getOccupation().c_str());
+		int age =list[i].getAge();
+		if(age)
+		{
+			_itoa_s(age, tmp, 10);
+			listCtrl.SetItemText(item, 5, tmp);
+		}
+		listCtrl.SetItemText(item, 6, list[i].getHomeAddress().c_str());
+		listCtrl.SetItemText(item, 7, list[i].getEmailAddress().c_str());
+		listCtrl.SetItemText(item, 8, list[i].getContactType().c_str());
+		
 	}
 
 }
@@ -466,24 +469,38 @@ void CAgendaDlg::DeleteContact()
 	int sel = listCtrl.GetSelectionMark();
 	Iterator *it = p->createIterator();
 ///	cout<<"age="<<it->currentItem().getFirstName()<<endl;
-	
-	int i = GetSelectedContact();
+	CString cStr;
+	cStr = listCtrl.GetItemText(sel, 0);
+	int i = atoi(cStr.GetBuffer());
+	//int i = GetSelectedContact();
 	if(i == -1)
 		MessageBox("invalid index", 0, 0);
 	else
 	{
+		if(p->ContactDB->openDB())
 		try
 		{
-			cout<<"\ndelete index="<<i;
-			p->ContactList.erase(p->ContactList.begin() + i);
+		
+			char Query[256];
+			sprintf(Query, "DELETE FROM %s WHERE Id=%s;", manager->detailsDlg->p->getPbName().c_str(), cStr.GetBuffer());
+			manager->detailsDlg->p->ContactDB->query(Query);
+			it->first();
+			while(it->currentItem()->getID() != i)
+				it->next();
+			p->ContactList.erase(p->ContactList.begin() + it->getIndex());
+			listCtrl.DeleteItem(sel);
+			p->ContactDB->close();
+			manager->detailsDlg->p->setChanged(true);
 		}
 		catch(string error)
 		{
-			cout<<"\nerror:"<<error<<endl;
+			MessageBox(error.c_str(), "Exception caught when deleting contact", MB_ICONWARNING);
 		}
-		listCtrl.DeleteItem(sel);
+		else
+			MessageBox("Can't open database", 0, MB_ICONWARNING);
+		
 	}
-	manager->detailsDlg->p->setChanged(true);
+	
 }
 
 
@@ -545,7 +562,11 @@ void CAgendaDlg::AddNewContact()
 	// TODO: Add your control notification handler code here
 	manager->detailsDlg->mode = ADD_CONTACT;
 	if(manager->detailsDlg->DoModal() == IDOK)
+	{
 		manager->detailsDlg->p->setChanged(true);
+		deque<Contact> List;
+		LoadList("all", List);
+	}
 
 }
 
@@ -559,10 +580,16 @@ void CAgendaDlg::EditContact()
 		MessageBox("First select a contact!", "ERROR", MB_ICONWARNING);
 	else
 	{
+		CString str = listCtrl.GetItemText(sel, 0);
+		manager->detailsDlg->ID = atoi(str.GetBuffer());
 		manager->detailsDlg->mode = EDIT_CONTACT;
 		manager->detailsDlg->contact = sel;
 		if(manager->detailsDlg->DoModal() == IDOK)
+		{
 			manager->detailsDlg->p->setChanged(true);
+			deque<Contact> List;
+			LoadList("all", List);
+		}
 	}
 }
 

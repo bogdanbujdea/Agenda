@@ -14,38 +14,30 @@ Phonebook::Phonebook()
 
 int Phonebook::loadPhonebook()
 {
-	ifstream phb;//("c:\\l.txt",ios::app);
 	if(!ContactDB->openDB())
 	{
 		MessageBox(0, "Can't open database", "ERROR", 0);
 		return 0;
 	}
-	//ZeroMemory(&ContactList, sizeof(ContactList));
+
 	ContactList.erase(ContactList.begin(), ContactList.end());
 	vector<vector<string>> retVal;
 	char Query[500];
 	try
 	{
-		cout<<"\npb to be opened="<<mPbName<<endl;
 		sprintf(Query, "SELECT * FROM %s;", mPbName.c_str());
 		retVal = ContactDB->query(Query);
 		int i, j;
 		string info[20];
 		string type;
-		cout<<"\nretval size()="<<retVal.size()<<endl;
 		
-		for(i = 0; i < (int) retVal.size(); i++)
-		{
-			for(int j = 0; j < (int) retVal.at(i).size(); j++)
-				cout<<"at["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j)<<endl;
-			cout<<endl;
-		}
+		
 		for(i = 0; i < (int) retVal.size(); i++)
 		{
 			for(int j = 0; j < (int) retVal.at(i).size(); j++)
 				info[j] = retVal.at(i).at(j);
 			
-			cout<<"\nctc type="<<info[1]<<endl;
+			
 			
 			if(info[1].compare("acquaintance") == 0)
 				addAcquaintance(info);
@@ -61,13 +53,7 @@ int Phonebook::loadPhonebook()
 			}
 			info->clear();
 		}
-		//for(int i = 0; i < ContactList.size(); i++)
-		//{
-		//	cout<<"\ni="<<i<<" contact name="<<ContactList[i].getFirstName()<<endl;
-		//}
-	/*			cout<<"\nat["<<i<<"]["<<j<<"]="<<retVal.at(i).at(j);
-			cout<<endl;
-		}*/
+	
 	}
 	catch(string error)
 	{
@@ -147,36 +133,36 @@ deque<Contact> Phonebook::getContacts(deque<Contact> list, string contactType)
 	return tmpList;
 }
 //
-//List Phonebook::search(string attribute, string crt, string contactType)
-//{
-//	List tmpList;
-//	stringstream str;
-//	int age;
-//	str<<crt;
-//str>>age;
-//	for(int i = 0; i < ContactList.getSize(); i++)
-//	{
-//		if(attribute == "occupation" && ContactList[i].getOccupation().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "lastname" && ContactList[i].getLastName().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "firstname" && ContactList[i].getFirstName().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "gender" && ContactList[i].getGender().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "birth date" && ContactList[i].getBirthDate().toString() == crt)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "number" && ContactList[i].getPhoneNumber().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "email" && ContactList[i].getEmailAddress().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "address" && ContactList[i].getHomeAddress().find(crt) != string::npos)
-//			tmpList.add(ContactList[i]);
-//		else if(attribute == "age" && ContactList[i].getAge() == age)
-//			tmpList.add(ContactList[i]);
-//	}
-//	return getContacts(tmpList, contactType);
-//}
+deque<Contact> Phonebook::search(string attribute, string crt, string contactType)
+{
+	deque<Contact> tmpList;
+	Iterator *it = createIterator();
+	it->first();
+	stringstream str;
+	int age;
+	str<<crt;
+	str>>age;
+	for(it->first(); !it->isDone(); it->next())
+	{
+		if(attribute == "occupation" && it->currentItem()->getOccupation().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "lastname" && it->currentItem()->getLastName().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "gender" && it->currentItem()->getGender().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "birth date" && it->currentItem()->getBirthDate().toString() == crt)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "number" && it->currentItem()->getPhoneNumber().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "email" && it->currentItem()->getEmailAddress().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "address" && it->currentItem()->getHomeAddress().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
+		else if(attribute == "age" && it->currentItem()->getAge() == age)
+			tmpList.push_back(*it->currentItem());
+	}
+	return getContacts(tmpList, contactType);
+}
 
 
 

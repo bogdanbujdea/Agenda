@@ -61,7 +61,7 @@ public:
 	deque<Contact> getContacts(deque<Contact> list, string contactType);
 	void deleteContact(int nIndex);
 	int displayContacts(deque<Contact> list);
-	//List search(string attribute, string crt, string contactType);
+	deque<Contact> search(string attribute, string crt, string contactType);
 	friend bool sortByName(Contact c1, Contact c2);
 	void Sort(int SortType);
 	int loadPhonebook();
@@ -85,6 +85,9 @@ public:
 	{
 		index = 0;
 	}
+
+	int getIndex() { return index; }
+
 	void next()
 	{
 		if(!isDone())

@@ -56,6 +56,7 @@ public:
 	afx_msg void OnBnClickedButton4();
 	bool show;
 	int picLoaded;
+	int ID;
 	CEdit eFirstName;
 	CEdit eLastName;
 	CEdit ePhoneNumber;
