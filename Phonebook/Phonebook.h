@@ -16,6 +16,7 @@ enum TypeOfSort
 {
 	SORT_BY_FIRST_NAME,
 	SORT_BY_LAST_NAME,
+	SORT_BY_ID
 };
 
 class Phonebook

@@ -146,6 +146,8 @@ deque<Contact> Phonebook::search(string attribute, string crt, string contactTyp
 	str>>age;
 	for(it->first(); !it->isDone(); it->next())
 	{
+		if(attribute == "firstname" && it->currentItem()->getFirstName().find(crt) != string::npos)
+			tmpList.push_back(*it->currentItem());
 		if(attribute == "occupation" && it->currentItem()->getOccupation().find(crt) != string::npos)
 			tmpList.push_back(*it->currentItem());
 		else if(attribute == "lastname" && it->currentItem()->getLastName().find(crt) != string::npos)
@@ -172,12 +174,16 @@ deque<Contact> Phonebook::search(string attribute, string crt, string contactTyp
 
 bool sortByLastName (Contact c1, Contact c2)
 {
-    /* a person is less than another person
-     * - if the last name is less
-     * - if the last name is equal and the first name is less
-     */
+   
     return c1.getLastName() < c2.getLastName();
 }
+
+bool sortByID (Contact c1, Contact c2)
+{
+   
+    return c1.getID() < c2.getID();
+}
+
 
 bool sortByFirstName (Contact c1, Contact c2)
 {
@@ -193,6 +199,8 @@ void Phonebook::Sort(int SortType)
 		break;
 	case SORT_BY_LAST_NAME:
 		sort(ContactList.begin(), ContactList.end(), sortByLastName);
+	case SORT_BY_ID:
+		sort(ContactList.begin(), ContactList.end(), sortByID);
 		break;
 	default:
 		throw("Invalid type of sort");

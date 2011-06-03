@@ -107,6 +107,8 @@ public:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnHelpAbout();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -119,6 +121,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_COMMAND(ID_HELP_ABOUT, &CAboutDlg::OnHelpAbout)
 END_MESSAGE_MAP()
 
 
@@ -173,6 +176,9 @@ ON_COMMAND(ID_EDIT_DELETECONTACT, &CAgendaDlg::DeleteContact)
 ON_COMMAND(ID_EDIT_EDITCONTACT, &CAgendaDlg::OnEditContact)
 ON_BN_CLICKED(IDC_BUTTON6, &CAgendaDlg::OnBnClickedButton6)
 ON_BN_CLICKED(IDC_BUTTON7, &CAgendaDlg::OnBnClickedButton7)
+ON_BN_CLICKED(IDC_RADIO1, &CAgendaDlg::OnBnClickedRadio1)
+ON_BN_CLICKED(IDC_RADIO2, &CAgendaDlg::OnBnClickedRadio2)
+ON_BN_CLICKED(IDC_RADIO3, &CAgendaDlg::OnBnClickedRadio3)
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -253,7 +259,7 @@ BOOL CAgendaDlg::OnInitDialog()
 	HICON hNew = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON4));
 	HICON hClear = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON5));
 	HICON hClose = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON7));
-	HICON hSave = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON8));
+	//HICON hSave = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON8));
 	HICON hDeletePb = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON9));
 	
 	DWORD error = GetLastError();
@@ -261,7 +267,7 @@ BOOL CAgendaDlg::OnInitDialog()
 	//_itoa_s(error, err, 10);
 	//MessageBox(err, err, 0);
 	bClosePb.SetIcon(hClose);
-	bSavePb.SetIcon(hSave);
+	//bSavePb.SetIcon(hSave);
 	bDeletePb.SetIcon(hDeletePb);
 	bSearch.SetIcon(hSearch);
 	bEdit.SetIcon(hEdit);
@@ -658,12 +664,47 @@ void CAgendaDlg::OnEditContact()
 
 void CAgendaDlg::OnBnClickedButton6()
 {
-	manager->detailsDlg->p->savePhonebook(1);
+	manager->detailsDlg->p->Sort(SortType);
+	deque<Contact> List;
+	listCtrl.DeleteAllItems();
+	LoadList("all", List);
 	// TODO: Add your control notification handler code here
 }
 
 
 void CAgendaDlg::OnBnClickedButton7()
 {
+	manager->DeletePhoneBook();
+	// TODO: Add your control notification handler code here
+}
+
+
+void CAboutDlg::OnHelpAbout()
+{
+	MessageBox("Phone Book Created by Bujdea Bogdan-Costinel", "3A", MB_ICONINFORMATION);
+	// TODO: Add your command handler code here
+}
+
+
+void CAgendaDlg::OnBnClickedRadio1()
+{
+	SortType = SORT_BY_FIRST_NAME;
+	
+	// TODO: Add your control notification handler code here
+}
+
+
+void CAgendaDlg::OnBnClickedRadio2()
+{
+	SortType = SORT_BY_LAST_NAME;
+	
+	// TODO: Add your control notification handler code here
+}
+
+
+void CAgendaDlg::OnBnClickedRadio3()
+{
+	SortType = SORT_BY_ID;
+	
 	// TODO: Add your control notification handler code here
 }

@@ -83,9 +83,9 @@ CAgenda::CAgenda() : PbNumber(0), folderPath(""), filePath(""), sp(0, 2, 100)
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
-	AllocConsole();
+	/*AllocConsole();
 	AttachConsole( GetCurrentProcessId() ) ;
-	freopen( "CON", "w", stdout ) ;
+	freopen( "CON", "w", stdout ) ;*/
 	//PbApp.sp.SpeakText("Hi! Welcome to my Phone Book program !!");
 	InitiateProgram();
 	// TODO: add construction code here,
@@ -151,7 +151,7 @@ BOOL CAgenda::InitInstance()
 	}
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
-	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDD_ACCELERATOR));
+	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
 	return FALSE;
 }
 

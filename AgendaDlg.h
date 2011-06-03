@@ -37,7 +37,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-
+	int SortType;
 	CTreeCtrl TreeCtrl;
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult);
@@ -81,4 +81,7 @@ public:
 	afx_msg void OnEditContact();
 	afx_msg void OnBnClickedButton6();
 	afx_msg void OnBnClickedButton7();
+	afx_msg void OnBnClickedRadio1();
+	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadio3();
 };
