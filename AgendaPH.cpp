@@ -159,10 +159,9 @@ BOOL CAgenda::InitInstance()
 
 BOOL CAgenda::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
-  if (code >= 0 && m_pMainWnd && m_hAccelTable)
-  {
+ 
     if (::TranslateAccelerator(m_pMainWnd->m_hWnd, m_hAccelTable, lpMsg))
       return TRUE;
-  }
+
 	return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
