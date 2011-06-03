@@ -171,6 +171,8 @@ ON_COMMAND(ID_EDIT_DELETEPHONEBOOK, &CAgendaDlg::DeletePhoneBook)
 ON_WM_CLOSE()
 ON_COMMAND(ID_EDIT_DELETECONTACT, &CAgendaDlg::DeleteContact)
 ON_COMMAND(ID_EDIT_EDITCONTACT, &CAgendaDlg::OnEditContact)
+ON_BN_CLICKED(IDC_BUTTON6, &CAgendaDlg::OnBnClickedButton6)
+ON_BN_CLICKED(IDC_BUTTON7, &CAgendaDlg::OnBnClickedButton7)
 END_MESSAGE_MAP()
 
 LRESULT CAgendaDlg::Search(UINT wParam, LONG lParam)
@@ -651,4 +653,17 @@ void CAgendaDlg::OnEditContact()
 {
 	// TODO: Add your command handler code here
 	this->EditContact();
+}
+
+
+void CAgendaDlg::OnBnClickedButton6()
+{
+	manager->detailsDlg->p->savePhonebook(1);
+	// TODO: Add your control notification handler code here
+}
+
+
+void CAgendaDlg::OnBnClickedButton7()
+{
+	// TODO: Add your control notification handler code here
 }

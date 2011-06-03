@@ -79,4 +79,6 @@ public:
 	afx_msg void OnClose();
 	afx_msg void OnEditDeletecontact();
 	afx_msg void OnEditContact();
+	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton7();
 };

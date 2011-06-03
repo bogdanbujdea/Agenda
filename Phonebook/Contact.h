@@ -1,7 +1,7 @@
 
 #ifndef CONTACT_H
 #define CONTACT_H
-
+#pragma warning( disable : 4290 )
 #include "Date.h"
 #include <iostream>
 #include <string>

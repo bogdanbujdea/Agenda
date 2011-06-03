@@ -177,23 +177,35 @@ int PbDetails::ChangeContact()
 
 void PbDetails::DisplayInfo()
 {
-	if(p->ContactList[contact].getContactType().compare("acquaintance") == 0)
+	Iterator *it = p->createIterator();
+	it->first();
+	while(it->getIndex() != contact && !it->isDone())
+		it->next();
+	if(it->currentItem()->getContactType().compare("acquaintance") == 0)
 		cbType.SetCurSel(0);
-	else if(p->ContactList[contact].getContactType().compare("colleague") == 0)
+	else if(it->currentItem()->getContactType().compare("colleague") == 0)
 		cbType.SetCurSel(1);
 	else cbType.SetCurSel(2);
 	this->SetWindowTextA("Contact Details");
-	eFirstName.SetWindowTextA(p->ContactList[contact].getFirstName().c_str());
-	eLastName.SetWindowTextA(p->ContactList[contact].getLastName().c_str());
-	ePhoneNumber.SetWindowTextA(p->ContactList[contact].getPhoneNumber().c_str());
-	eOccupation.SetWindowTextA(p->ContactList[contact].getOccupation().c_str());
-	int age = p->ContactList[contact].getAge();
+	eFirstName.SetWindowTextA(it->currentItem()->getFirstName().c_str());
+	eLastName.SetWindowTextA(it->currentItem()->getLastName().c_str());
+	ePhoneNumber.SetWindowTextA(it->currentItem()->getPhoneNumber().c_str());
+	eOccupation.SetWindowTextA(it->currentItem()->getOccupation().c_str());
+	int age = it->currentItem()->getAge();
 	char tmp[10]; 
 	_itoa_s(age, tmp, 10);
 	eAge.SetWindowTextA(tmp);
-	eHomeAddress.SetWindowTextA(p->ContactList[contact].getHomeAddress().c_str());
-	eEmail.SetWindowTextA(p->ContactList[contact].getEmailAddress().c_str());
-	eBirthDate.SetWindowTextA(p->ContactList[contact].getBirthDate().toString().c_str());
+	eHomeAddress.SetWindowTextA(it->currentItem()->getHomeAddress().c_str());
+	eEmail.SetWindowTextA(it->currentItem()->getEmailAddress().c_str());
+	eBirthDate.SetWindowTextA(it->currentItem()->getBirthDate().toString().c_str());
+	string folder = p->getFolderPath();
+	folder += "\\";
+	folder += it->currentItem()->getFirstName();
+	folder += "_";
+	folder += it->currentItem()->getLastName();
+	folder += ".jpg";
+	CString str = folder.c_str();
+	mPic.LoadFromFile(str);
 }
 
 void PbDetails::ViewContact()
@@ -490,6 +502,24 @@ int PbDetails::SaveContact()
 		contact["Address"] = tmp;
 	}
 	cout<<"\npb name="<<p->ContactDB->getDbName()<<endl;
+	if(picLoaded)
+	{	
+		photoPath = p->getFolderPath();
+		photoPath += "\\";
+		photoPath += details[2];
+		photoPath += "_";
+		photoPath += details[3];
+		photoPath += ".jpg";
+		if(CopyFile(RemotePhotoPath.c_str(), photoPath.c_str(), 0) == 0)
+		{
+			MessageBox("Can't copy photo", PbApp.sp.GetStringError(GetLastError()), 0);
+				
+			//MessageBox("Can't copy photo", "ERROR", MB_ICONERROR);
+		}
+		sprintf(tmp, "'%s'", photoPath.c_str());
+		contact["PhotoPath"]=tmp;
+		
+	}
 	if(p->ContactDB->openDB())
 	try
 	{
