@@ -157,11 +157,11 @@ BOOL CAgenda::InitInstance()
 
 
 
-BOOL CAgenda::ProcessMessageFilter(int code, LPMSG lpMsg)
-{
- 
-    if (::TranslateAccelerator(m_pMainWnd->m_hWnd, m_hAccelTable, lpMsg))
-      return TRUE;
-
-	return CWinApp::ProcessMessageFilter(code, lpMsg);
-}
+//BOOL CAgenda::ProcessMessageFilter(int code, LPMSG lpMsg)
+//{
+// 
+//    if (::TranslateAccelerator(m_pMainWnd->m_hWnd, m_hAccelTable, lpMsg))
+//      return TRUE;
+//
+//	return CWinApp::ProcessMessageFilter(code, lpMsg);
+//}

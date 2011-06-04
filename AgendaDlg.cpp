@@ -238,6 +238,7 @@ BOOL CAgendaDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+	hAccelerators = LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
 	// TODO: Add extra initialization here
 	InitTree();
@@ -419,10 +420,7 @@ void CAgendaDlg::OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
-void CAgendaDlg::OnBnClickedMfcbutton1()
-{
-	// TODO: Add your control notification handler code here
-}
+
 
 
 int CAgendaDlg::GetSelectedContact()
@@ -516,14 +514,10 @@ void CAgendaDlg::DeleteContact()
 
 BOOL CAgendaDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: Add your specialized code here and/or call the base class
-	if((pMsg->message == WM_KEYDOWN) && 
-    (pMsg->wParam == VK_RETURN) || (pMsg->wParam == VK_ESCAPE))
-	{
-	   // Enter key was hit -> do whatever you want
-	   return TRUE;
-	}
-	return CDialogEx::PreTranslateMessage(pMsg);
+	// utilizare acceleratori
+	if(TranslateAccelerator(m_hWnd, hAccelerators, pMsg))
+		return TRUE;
+	return CDialog::PreTranslateMessage(pMsg);
 }
 
 

@@ -42,7 +42,7 @@ public:
 	bool LoadSettings();
 	void Notify();
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+	//virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 };
 
 extern CAgenda PbApp;

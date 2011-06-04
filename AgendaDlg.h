@@ -36,7 +36,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-
+	HACCEL hAccelerators;
 	int SortType;
 	CTreeCtrl TreeCtrl;
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
