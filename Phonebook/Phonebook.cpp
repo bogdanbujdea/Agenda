@@ -69,7 +69,6 @@ int Phonebook::loadPhonebook()
 	tmp += mPbName;
 	tmp += ".db~";
 	oldDB = ContactDB->getDbName();
-	cout<<"\ntmp db="<<tmp<<endl;
 	if(!CopyFile(ContactDB->getDbName().c_str(), tmp.c_str(), 0))
 		MessageBox(0, "Can't create tmp database", 0, 0);
 	else
@@ -81,40 +80,6 @@ string Phonebook::getOwner() { return mOwner; }
 
 void Phonebook::setOwner(string owner) { mOwner = owner; }
 
-//int Phonebook::addAcquaintance(string *s)
-//{
-//	Acquaintance tmp(s);
-//	ContactList.push_back(tmp);
-//	return 1;
-//}
-//
-//int Phonebook::addColleague(string *s)
-//{
-//	Colleague col(s);
-//	ContactList.push_back(col);
-//	return 0;
-//}
-//
-//int Phonebook::addFriend(string *s)
-//{
-//	Friend fr(s);
-//	ContactList.push_back(fr);
-//	return 0;
-//}
-
-int Phonebook::displayContacts(deque<Contact> list)
-{
-	cout<<"\n\nContacts:\n\n";
-	cout<<"size="<<list.size();
-	for(int i = 0; i < (int)list.size(); i++)
-	{
-		cout<<"\nFirst Name:"<<list[i].getFirstName();
-		cout<<"\nLast Name:"<<list[i].getLastName();
-		cout<<"\nPhone number:"<<list[i].getPhoneNumber();
-		cout<<"\nGender:"<<list[i].getGender()<<endl<<endl;
-	}
-	return 0;
-}
 
 void Phonebook::deleteContact(int nIndex)
 {
@@ -215,7 +180,6 @@ int Phonebook::savePhonebook(int save)
 	{
 		if(!CopyFile(ContactDB->getDbName().c_str(), oldDB.c_str(), 0) || !DeleteFile(ContactDB->getDbName().c_str()))
 			MessageBox(0, "Can't save the phone book!", "Error save", 0);
-		cout<<"\nerror="<<GetLastError()<<endl;
 	}
 	
 	return 0;
@@ -223,7 +187,7 @@ int Phonebook::savePhonebook(int save)
 
 Phonebook::~Phonebook()
 {
-	//savePhonebook(1);
+	savePhonebook(1);
 }
 
 Iterator *Phonebook::createIterator() 

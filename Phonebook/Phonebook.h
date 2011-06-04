@@ -54,14 +54,10 @@ public:
 	}
 	void setDbName(string Name) { mDbName = Name; }
 	void operator=(Phonebook&);
-	//int addAcquaintance(string *s);
-	//int addColleague(string *s);
-	//int addFriend(string *s);
 	int editContact();
 	string getOwner();
 	deque<Contact> getContacts(deque<Contact> list, string contactType);
 	void deleteContact(int nIndex);
-	int displayContacts(deque<Contact> list);
 	deque<Contact> search(string attribute, string crt, string contactType);
 	friend bool sortByName(Contact c1, Contact c2);
 	void Sort(int SortType);
