@@ -54,9 +54,9 @@ public:
 	}
 	void setDbName(string Name) { mDbName = Name; }
 	void operator=(Phonebook&);
-	int addAcquaintance(string *s);
-	int addColleague(string *s);
-	int addFriend(string *s);
+	//int addAcquaintance(string *s);
+	//int addColleague(string *s);
+	//int addFriend(string *s);
 	int editContact();
 	string getOwner();
 	deque<Contact> getContacts(deque<Contact> list, string contactType);

@@ -81,26 +81,26 @@ string Phonebook::getOwner() { return mOwner; }
 
 void Phonebook::setOwner(string owner) { mOwner = owner; }
 
-int Phonebook::addAcquaintance(string *s)
-{
-	Acquaintance tmp(s);
-	ContactList.push_back(tmp);
-	return 1;
-}
-
-int Phonebook::addColleague(string *s)
-{
-	Colleague col(s);
-	ContactList.push_back(col);
-	return 0;
-}
-
-int Phonebook::addFriend(string *s)
-{
-	Friend fr(s);
-	ContactList.push_back(fr);
-	return 0;
-}
+//int Phonebook::addAcquaintance(string *s)
+//{
+//	Acquaintance tmp(s);
+//	ContactList.push_back(tmp);
+//	return 1;
+//}
+//
+//int Phonebook::addColleague(string *s)
+//{
+//	Colleague col(s);
+//	ContactList.push_back(col);
+//	return 0;
+//}
+//
+//int Phonebook::addFriend(string *s)
+//{
+//	Friend fr(s);
+//	ContactList.push_back(fr);
+//	return 0;
+//}
 
 int Phonebook::displayContacts(deque<Contact> list)
 {

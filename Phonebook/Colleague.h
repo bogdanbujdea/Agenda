@@ -5,11 +5,12 @@
 
 class Colleague : public Contact
 {
-public:
+	friend class Contact;
 	Colleague(string EmailAddress, string Occupation, int Age,string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Colleague(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Colleague(string *s);
 	Colleague(const Colleague &col);
+public:
 	Contact::getFirstName;
 	Contact::getLastName;
 	Contact::getPhoneNumber;

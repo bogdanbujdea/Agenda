@@ -5,10 +5,11 @@
 
 class Friend : public Contact
 {
-public:
 	Friend(Date BirthDate, string HomeAddress, string EmailAddress, string Occupation, int Age, string Gender, string FirstName, string LastName, string PhoneNumber, string ContactType, int ID);
 	Friend(string *s);
 	Friend(const Friend &fr);
+	friend class Contact;
+public:
 	Contact::getFirstName;
 	Contact::getLastName;
 	Contact::getPhoneNumber;
